@@ -1,18 +1,39 @@
 .header {
   width: 1920px;
-  min-height: 88px;
+  min-height: 56px;
   background-color: #1C1C21;
   display: flex;
-  composes: p4 from global;
+  justify-content: center;
+  gap: 8px;
+  composes: pt-4 pb-4 from global;
 }
 
 .button {
   display: flex;
   align-items: center;
-  border: 1px solid red;
   border-radius: 50px;
+  gap: 8px;
+  composes: pl-5 pr-5 pt-4 pb-4 from global;
 }
 
-.text {
+.pr-5-class {
+  composes: pr-5 from global;
+}
 
+.nav {
+  display: flex;
+  justify-content: space-around;
+  width: 1280px;
+}
+
+.nav_left {
+  display: flex;
+}
+
+.nav_center {
+  display: flex;
+}
+
+.nav_right {
+  display: flex;
 }
