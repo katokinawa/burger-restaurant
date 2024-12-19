@@ -1,0 +1,25 @@
+:root {
+  font-family: JetBrains Mono, Iceland, IBM Plex Sans, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 1.2rem;
+  color: #fff;
+  background-color: #131316;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
