@@ -26,7 +26,7 @@ export default function BurgerIngredients({ data }) {
           Начинки
         </Tab>
       </div>
-      <div>
+      <div className={styles.ingredients_wrapper}>
         {current === "Булки" ? (
           <>
             <p className="text text_type_main-medium mb-6">Булки</p>
@@ -43,7 +43,7 @@ export default function BurgerIngredients({ data }) {
                       />
                       <img
                         className={styles.img}
-                        src={item.image}
+                        src={item.image_large}
                         alt={item.name}
                       ></img>
                       <div className={styles.price_wrapper}>
@@ -74,7 +74,7 @@ export default function BurgerIngredients({ data }) {
                       />
                       <img
                         className={styles.img}
-                        src={item.image}
+                        src={item.image_large}
                         alt={item.name}
                       ></img>
                       <div className={styles.price_wrapper}>
@@ -105,7 +105,7 @@ export default function BurgerIngredients({ data }) {
                       />
                       <img
                         className={styles.img}
-                        src={item.image}
+                        src={item.image_large}
                         alt={item.name}
                       ></img>
                       <div className={styles.price_wrapper}>
@@ -137,7 +137,7 @@ export default function BurgerIngredients({ data }) {
                       />
                       <img
                         className={styles.img}
-                        src={item.image}
+                        src={item.image_large}
                         alt={item.name}
                       ></img>
                       <div className={styles.price_wrapper}>
@@ -169,7 +169,7 @@ export default function BurgerIngredients({ data }) {
                       />
                       <img
                         className={styles.img}
-                        src={item.image}
+                        src={item.image_large}
                         alt={item.name}
                       ></img>
                       <div className={styles.price_wrapper}>
@@ -201,7 +201,7 @@ export default function BurgerIngredients({ data }) {
                       />
                       <img
                         className={styles.img}
-                        src={item.image}
+                        src={item.image_large}
                         alt={item.name}
                       ></img>
                       <div className={styles.price_wrapper}>
