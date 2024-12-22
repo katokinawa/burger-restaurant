@@ -1,9 +1,9 @@
 .burger_constructor {
-  width: 630px;
-display: flex;
-flex-direction: column;
-justify-content: start;
-align-items: end;
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: end;
   composes: mt-25 pl-4 pr-4 custom-scroll from global;
 }
 
@@ -11,9 +11,24 @@ align-items: end;
   display: flex;
   flex-direction: column;
   align-items: end;
-  overflow-x: auto;
-  max-height: 656px;
   gap: 10px;
+}
+
+.constructor_list_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  overflow-x: auto;
+  gap: 10px;
+  max-height: 656px;
+}
+
+.constructor_item_wrapper {
+  width: 568px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .price_wrapper {
