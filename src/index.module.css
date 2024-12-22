@@ -12,11 +12,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html {
-  display: flex;
-  justify-content: center;
-}
-
 button {
   padding: 0;
   border: none;

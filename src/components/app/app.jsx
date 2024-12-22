@@ -6,20 +6,22 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients'
 import BurgerConstructor from '../burger-constructor/burger-constructor'
 
 export default function App() {
-  const [data, setData] = useState({})
-
+  const [data, setData] = useState([])
 
   useEffect(() => {
     fetch(API_URL)
     .then(res => res.json())
-    .then(data => setData(data))
+    .then(item => setData(item.data))
     .catch(error => console.log(`Не могу получить данные: ${error}`))
   }, [])
+
   return (
     <>
       <AppHeader />
-      <BurgerIngredients data={data} />
-      <BurgerConstructor data={data} />
+      <main className={styles.main}>
+        <BurgerIngredients data={data} />
+        <BurgerConstructor data={data} />
+      </main>
     </>
   )
 }

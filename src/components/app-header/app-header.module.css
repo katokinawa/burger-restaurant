@@ -26,14 +26,6 @@
   width: 1280px;
 }
 
-.nav_left {
-  display: flex;
-}
-
-.nav_center {
-  display: flex;
-}
-
-.nav_right {
+.nav_left, .nav_center, .nav_right {
   display: flex;
 }

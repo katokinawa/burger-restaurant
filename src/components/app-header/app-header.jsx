@@ -20,8 +20,8 @@ export default function AppHeader() {
           </li>
           <li>
             <button className={styles.button}>
-              <ListIcon type="primary" />
-              <p className="text text_type_main-default">Лента заказов</p>
+              <ListIcon type="secondary" />
+              <p className="text text_type_main-default text_color_inactive" >Лента заказов</p>
             </button>
           </li>
         </ul>
@@ -31,8 +31,8 @@ export default function AppHeader() {
         <ul className={styles.nav_right}>
           <li>
             <button className={styles.button}>
-              <ProfileIcon type="primary" />
-              <p className="text text_type_main-default">Личный кабинет</p>
+              <ProfileIcon type="secondary" />
+              <p className="text text_type_main-default text_color_inactive">Личный кабинет</p>
             </button>
           </li>
         </ul>

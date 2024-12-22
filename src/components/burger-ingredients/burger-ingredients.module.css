@@ -1,0 +1,41 @@
+.burger_ingredients {
+  width: 623px;
+  max-height: 872px;
+  overflow: auto;
+  composes: mt-10 from global;
+}
+
+.tabs {
+  display: flex;
+  composes: mb-10 from global;
+}
+
+.ingredients_list {
+  display: flex;
+  gap: 24px;
+  padding: 16px;
+  flex-wrap: wrap;
+}
+
+.article {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 272px;
+  min-height: 208px;
+  composes: mb-10 from global;
+}
+
+.img {
+  width: 240px;
+  height: 120px;
+  composes: ml-4 mr-4 mb-1 from global;
+}
+
+.price_wrapper {
+  display: flex;
+  gap: 8px;
+  composes: mb-1 from global;
+}
+

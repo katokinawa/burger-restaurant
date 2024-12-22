@@ -1,0 +1,4 @@
+.burger_constructor {
+  width: 600px;
+  composes: mt-25 from global;
+}
