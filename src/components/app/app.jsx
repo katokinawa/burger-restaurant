@@ -7,6 +7,7 @@ import BurgerConstructor from '../burger-constructor/burger-constructor'
 
 export default function App() {
   const [data, setData] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     fetch(API_URL)
@@ -15,12 +16,16 @@ export default function App() {
     .catch(error => console.log(`Не могу получить данные: ${error}`))
   }, [])
 
+  function handleModal() {
+    setIsModalOpen(!isModalOpen)
+  }
+
   return (
     <>
       <AppHeader />
       <main className={styles.main}>
-        <BurgerIngredients data={data} />
-        <BurgerConstructor data={data} />
+        <BurgerIngredients isModalOpen={isModalOpen} handleModal={handleModal} data={data} />
+        <BurgerConstructor isModalOpen={isModalOpen} handleModal={handleModal} data={data} />
       </main>
     </>
   )

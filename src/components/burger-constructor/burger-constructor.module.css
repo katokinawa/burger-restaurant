@@ -42,3 +42,9 @@
   gap: 40px;
   composes: mt-10 from global;
 }
+
+.modalCloseButton {
+  position: absolute;
+  top: 45px;
+  right: 45px;
+}

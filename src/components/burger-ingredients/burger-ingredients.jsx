@@ -5,8 +5,9 @@ import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import Modal from "../modal/modal";
 
-export default function BurgerIngredients({ data }) {
+export default function BurgerIngredients({ data, isModalOpen, handleModal }) {
   const [current, setCurrent] = useState("Булки");
   return (
     <section className={styles.burger_ingredients}>
