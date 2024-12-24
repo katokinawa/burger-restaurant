@@ -8,8 +8,6 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import doneImage from "../../images/done.svg";
-import closeImage from "../../images/close.svg";
-import ModalOverlay from "../modal-overlay/modal-overlay";
 
 export default function BurgerConstructor({ data, isModalOpen, handleModal }) {
   return (
@@ -72,11 +70,7 @@ export default function BurgerConstructor({ data, isModalOpen, handleModal }) {
           Оформить заказ
         </Button>
       </div>
-      <ModalOverlay>
-        <Modal open={isModalOpen}>
-          <button className={styles.modalCloseButton} onClick={handleModal}>
-            <img src={closeImage} />
-          </button>
+        <Modal isModalOpen={isModalOpen} handleClose={handleModal}>
           <p className="text text_type_digits-large mb-8">034536</p>
           <p className="text text_type_main-default mb-15">
             идентификатор заказа
@@ -89,7 +83,6 @@ export default function BurgerConstructor({ data, isModalOpen, handleModal }) {
             Дождитесь готовности на орбитальной станции
           </p>
         </Modal>
-      </ModalOverlay>
     </section>
   );
 }
