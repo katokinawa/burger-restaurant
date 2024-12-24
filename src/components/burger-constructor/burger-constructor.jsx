@@ -1,5 +1,5 @@
-// import { useState } from 'react'
 import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
 import styles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
@@ -7,7 +7,6 @@ import {
   Button,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import doneImage from "../../images/done.svg";
 
 export default function BurgerConstructor({ data, isModalOpen, handleModal }) {
   return (
@@ -71,17 +70,7 @@ export default function BurgerConstructor({ data, isModalOpen, handleModal }) {
         </Button>
       </div>
         <Modal isModalOpen={isModalOpen} handleClose={handleModal}>
-          <p className="text text_type_digits-large mb-8">034536</p>
-          <p className="text text_type_main-default mb-15">
-            идентификатор заказа
-          </p>
-          <img className="mb-15" src={doneImage} />
-          <p className="text text_type_main-small mb-2">
-            Ваш заказ начали готовить
-          </p>
-          <p className="text text_type_main-default text_color_inactive">
-            Дождитесь готовности на орбитальной станции
-          </p>
+          <OrderDetails />
         </Modal>
     </section>
   );

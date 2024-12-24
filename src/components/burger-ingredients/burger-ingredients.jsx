@@ -6,11 +6,15 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 
 export default function BurgerIngredients({ data, isModalOpen, handleModal }) {
   const [current, setCurrent] = useState("Булки");
   return (
     <section className={styles.burger_ingredients}>
+      <Modal isModalOpen={isModalOpen} handleClose={handleModal}>
+        <IngredientDetails />
+      </Modal>
       <p className="text text_type_main-large mb-5">Соберите бургер</p>
       <div className={styles.tabs}>
         <Tab value="Булки" active={current === "Булки"} onClick={setCurrent}>
