@@ -8,12 +8,25 @@ import {
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
-export default function BurgerIngredients({ data, isModalOpen, handleModal }) {
+export default function BurgerIngredients({ data }) {
   const [current, setCurrent] = useState("Булки");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedIngredient, setSelectedIngredient] = useState(null);
+
+  function handleModal(item) {
+    setSelectedIngredient(item);
+    setIsModalOpen(true);
+  }
+
+  function handleCloseModal() {
+    setIsModalOpen(false);
+    setSelectedIngredient(null);
+  }
+
   return (
     <section className={styles.burger_ingredients}>
-      <Modal isModalOpen={isModalOpen} handleClose={handleModal}>
-        <IngredientDetails />
+      <Modal isModalOpen={isModalOpen} handleClose={handleCloseModal}>
+        <IngredientDetails ingredient={selectedIngredient} />
       </Modal>
       <p className="text text_type_main-large mb-5">Соберите бургер</p>
       <div className={styles.tabs}>
@@ -39,7 +52,7 @@ export default function BurgerIngredients({ data, isModalOpen, handleModal }) {
               {data.map(
                 (item) =>
                   item.type === "bun" && (
-                    <article key={item._id} className={styles.article}>
+                    <article key={item._id} onClick={() => handleModal(item)} className={styles.article}>
                       <Counter
                         count={1}
                         size="default"
@@ -70,7 +83,7 @@ export default function BurgerIngredients({ data, isModalOpen, handleModal }) {
               {data.map(
                 (item) =>
                   item.type === "sauce" && (
-                    <article key={item._id} className={styles.article}>
+                    <article key={item._id} onClick={() => handleModal(item)} className={styles.article}>
                       <Counter
                         count={1}
                         size="default"
@@ -101,7 +114,7 @@ export default function BurgerIngredients({ data, isModalOpen, handleModal }) {
               {data.map(
                 (item) =>
                   item.type === "main" && (
-                    <article key={item._id} className={styles.article}>
+                    <article key={item._id} onClick={() => handleModal(item)} className={styles.article}>
                       <Counter
                         count={1}
                         size="default"
@@ -133,7 +146,7 @@ export default function BurgerIngredients({ data, isModalOpen, handleModal }) {
               {data.map(
                 (item) =>
                   item.type === "bun" && (
-                    <article key={item._id} className={styles.article}>
+                    <article key={item._id} onClick={() => handleModal(item)} className={styles.article}>
                       <Counter
                         count={1}
                         size="default"
@@ -165,7 +178,7 @@ export default function BurgerIngredients({ data, isModalOpen, handleModal }) {
               {data.map(
                 (item) =>
                   item.type === "sauce" && (
-                    <article key={item._id} className={styles.article}>
+                    <article key={item._id} onClick={() => handleModal(item)} className={styles.article}>
                       <Counter
                         count={1}
                         size="default"
@@ -197,7 +210,7 @@ export default function BurgerIngredients({ data, isModalOpen, handleModal }) {
               {data.map(
                 (item) =>
                   item.type === "main" && (
-                    <article key={item._id} className={styles.article}>
+                    <article key={item._id} onClick={() => handleModal(item)} className={styles.article}>
                       <Counter
                         count={1}
                         size="default"

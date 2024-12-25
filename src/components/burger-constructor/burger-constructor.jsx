@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import styles from "./burger-constructor.module.css";
@@ -8,9 +9,22 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-export default function BurgerConstructor({ data, isModalOpen, handleModal }) {
+export default function BurgerConstructor({ data }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  function handleModal() {
+    setIsModalOpen(true);
+  }
+
+  function handleCloseModal() {
+    setIsModalOpen(false);
+  }
+
   return (
     <section className={styles.burger_constructor}>
+      <Modal isModalOpen={isModalOpen} handleClose={handleCloseModal}>
+        <OrderDetails />
+      </Modal>
       <div className={styles.constructor_wrapper}>
         <ConstructorElement
           type="top"
@@ -69,9 +83,6 @@ export default function BurgerConstructor({ data, isModalOpen, handleModal }) {
           Оформить заказ
         </Button>
       </div>
-        <Modal isModalOpen={isModalOpen} handleClose={handleModal}>
-          <OrderDetails />
-        </Modal>
     </section>
   );
 }
