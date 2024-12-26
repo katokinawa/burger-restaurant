@@ -8,28 +8,12 @@ import {
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import PropTypes from "prop-types";
+import { useModal } from "../../hooks/useModal";
+import { IngredientType } from "../../utils/types";
 
 export default function BurgerIngredients({ data }) {
   const [current, setCurrent] = useState("bun");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedIngredient, setSelectedIngredient] = useState(null);
-
-  function handleModal(item) {
-    setSelectedIngredient(item);
-    setIsModalOpen(true);
-  }
-
-  function handleCloseModal() {
-    setIsModalOpen(false);
-    setSelectedIngredient(null);
-  }
-
-  function getTypeLabel(type) {
-    if (type === "bun") return "Булки";
-    if (type === "sauce") return "Соусы";
-    if (type === "main") return "Начинки";
-    return null;
-  }
+  const { isModalOpen, selectedIngredient, openModal, closeModal } = useModal();
 
   const renderIngredients = (type) => {
     return (
@@ -41,7 +25,7 @@ export default function BurgerIngredients({ data }) {
               item.type === type && (
                 <article
                   key={item._id}
-                  onClick={() => handleModal(item)}
+                  onClick={() => openModal(item)}
                   className={styles.article}
                 >
                   <Counter
@@ -68,19 +52,40 @@ export default function BurgerIngredients({ data }) {
     );
   };
 
-  const renderOtherIngredients = (type) => {
-    if (current === type) return null;
-
-    return (
-      <>
-        <p className="text text_type_main-medium mb-6">{getTypeLabel(type)}</p>
+  return (
+    <section className={styles.burger_ingredients}>
+      <Modal isModalOpen={isModalOpen} handleClose={closeModal}>
+        <IngredientDetails ingredient={selectedIngredient} />
+      </Modal>
+      <p className="text text_type_main-large mb-5">Соберите бургер</p>
+      <div className={styles.tabs}>
+        <a href="#bun">
+          <Tab value="bun" active={current === "bun"} onClick={setCurrent}>
+            Булки
+          </Tab>
+        </a>
+        <a href="#sauce">
+          <Tab value="sauce" active={current === "sauce"} onClick={setCurrent}>
+            Соусы
+          </Tab>
+        </a>
+        <a href="#main">
+          <Tab value="main" active={current === "main"} onClick={setCurrent}>
+            Начинки
+          </Tab>
+        </a>
+      </div>
+      <div className={styles.ingredients_wrapper}>
+        <p id="bun" className="text text_type_main-medium mb-6">
+          Булки
+        </p>
         <div className={styles.ingredients_list}>
           {data.map(
             (item) =>
-              item.type === type && (
+              item.type === "bun" && (
                 <article
                   key={item._id}
-                  onClick={() => handleModal(item)}
+                  onClick={() => openModal(item)}
                   className={styles.article}
                 >
                   <Counter
@@ -103,52 +108,75 @@ export default function BurgerIngredients({ data }) {
               )
           )}
         </div>
-      </>
-    );
-  };
-
-  return (
-    <section className={styles.burger_ingredients}>
-      <Modal isModalOpen={isModalOpen} handleClose={handleCloseModal}>
-        <IngredientDetails ingredient={selectedIngredient} />
-      </Modal>
-      <p className="text text_type_main-large mb-5">Соберите бургер</p>
-      <div className={styles.tabs}>
-        <Tab value="bun" active={current === "bun"} onClick={setCurrent}>
-          Булки
-        </Tab>
-        <Tab value="sauce" active={current === "sauce"} onClick={setCurrent}>
+        <p id="sauce" className="text text_type_main-medium mb-6">
           Соусы
-        </Tab>
-        <Tab value="main" active={current === "main"} onClick={setCurrent}>
+        </p>
+        <div className={styles.ingredients_list}>
+          {data.map(
+            (item) =>
+              item.type === "sauce" && (
+                <article
+                  key={item._id}
+                  onClick={() => openModal(item)}
+                  className={styles.article}
+                >
+                  <Counter
+                    count={1}
+                    size="default"
+                    extraClass="m-1"
+                    className={styles.counter}
+                  />
+                  <img
+                    className={styles.img}
+                    src={item.image_large}
+                    alt={item.name}
+                  ></img>
+                  <div className={styles.price_wrapper}>
+                    <p className="text text_type_main-default">{item.price}</p>
+                    <CurrencyIcon type="primary" />
+                  </div>
+                  <p className="text text_type_main-default">{item.name}</p>
+                </article>
+              )
+          )}
+        </div>
+        <p id="main" className="text text_type_main-medium mb-6">
           Начинки
-        </Tab>
-      </div>
-      <div className={styles.ingredients_wrapper}>
-        {renderIngredients(current)}
-        {renderOtherIngredients("bun")}
-        {renderOtherIngredients("sauce")}
-        {renderOtherIngredients("main")}
+        </p>
+        <div className={styles.ingredients_list}>
+          {data.map(
+            (item) =>
+              item.type === "main" && (
+                <article
+                  key={item._id}
+                  onClick={() => openModal(item)}
+                  className={styles.article}
+                >
+                  <Counter
+                    count={1}
+                    size="default"
+                    extraClass="m-1"
+                    className={styles.counter}
+                  />
+                  <img
+                    className={styles.img}
+                    src={item.image_large}
+                    alt={item.name}
+                  ></img>
+                  <div className={styles.price_wrapper}>
+                    <p className="text text_type_main-default">{item.price}</p>
+                    <CurrencyIcon type="primary" />
+                  </div>
+                  <p className="text text_type_main-default">{item.name}</p>
+                </article>
+              )
+          )}
+        </div>
       </div>
     </section>
   );
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string,
-      name: PropTypes.string,
-      type: PropTypes.string,
-      proteins: PropTypes.number,
-      fat: PropTypes.number,
-      carbohydrates: PropTypes.number,
-      calories: PropTypes.number,
-      price: PropTypes.number,
-      image: PropTypes.string,
-      image_mobile: PropTypes.string,
-      image_large: PropTypes.string,
-      __v: PropTypes.number,
-    })
-  ),
+  data: PropTypes.arrayOf(IngredientType),
 };

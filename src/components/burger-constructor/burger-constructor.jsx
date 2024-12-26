@@ -9,26 +9,19 @@ import {
   Button,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useModal } from "../../hooks/useModal"
+import { IngredientType } from '../../utils/types';
 
 export default function BurgerConstructor({ data }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [orderData, setOrderData] = useState([
     {
       id: "034536",
     },
   ]);
-
-  function handleModal() {
-    setIsModalOpen(true);
-  }
-
-  function handleCloseModal() {
-    setIsModalOpen(false);
-  }
-
+  const { isModalOpen, openModal, closeModal } = useModal();
   return (
     <section className={styles.burger_constructor}>
-      <Modal isModalOpen={isModalOpen} handleClose={handleCloseModal}>
+      <Modal isModalOpen={isModalOpen} handleClose={closeModal}>
         <OrderDetails orderData={orderData} />
       </Modal>
       <div className={styles.constructor_wrapper}>
@@ -81,7 +74,7 @@ export default function BurgerConstructor({ data }) {
           <CurrencyIcon type="primary" />
         </div>
         <Button
-          onClick={handleModal}
+          onClick={openModal}
           htmlType="button"
           type="primary"
           size="large"
@@ -94,20 +87,5 @@ export default function BurgerConstructor({ data }) {
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string,
-      name: PropTypes.string,
-      type: PropTypes.string,
-      proteins: PropTypes.number,
-      fat: PropTypes.number,
-      carbohydrates: PropTypes.number,
-      calories: PropTypes.number,
-      price: PropTypes.number,
-      image: PropTypes.string,
-      image_mobile: PropTypes.string,
-      image_large: PropTypes.string,
-      __v: PropTypes.number,
-    })
-  ),
+  data: PropTypes.arrayOf(IngredientType),
 };

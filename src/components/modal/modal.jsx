@@ -7,15 +7,16 @@ import PropTypes from "prop-types";
 
 export default function Modal({ children, isModalOpen, handleClose }) {
   useEffect(() => {
+    function handlePressKey(evt) {
+      if (evt.key === "Escape") {
+        handleClose();
+      }
+    }
     document.addEventListener("keydown", handlePressKey);
     return () => document.removeEventListener("keydown", handlePressKey);
-  }, [isModalOpen]);
+  }, [isModalOpen, handleClose]);
 
-  function handlePressKey(evt) {
-    if (evt.key === "Escape") {
-      handleClose();
-    }
-  }
+
   return createPortal(
     <ModalOverlay isModalOpen={isModalOpen} handleClose={handleClose}>
       <div
