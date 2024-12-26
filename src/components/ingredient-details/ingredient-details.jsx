@@ -26,7 +26,7 @@ export default function IngredientDetails({ ingredient }) {
               Белки, г
             </p>
             <p className="text text_type_digits-default text_color_inactive">
-              {ingredient.carbohydrates}
+              {ingredient.proteins}
             </p>
             <p className="text text_type_main-default text_color_inactive"></p>
           </li>
@@ -55,5 +55,14 @@ export default function IngredientDetails({ ingredient }) {
 }
 
 IngredientDetails.propTypes = {
-  ingredient: PropTypes.array,
+  orderData: PropTypes.arrayOf(
+    PropTypes.exact({
+      name: PropTypes.string,
+      image_large: PropTypes.string,
+      calories: PropTypes.number,
+      proteins: PropTypes.number,
+      carbohydrates: PropTypes.number,
+      fat: PropTypes.number,
+    })
+  ),
 };
