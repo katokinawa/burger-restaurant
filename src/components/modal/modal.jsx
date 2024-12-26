@@ -1,8 +1,9 @@
-import { createPortal } from "react-dom";
 import styles from "./modal.module.css";
+import { createPortal } from "react-dom";
+import { useEffect } from "react";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import closeImage from "../../images/close.svg";
-import { useEffect } from "react";
+import PropTypes from "prop-types";
 
 export default function Modal({ children, isModalOpen, handleClose }) {
   useEffect(() => {
@@ -30,3 +31,9 @@ export default function Modal({ children, isModalOpen, handleClose }) {
     document.getElementById("modal")
   );
 }
+
+Modal.propTypes = {
+  children: PropTypes.element.isRequired,
+  isModalOpen: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+};

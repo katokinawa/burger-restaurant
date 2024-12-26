@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import styles from "./burger-constructor.module.css";
@@ -11,6 +12,11 @@ import {
 
 export default function BurgerConstructor({ data }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [orderData, setOrderData] = useState([
+    {
+      id: "034536",
+    },
+  ]);
 
   function handleModal() {
     setIsModalOpen(true);
@@ -23,7 +29,7 @@ export default function BurgerConstructor({ data }) {
   return (
     <section className={styles.burger_constructor}>
       <Modal isModalOpen={isModalOpen} handleClose={handleCloseModal}>
-        <OrderDetails />
+        <OrderDetails orderData={orderData} />
       </Modal>
       <div className={styles.constructor_wrapper}>
         <ConstructorElement
@@ -86,3 +92,7 @@ export default function BurgerConstructor({ data }) {
     </section>
   );
 }
+
+BurgerConstructor.propTypes = {
+  data: PropTypes.array.isRequired,
+};

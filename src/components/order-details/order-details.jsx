@@ -1,13 +1,8 @@
-import { useState } from "react";
 import styles from "./order-details.module.css";
 import doneImage from "../../images/done.svg";
+import PropTypes from "prop-types";
 
-export default function OrderDetails() {
-  const [orderData, setOrderData] = useState([
-    {
-      id: "034536",
-    },
-  ]);
+export default function OrderDetails({ orderData }) {
   return (
     <div className={styles.order_details_wrapper}>
       <p className={styles.heading + " text text_type_digits-large mb-8"}>
@@ -24,3 +19,11 @@ export default function OrderDetails() {
     </div>
   );
 }
+
+OrderDetails.propTypes = {
+  orderData: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+    })
+  ),
+};
