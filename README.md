@@ -1,8 +1,13 @@
-# React + Vite
+# Stellar Burgers - бургерная на краю вселенной
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Добро пожаловать в **Stellar Burgers** — бургерную, которая находится на самом краю вселенной! Здесь мы подаем космически-вкусные бургеры, вдохновленные величием космоса и таинственными планетами.
+Для сборки и разработки используется Vite. Для обеспечения качества кода применяются ESLint, PropTypes и несколько плагинов для React, включая eslint-plugin-react, eslint-plugin-react-hooks, и eslint-plugin-react-refresh.
 
-Currently, two official plugins are available:
+## Для того чтобы развернуть проект, следуйте этим шагам:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Перейдите в репозиторий проекта, после нажмите "Code" и загрузите к себе локальный архив с проектом.
+2. Распакуйте папку из архива в удобное местоположение.
+3. Откройте терминал Bash или PowerShell.
+4. Перейдите в директорию проекта с помощью команды `cd <директория>`.
+5. Загрузите все зависимости с помощью команды `npm install`.
+6. Запустите проект с помощью команды `npm run preview`.
