@@ -55,14 +55,18 @@ export default function IngredientDetails({ ingredient }) {
 }
 
 IngredientDetails.propTypes = {
-  orderData: PropTypes.arrayOf(
-    PropTypes.exact({
-      name: PropTypes.string,
-      image_large: PropTypes.string,
-      calories: PropTypes.number,
-      proteins: PropTypes.number,
-      carbohydrates: PropTypes.number,
-      fat: PropTypes.number,
-    })
-  ),
+  ingredient: PropTypes.shape({
+    _id: PropTypes.string,
+    name: PropTypes.string,
+    type: PropTypes.string,
+    proteins: PropTypes.number,
+    fat: PropTypes.number,
+    carbohydrates: PropTypes.number,
+    calories: PropTypes.number,
+    price: PropTypes.number,
+    image: PropTypes.string,
+    image_mobile: PropTypes.string,
+    image_large: PropTypes.string,
+    __v: PropTypes.number,
+  }),
 };
