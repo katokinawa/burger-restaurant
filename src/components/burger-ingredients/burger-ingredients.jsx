@@ -15,43 +15,6 @@ export default function BurgerIngredients({ data }) {
   const [current, setCurrent] = useState("bun");
   const { isModalOpen, selectedIngredient, openModal, closeModal } = useModal();
 
-  const renderIngredients = (type) => {
-    return (
-      <>
-        <p className="text text_type_main-medium mb-6">{getTypeLabel(type)}</p>
-        <div className={styles.ingredients_list}>
-          {data.map(
-            (item) =>
-              item.type === type && (
-                <article
-                  key={item._id}
-                  onClick={() => openModal(item)}
-                  className={styles.article}
-                >
-                  <Counter
-                    count={1}
-                    size="default"
-                    extraClass="m-1"
-                    className={styles.counter}
-                  />
-                  <img
-                    className={styles.img}
-                    src={item.image_large}
-                    alt={item.name}
-                  />
-                  <div className={styles.price_wrapper}>
-                    <p className="text text_type_main-default">{item.price}</p>
-                    <CurrencyIcon type="primary" />
-                  </div>
-                  <p className="text text_type_main-default">{item.name}</p>
-                </article>
-              )
-          )}
-        </div>
-      </>
-    );
-  };
-
   return (
     <section className={styles.burger_ingredients}>
       <Modal isModalOpen={isModalOpen} handleClose={closeModal}>

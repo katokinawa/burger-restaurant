@@ -1,5 +1,5 @@
 .burger_ingredients {
-  width: 630px;
+  width: 600px;
   composes: mt-10 from global;
 }
 
@@ -18,7 +18,8 @@
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
-  composes: p-4 from global;
+  text-align: center;
+  composes: pm-4 from global;
 }
 
 .article {
@@ -27,7 +28,7 @@
   flex-direction: column;
   align-items: center;
   width: 272px;
-  min-height: 208px;
+  max-height: 208px;
   composes: mb-10 from global;
 }
 

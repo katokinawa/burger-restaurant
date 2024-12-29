@@ -4,6 +4,14 @@
   gap: 40px;
 }
 
+/* мини-адаптив для того, чтобы контент помещался на одном экране */
+@media (max-width: 1400px) {
+  .main {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 /* Пришлось перенести из index.module.css, иначе ломался прод при npm run preview */
 button {
   padding: 0;
