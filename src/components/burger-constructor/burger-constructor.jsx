@@ -1,4 +1,3 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
@@ -11,18 +10,16 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useModal } from "../../hooks/useModal"
 import { IngredientType } from '../../utils/types';
+import { useSelector } from "react-redux";
 
-export default function BurgerConstructor({ data }) {
-  const [orderData, setOrderData] = useState([
-    {
-      id: "034536",
-    },
-  ]);
+export default function BurgerConstructor() {
   const { isModalOpen, openModal, closeModal } = useModal();
+  const data = useSelector(state => state.burger_constructor.items)
+
   return (
     <section className={styles.burger_constructor}>
       <Modal isModalOpen={isModalOpen} handleClose={closeModal}>
-        <OrderDetails orderData={orderData} />
+        <OrderDetails />
       </Modal>
       <div className={styles.constructor_wrapper}>
         <ConstructorElement

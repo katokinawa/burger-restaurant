@@ -1,8 +1,9 @@
 import styles from "./ingredient-details.module.css";
 import { IngredientType } from '../../utils/types';
+import { useSelector } from "react-redux";
 
-export default function IngredientDetails({ ingredient }) {
-  if (!ingredient) return null;
+export default function IngredientDetails() {
+  const ingredient = useSelector(state => state.ingredient.data)
   return (
     <div className={styles.ingredients_modal_wrapper}>
       <p className={styles.heading + " text text_type_main-large"}>

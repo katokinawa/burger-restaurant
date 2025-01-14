@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./burger-ingredients.module.css";
 import {
   Tab,
@@ -10,15 +10,77 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 import PropTypes from "prop-types";
 import { useModal } from "../../hooks/useModal";
 import { IngredientType } from "../../utils/types";
+import { useDispatch, useSelector } from "react-redux";
+import { getIngredients } from "../../services/actions/ingredients";
 
-export default function BurgerIngredients({ data }) {
+export default function BurgerIngredients() {
   const [current, setCurrent] = useState("bun");
-  const { isModalOpen, selectedIngredient, openModal, closeModal } = useModal();
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.ingredients.items);
+
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
+
+  const containerRef = useRef(null);
+  const bunRef = useRef(null);
+  const sauceRef = useRef(null);
+  const mainRef = useRef(null);
+
+  const handleScroll = () => {
+    if (
+      !containerRef.current ||
+      !bunRef.current ||
+      !sauceRef.current ||
+      !mainRef.current
+    )
+      return;
+
+    const containerTop = containerRef.current.getBoundingClientRect().top;
+
+    const bunTop = bunRef.current.getBoundingClientRect().top - containerTop;
+    const sauceTop =
+      sauceRef.current.getBoundingClientRect().top - containerTop;
+    const mainTop = mainRef.current.getBoundingClientRect().top - containerTop;
+
+    const tabs = [
+      { name: "bun", position: bunTop },
+      { name: "sauce", position: sauceTop },
+      { name: "main", position: mainTop },
+    ];
+
+    const visibleTabs = tabs.filter((tab) => tab.position >= 0);
+
+    let currentTab;
+    if (visibleTabs.length > 0) {
+      currentTab = tabs.find((item) => item.position >= 0);
+    } else {
+      // в случае, если никакой заголовок не виден на экране, показывать последний из списка
+      currentTab = tabs[tabs.length - 1];
+    }
+
+    setCurrent(currentTab.name);
+  };
+
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
 
   return (
     <section className={styles.burger_ingredients}>
       <Modal isModalOpen={isModalOpen} handleClose={closeModal}>
-        <IngredientDetails ingredient={selectedIngredient} />
+        <IngredientDetails />
       </Modal>
       <p className="text text_type_main-large mb-5">Соберите бургер</p>
       <div className={styles.tabs}>
@@ -38,8 +100,8 @@ export default function BurgerIngredients({ data }) {
           </Tab>
         </a>
       </div>
-      <div className={styles.ingredients_wrapper}>
-        <p id="bun" className="text text_type_main-medium mb-6">
+      <div ref={containerRef} className={styles.ingredients_wrapper}>
+        <p id="bun" ref={bunRef} className="text text_type_main-medium mb-6">
           Булки
         </p>
         <div className={styles.ingredients_list}>
@@ -71,7 +133,11 @@ export default function BurgerIngredients({ data }) {
               )
           )}
         </div>
-        <p id="sauce" className="text text_type_main-medium mb-6">
+        <p
+          id="sauce"
+          ref={sauceRef}
+          className="text text_type_main-medium mb-6"
+        >
           Соусы
         </p>
         <div className={styles.ingredients_list}>
@@ -103,7 +169,7 @@ export default function BurgerIngredients({ data }) {
               )
           )}
         </div>
-        <p id="main" className="text text_type_main-medium mb-6">
+        <p id="main" ref={mainRef} className="text text_type_main-medium mb-6">
           Начинки
         </p>
         <div className={styles.ingredients_list}>

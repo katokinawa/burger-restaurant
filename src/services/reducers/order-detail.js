@@ -1,4 +1,10 @@
 const initialState = {
+  data: [
+    {
+      _id: '0'
+    }
+  ]
+
 };
 
 export const orderDetail = (state = initialState, action) => {
