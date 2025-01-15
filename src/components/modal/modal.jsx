@@ -6,6 +6,7 @@ import closeImage from "../../images/close.svg";
 import PropTypes from "prop-types";
 
 export default function Modal({ children, isModalOpen, handleClose }) {
+  // useEffects
   useEffect(() => {
     function handlePressKey(evt) {
       if (evt.key === "Escape") {
@@ -16,7 +17,7 @@ export default function Modal({ children, isModalOpen, handleClose }) {
     return () => document.removeEventListener("keydown", handlePressKey);
   }, [isModalOpen, handleClose]);
 
-
+  // JSX
   return createPortal(
     <ModalOverlay isModalOpen={isModalOpen} handleClose={handleClose}>
       <div

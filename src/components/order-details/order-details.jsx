@@ -4,7 +4,10 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 export default function OrderDetails() {
-  const orderData = useSelector(state => state.order.data)
+  // Redux
+  const orderData = useSelector((state) => state.order.data);
+
+  // JSX
   return (
     <div className={styles.order_details_wrapper}>
       <p className={styles.heading + " text text_type_digits-large mb-8"}>

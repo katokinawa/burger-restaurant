@@ -9,7 +9,7 @@
 }
 
 .ingredients_wrapper {
-  max-height: 828px;
+  max-height: 800px;
   overflow-x: auto;
   composes: custom-scroll from global;
 }

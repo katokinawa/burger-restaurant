@@ -7,18 +7,13 @@ import PropTypes from "prop-types";
 import { IngredientType } from "../../utils/types";
 import { useDrag } from "react-dnd";
 export default function IngredientElement({ item, openModal }) {
-
-
   // DND (drag and drop)
-  const [{ isDragging }, dragTarget] = useDrag({
+  const [, dragTarget] = useDrag({
     type: "ingredient",
     item: item,
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
   });
 
-
+  // JSX
   return (
     <article
       onClick={() => {

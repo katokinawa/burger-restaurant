@@ -2,6 +2,8 @@ import styles from "./modal-overlay.module.css";
 import PropTypes from "prop-types";
 
 export default function ModalOverlay({ children, isModalOpen, handleClose }) {
+
+  // JSX
   return (
     <div
       onClick={handleClose}

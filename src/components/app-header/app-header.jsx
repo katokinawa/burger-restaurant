@@ -8,6 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 export default function AppHeader() {
+  // JSX
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
@@ -21,7 +22,9 @@ export default function AppHeader() {
           <li>
             <button className={styles.button}>
               <ListIcon type="secondary" />
-              <p className="text text_type_main-default text_color_inactive" >Лента заказов</p>
+              <p className="text text_type_main-default text_color_inactive">
+                Лента заказов
+              </p>
             </button>
           </li>
         </ul>
@@ -32,7 +35,9 @@ export default function AppHeader() {
           <li>
             <button className={styles.button}>
               <ProfileIcon type="secondary" />
-              <p className="text text_type_main-default text_color_inactive">Личный кабинет</p>
+              <p className="text text_type_main-default text_color_inactive">
+                Личный кабинет
+              </p>
             </button>
           </li>
         </ul>
