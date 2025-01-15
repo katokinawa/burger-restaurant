@@ -1,0 +1,7 @@
+.constructor_item_wrapper {
+    width: 568px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }

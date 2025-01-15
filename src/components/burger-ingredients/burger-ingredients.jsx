@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./burger-ingredients.module.css";
-import {
-  Tab,
-  CurrencyIcon,
-  Counter,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import PropTypes from "prop-types";
@@ -12,22 +8,45 @@ import { useModal } from "../../hooks/useModal";
 import { IngredientType } from "../../utils/types";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "../../services/actions/ingredients";
+import IngredientElement from "../ingredient-element/ingredient-element";
 
 export default function BurgerIngredients() {
+  // States
   const [current, setCurrent] = useState("bun");
-  const { isModalOpen, openModal, closeModal } = useModal();
-  const dispatch = useDispatch();
-  const data = useSelector((state) => state.ingredients.items);
 
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
+  // Hooks
+  const { isModalOpen, closeModal, openModal } = useModal();
 
+  // Refs
   const containerRef = useRef(null);
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
 
+  // Redux
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.ingredients.items);
+
+  // UseEffects
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
+
+  // Functions
   const handleScroll = () => {
     if (
       !containerRef.current ||
@@ -63,20 +82,7 @@ export default function BurgerIngredients() {
     setCurrent(currentTab.name);
   };
 
-  useEffect(() => {
-    const container = containerRef.current;
-
-    if (container) {
-      container.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (container) {
-        container.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
-
+  // JSX
   return (
     <section className={styles.burger_ingredients}>
       <Modal isModalOpen={isModalOpen} handleClose={closeModal}>
@@ -108,28 +114,11 @@ export default function BurgerIngredients() {
           {data.map(
             (item) =>
               item.type === "bun" && (
-                <article
+                <IngredientElement
                   key={item._id}
-                  onClick={() => openModal(item)}
-                  className={styles.article}
-                >
-                  <Counter
-                    count={1}
-                    size="default"
-                    extraClass="m-1"
-                    className={styles.counter}
-                  />
-                  <img
-                    className={styles.img}
-                    src={item.image_large}
-                    alt={item.name}
-                  ></img>
-                  <div className={styles.price_wrapper}>
-                    <p className="text text_type_main-default">{item.price}</p>
-                    <CurrencyIcon type="primary" />
-                  </div>
-                  <p className="text text_type_main-default">{item.name}</p>
-                </article>
+                  item={item}
+                  openModal={openModal}
+                />
               )
           )}
         </div>
@@ -144,28 +133,11 @@ export default function BurgerIngredients() {
           {data.map(
             (item) =>
               item.type === "sauce" && (
-                <article
+                <IngredientElement
                   key={item._id}
-                  onClick={() => openModal(item)}
-                  className={styles.article}
-                >
-                  <Counter
-                    count={1}
-                    size="default"
-                    extraClass="m-1"
-                    className={styles.counter}
-                  />
-                  <img
-                    className={styles.img}
-                    src={item.image_large}
-                    alt={item.name}
-                  ></img>
-                  <div className={styles.price_wrapper}>
-                    <p className="text text_type_main-default">{item.price}</p>
-                    <CurrencyIcon type="primary" />
-                  </div>
-                  <p className="text text_type_main-default">{item.name}</p>
-                </article>
+                  item={item}
+                  openModal={openModal}
+                />
               )
           )}
         </div>
@@ -176,28 +148,11 @@ export default function BurgerIngredients() {
           {data.map(
             (item) =>
               item.type === "main" && (
-                <article
+                <IngredientElement
                   key={item._id}
-                  onClick={() => openModal(item)}
-                  className={styles.article}
-                >
-                  <Counter
-                    count={1}
-                    size="default"
-                    extraClass="m-1"
-                    className={styles.counter}
-                  />
-                  <img
-                    className={styles.img}
-                    src={item.image_large}
-                    alt={item.name}
-                  ></img>
-                  <div className={styles.price_wrapper}>
-                    <p className="text text_type_main-default">{item.price}</p>
-                    <CurrencyIcon type="primary" />
-                  </div>
-                  <p className="text text_type_main-default">{item.name}</p>
-                </article>
+                  item={item}
+                  openModal={openModal}
+                />
               )
           )}
         </div>
