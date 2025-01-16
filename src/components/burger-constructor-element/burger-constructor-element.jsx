@@ -4,37 +4,42 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDrag } from "react-dnd";
-import PropTypes from 'prop-types';
+import { useDrag, useDrop } from "react-dnd";
+import PropTypes from "prop-types";
 
-export default function BurgerConstructorElement({ item, index }) {
-  const [{ isDrag }, dragItemTarget] = useDrag({
+export default function BurgerConstructorElement({ item, index, moveItem }) {
+  // DND (drag and drop)
+  const [, dropItemTarget] = useDrop({
+    accept: "ingredientItem",
+    drop(draggedItem) {
+      moveItem(draggedItem.index, index);
+    },
+  });
+  const [, dragItemTarget] = useDrag({
     type: "ingredientItem",
     item: {
       item: item,
       index: index,
     },
-    collect: (monitor) => ({
-      isDrag: monitor.isDragging(),
-    }),
   });
 
   // JSX
   return (
-    !isDrag && (
-      <article ref={dragItemTarget} className={styles.constructor_item_wrapper}>
+    <article ref={dropItemTarget}>
+      <div ref={dragItemTarget} className={styles.constructor_item_wrapper}>
         <DragIcon type="primary" />
         <ConstructorElement
           text={item.name}
           price={item.price}
           thumbnail={item.image}
         />
-      </article>
-    )
+      </div>
+    </article>
   );
 }
 
 BurgerConstructorElement.propTypes = {
   item: IngredientType,
-  index: PropTypes.number
+  index: PropTypes.number,
+  moveItem: PropTypes.func,
 };

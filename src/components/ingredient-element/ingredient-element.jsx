@@ -6,10 +6,10 @@ import styles from "./ingredient-element.module.css";
 import PropTypes from "prop-types";
 import { IngredientType } from "../../utils/types";
 import { useDrag } from "react-dnd";
-export default function IngredientElement({ item, openModal }) {
+export default function IngredientElement({ item, openModal, type }) {
   // DND (drag and drop)
   const [, dragTarget] = useDrag({
-    type: "ingredient",
+    type: type === 'bun' ? 'bun' : 'ingredient',
     item: item,
   });
 
@@ -41,4 +41,5 @@ export default function IngredientElement({ item, openModal }) {
 IngredientElement.propTypes = {
   item: IngredientType,
   openModal: PropTypes.func,
+  type: PropTypes.string,
 };

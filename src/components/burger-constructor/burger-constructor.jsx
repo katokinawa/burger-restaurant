@@ -12,7 +12,12 @@ import { IngredientType } from "../../utils/types";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
-import { ADD_BURGER_INGREDIENT } from "../../services/actions/burger-constructor";
+import {
+  ADD_BURGER_BUN_BOTTOM,
+  ADD_BURGER_BUN_TOP,
+  ADD_BURGER_INGREDIENT,
+  SWAP_BURGER_INGREDIENT,
+} from "../../services/actions/burger-constructor";
 import cloudIcon from "../../images/cloud.svg";
 
 export default function BurgerConstructor() {
@@ -22,8 +27,42 @@ export default function BurgerConstructor() {
   // Redux
   const dispatch = useDispatch();
   const data = useSelector((state) => state.burger_constructor.items);
+  const buns = useSelector((state) => state.burger_constructor.buns);
+
+  // Consts
+  const bunsTop = buns[0];
+  const bunsBottom = buns[1];
 
   // Functions
+  const handleMoveItem = (dragItemIndex, dropItemIndex) => {
+    const updatedIngredients = [...data];
+    let temp = updatedIngredients[dropItemIndex];
+    updatedIngredients[dropItemIndex] = updatedIngredients[dragItemIndex];
+    updatedIngredients[dragItemIndex] = temp;
+    handleSwapBurgerIngredient(updatedIngredients);
+  };
+
+  const handleSwapBurgerIngredient = (item) => {
+    dispatch({
+      type: SWAP_BURGER_INGREDIENT,
+      item,
+    });
+  };
+
+  const handleDropBunTop = (item) => {
+    dispatch({
+      type: ADD_BURGER_BUN_TOP,
+      item,
+    });
+  };
+
+  const handleDropBunBottom = (item) => {
+    dispatch({
+      type: ADD_BURGER_BUN_BOTTOM,
+      item,
+    });
+  };
+
   const handleDrop = (item) => {
     dispatch({
       type: ADD_BURGER_INGREDIENT,
@@ -32,17 +71,23 @@ export default function BurgerConstructor() {
   };
 
   // DND (drag and drop)
+  const [, dropTargetBunsTop] = useDrop({
+    accept: "bun",
+    drop(item) {
+      handleDropBunTop(item);
+    },
+  });
+  const [, dropTargetBunsBottom] = useDrop({
+    accept: "bun",
+    drop(item) {
+      handleDropBunBottom(item);
+    },
+  });
+
   const [, dropTarget] = useDrop({
     accept: "ingredient",
     drop(item) {
       handleDrop(item);
-    },
-  });
-
-  const [, dropItemTarget] = useDrop({
-    accept: "ingredientItem",
-    drop(item) {
-      // handleDrop(item);
     },
   });
 
@@ -52,17 +97,13 @@ export default function BurgerConstructor() {
       <Modal isModalOpen={isModalOpen} handleClose={closeModal}>
         <OrderDetails />
       </Modal>
-      <div className={styles.constructor_bun_wrapper}>
+      <div ref={dropTargetBunsTop} className={styles.constructor_bun_wrapper}>
         <ConstructorElement
           type="top"
           isLocked={true}
-          text="Краторная булка N-200i (верх)"
-          price={
-            data.find((item) => item.name === "Краторная булка N-200i")?.price
-          }
-          thumbnail={
-            data.find((item) => item.name === "Краторная булка N-200i")?.image
-          }
+          text={bunsTop.name + " (верх)"}
+          price={bunsTop.price}
+          thumbnail={bunsTop.image}
         />
       </div>
       {data.length === 0 ? (
@@ -76,27 +117,31 @@ export default function BurgerConstructor() {
         </div>
       ) : (
         <div ref={dropTarget} className={styles.constructor_wrapper}>
-          <div ref={dropItemTarget} className={styles.constructor_list_wrapper}>
+          <div className={styles.constructor_list_wrapper}>
             {data.map(
               (item, index) =>
                 item.type !== "bun" && (
-                  <BurgerConstructorElement key={index} item={item} index={index} />
+                  <BurgerConstructorElement
+                    key={index}
+                    item={item}
+                    index={index}
+                    moveItem={handleMoveItem}
+                  />
                 )
             )}
           </div>
         </div>
       )}
-      <div className={styles.constructor_bun_wrapper}>
+      <div
+        ref={dropTargetBunsBottom}
+        className={styles.constructor_bun_wrapper}
+      >
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text="Краторная булка N-200i (низ)"
-          price={
-            data.find((item) => item.name === "Краторная булка N-200i")?.price
-          }
-          thumbnail={
-            data.find((item) => item.name === "Краторная булка N-200i")?.image
-          }
+          text={bunsBottom.name + " (низ)"}
+          price={bunsBottom.price}
+          thumbnail={bunsBottom.image}
         />
       </div>
 

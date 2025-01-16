@@ -117,6 +117,7 @@ export default function BurgerIngredients() {
                 <IngredientElement
                   key={item._id}
                   item={item}
+                  type={item.type}
                   openModal={openModal}
                 />
               )
@@ -136,6 +137,7 @@ export default function BurgerIngredients() {
                 <IngredientElement
                   key={item._id}
                   item={item}
+                  type={item.type}
                   openModal={openModal}
                 />
               )
@@ -151,6 +153,7 @@ export default function BurgerIngredients() {
                 <IngredientElement
                   key={item._id}
                   item={item}
+                  type={item.type}
                   openModal={openModal}
                 />
               )
