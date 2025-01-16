@@ -26,8 +26,11 @@ export default function BurgerConstructor() {
 
   // Redux
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.burger_constructor.items);
+  const ingredients = useSelector((state) => state.burger_constructor.items);
   const buns = useSelector((state) => state.burger_constructor.buns);
+
+  // Consts
+  const sum = ingredients.reduce((sum, { price }) => sum + price, 0) + buns.reduce((sum, { price }) => sum + price, 0);
 
   // Consts
   const bunsTop = buns[0];
@@ -35,7 +38,7 @@ export default function BurgerConstructor() {
 
   // Functions
   const handleMoveItem = (dragItemIndex, dropItemIndex) => {
-    const updatedIngredients = [...data];
+    const updatedIngredients = [...ingredients];
     let temp = updatedIngredients[dropItemIndex];
     updatedIngredients[dropItemIndex] = updatedIngredients[dragItemIndex];
     updatedIngredients[dragItemIndex] = temp;
@@ -106,7 +109,7 @@ export default function BurgerConstructor() {
           thumbnail={bunsTop.image}
         />
       </div>
-      {data.length === 0 ? (
+      {ingredients.length === 0 ? (
         <div ref={dropTarget} className={styles.constructor_wrapper_hover}>
           <div className={styles.dnd_wrapper}>
             <img src={cloudIcon} />
@@ -118,7 +121,7 @@ export default function BurgerConstructor() {
       ) : (
         <div ref={dropTarget} className={styles.constructor_wrapper}>
           <div className={styles.constructor_list_wrapper}>
-            {data.map(
+            {ingredients.map(
               (item, index) =>
                 item.type !== "bun" && (
                   <BurgerConstructorElement
@@ -147,7 +150,7 @@ export default function BurgerConstructor() {
 
       <div className={styles.form_total_wrapper}>
         <div className={styles.price_wrapper}>
-          <p className="text text_type_main-large">0</p>
+          <p className="text text_type_main-large">{sum}</p>
           <CurrencyIcon type="primary" />
         </div>
         <Button

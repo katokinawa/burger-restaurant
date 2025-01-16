@@ -25,7 +25,7 @@ export default function BurgerIngredients() {
 
   // Redux
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.ingredients.items);
+  const ingredients = useSelector(state => state.ingredients.items);
 
   // UseEffects
   useEffect(() => {
@@ -111,7 +111,7 @@ export default function BurgerIngredients() {
           Булки
         </p>
         <div className={styles.ingredients_list}>
-          {data.map(
+          {ingredients.map(
             (item) =>
               item.type === "bun" && (
                 <IngredientElement
@@ -131,7 +131,7 @@ export default function BurgerIngredients() {
           Соусы
         </p>
         <div className={styles.ingredients_list}>
-          {data.map(
+          {ingredients.map(
             (item) =>
               item.type === "sauce" && (
                 <IngredientElement
@@ -147,7 +147,7 @@ export default function BurgerIngredients() {
           Начинки
         </p>
         <div className={styles.ingredients_list}>
-          {data.map(
+          {ingredients.map(
             (item) =>
               item.type === "main" && (
                 <IngredientElement
@@ -165,5 +165,5 @@ export default function BurgerIngredients() {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(IngredientType),
+  ingredients: PropTypes.arrayOf(IngredientType),
 };
