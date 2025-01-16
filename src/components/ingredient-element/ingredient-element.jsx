@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 export default function IngredientElement({ item, openModal, type }) {
   // Redux
   const ingredients = useSelector((state) => state.burger_constructor.items);
-  const counterBuns = useSelector((state) => state.burger_constructor.buns);
+  const counterBuns = useSelector((state) => state.burger_constructor.bun);
 
   // Consts
   const countIngredient = ingredients.filter((e) => e._id === item._id);
@@ -41,7 +41,7 @@ export default function IngredientElement({ item, openModal, type }) {
       )}
       {countBuns.length !== 0 && (
         <Counter
-          count={countBuns.length}
+          count={countBuns.length + 1}
           size="default"
           extraClass="m-1"
           className={styles.counter}

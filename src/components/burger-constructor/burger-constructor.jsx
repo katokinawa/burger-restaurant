@@ -13,8 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import {
-  ADD_BURGER_BUN_BOTTOM,
-  ADD_BURGER_BUN_TOP,
+  ADD_BURGER_BUN,
   ADD_BURGER_INGREDIENT,
   DELETE_BURGER_INGREDIENT,
   SWAP_BURGER_INGREDIENT,
@@ -29,22 +28,20 @@ export default function BurgerConstructor() {
   // Redux
   const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.burger_constructor.items);
-  const buns = useSelector((state) => state.burger_constructor.buns);
-  const orderRequest = useSelector((state) => state.order.orderRequest);
+  const bun = useSelector((state) => state.burger_constructor.bun);
 
   // Consts
   const sum =
     ingredients.reduce((sum, { price }) => sum + price, 0) +
-    buns.reduce((sum, { price }) => sum + price, 0);
+    bun.reduce((sum, { price }) => sum + price * 2, 0);
 
-  const bunsTop = buns[0];
-  const bunsBottom = buns[1];
+  const bunItem = bun[0];
 
   // Functions
   const collectArrayId = () => {
     const arr = [
       ...ingredients.map((item) => item._id),
-      ...buns.map((item) => item._id),
+      ...bun.map((item) => item._id),
     ];
     return { ingredients: arr };
   };
@@ -81,16 +78,9 @@ export default function BurgerConstructor() {
     });
   };
 
-  const handleDropBunTop = (item) => {
+  const handleDropBun = (item) => {
     dispatch({
-      type: ADD_BURGER_BUN_TOP,
-      item,
-    });
-  };
-
-  const handleDropBunBottom = (item) => {
-    dispatch({
-      type: ADD_BURGER_BUN_BOTTOM,
+      type: ADD_BURGER_BUN,
       item,
     });
   };
@@ -106,13 +96,13 @@ export default function BurgerConstructor() {
   const [, dropTargetBunsTop] = useDrop({
     accept: "bun",
     drop(item) {
-      handleDropBunTop(item);
+      handleDropBun(item);
     },
   });
   const [, dropTargetBunsBottom] = useDrop({
     accept: "bun",
     drop(item) {
-      handleDropBunBottom(item);
+      handleDropBun(item);
     },
   });
 
@@ -133,9 +123,9 @@ export default function BurgerConstructor() {
         <ConstructorElement
           type="top"
           isLocked={true}
-          text={bunsTop.name + " (верх)"}
-          price={bunsTop.price}
-          thumbnail={bunsTop.image}
+          text={bunItem.name + " (верх)"}
+          price={bunItem.price}
+          thumbnail={bunItem.image}
         />
       </div>
       {ingredients.length === 0 ? (
@@ -172,9 +162,9 @@ export default function BurgerConstructor() {
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text={bunsBottom.name + " (низ)"}
-          price={bunsBottom.price}
-          thumbnail={bunsBottom.image}
+          text={bunItem.name + " (низ)"}
+          price={bunItem.price}
+          thumbnail={bunItem.image}
         />
       </div>
 

@@ -1,7 +1,7 @@
 import { API_URL_POST_ORDER } from "../../utils/constants";
 export const POST_ORDER_REQUEST = "POST_ORDER_REQUEST";
-export const POST_ORDER_FAILED = "POST_ORDER_FAILED";
-export const POST_ORDER_SUCCESSFUL = "POST_ORDER_SUCCESSFUL";
+export const POST_ORDER_ERROR = "POST_ORDER_ERROR";
+export const POST_ORDER_SUCCESS = "POST_ORDER_SUCCESS";
 export const ORDER_SET_INITIAL_STATE = "ORDER_SET_INITIAL_STATE";
 
 export function postOrder(ingredients) {
@@ -21,18 +21,18 @@ export function postOrder(ingredients) {
           return res.json();
         }
         dispatch({
-          type: POST_ORDER_FAILED,
+          type: POST_ORDER_ERROR,
         });
       })
       .then((item) => {
         dispatch({
-          type: POST_ORDER_SUCCESSFUL,
+          type: POST_ORDER_SUCCESS,
           item,
         });
       })
       .catch(() => {
         dispatch({
-          type: POST_ORDER_FAILED,
+          type: POST_ORDER_ERROR,
         });
       });
   };

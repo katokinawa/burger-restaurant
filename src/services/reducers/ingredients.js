@@ -1,4 +1,8 @@
-import { GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS } from '../actions/ingredients'
+import {
+  GET_INGREDIENTS_REQUEST,
+  GET_INGREDIENTS_ERROR,
+  GET_INGREDIENTS_SUCCESS,
+} from "../actions/ingredients";
 
 const initialState = {
   items: [],
@@ -12,25 +16,24 @@ export const ingredients = (state = initialState, action) => {
       return {
         ...state,
         ingredientsRequest: true,
-      }
+      };
     }
-    case GET_INGREDIENTS_FAILED: {
+    case GET_INGREDIENTS_ERROR: {
       return {
         ...state,
         ingredientsRequest: false,
         ingredientsFailed: true,
-      }
+      };
     }
     case GET_INGREDIENTS_SUCCESS: {
       return {
         ...state,
         items: action.items,
         ingredientsRequest: false,
-
-      }
+      };
     }
     default: {
       return state;
     }
   }
-}
+};
