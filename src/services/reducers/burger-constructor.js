@@ -53,7 +53,7 @@ export const burgerConstructor = (state = initialState, action) => {
     case DELETE_BURGER_INGREDIENT: {
       return {
         ...state,
-        items: [],
+        items: action.item,
       };
     }
     default: {

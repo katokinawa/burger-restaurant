@@ -11,7 +11,7 @@ export default function OrderDetails() {
   return (
     <div className={styles.order_details_wrapper}>
       <p className={styles.heading + " text text_type_digits-large mb-8"}>
-        {orderData[0]._id}
+        {orderData?.order?.number}
       </p>
       <p className="text text_type_main-default mb-15">идентификатор заказа</p>
       <img className="mb-15" src={doneImage} />

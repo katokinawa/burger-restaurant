@@ -16,9 +16,11 @@ import {
   ADD_BURGER_BUN_BOTTOM,
   ADD_BURGER_BUN_TOP,
   ADD_BURGER_INGREDIENT,
+  DELETE_BURGER_INGREDIENT,
   SWAP_BURGER_INGREDIENT,
 } from "../../services/actions/burger-constructor";
 import cloudIcon from "../../images/cloud.svg";
+import { postOrder } from "../../services/actions/order-detail";
 
 export default function BurgerConstructor() {
   // Hooks
@@ -28,21 +30,48 @@ export default function BurgerConstructor() {
   const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.burger_constructor.items);
   const buns = useSelector((state) => state.burger_constructor.buns);
+  const orderRequest = useSelector((state) => state.order.orderRequest);
 
   // Consts
-  const sum = ingredients.reduce((sum, { price }) => sum + price, 0) + buns.reduce((sum, { price }) => sum + price, 0);
+  const sum =
+    ingredients.reduce((sum, { price }) => sum + price, 0) +
+    buns.reduce((sum, { price }) => sum + price, 0);
 
-  // Consts
   const bunsTop = buns[0];
   const bunsBottom = buns[1];
 
   // Functions
+  const collectArrayId = () => {
+    const arr = [
+      ...ingredients.map((item) => item._id),
+      ...buns.map((item) => item._id),
+    ];
+    return { ingredients: arr };
+  };
+
+  const handlePostOrder = () => {
+    dispatch(postOrder(collectArrayId()));
+  };
+
   const handleMoveItem = (dragItemIndex, dropItemIndex) => {
     const updatedIngredients = [...ingredients];
     let temp = updatedIngredients[dropItemIndex];
     updatedIngredients[dropItemIndex] = updatedIngredients[dragItemIndex];
     updatedIngredients[dragItemIndex] = temp;
     handleSwapBurgerIngredient(updatedIngredients);
+  };
+
+  const handleDeleteItem = (index) => {
+    const deleteIngredient = [...ingredients];
+    deleteIngredient.splice(index, 1);
+    handleDeleteIngredient(deleteIngredient);
+  };
+
+  const handleDeleteIngredient = (item) => {
+    dispatch({
+      type: DELETE_BURGER_INGREDIENT,
+      item,
+    });
   };
 
   const handleSwapBurgerIngredient = (item) => {
@@ -129,6 +158,7 @@ export default function BurgerConstructor() {
                     item={item}
                     index={index}
                     moveItem={handleMoveItem}
+                    deleteItem={handleDeleteItem}
                   />
                 )
             )}
@@ -154,7 +184,10 @@ export default function BurgerConstructor() {
           <CurrencyIcon type="primary" />
         </div>
         <Button
-          onClick={openModal}
+          onClick={(e) => {
+            handlePostOrder();
+            openModal(e);
+          }}
           htmlType="button"
           type="primary"
           size="large"
