@@ -75,7 +75,7 @@ export default function BurgerIngredients() {
     if (visibleTabs.length > 0) {
       currentTab = tabs.find((item) => item.position >= 0);
     } else {
-      // в случае, если никакой заголовок не виден на экране, показывать последний из списка
+      // в случае, если никакой заголовок не виден на экране, показывать последний из таба
       currentTab = tabs[tabs.length - 1];
     }
 
