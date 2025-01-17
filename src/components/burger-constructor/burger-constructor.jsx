@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import styles from "./burger-constructor.module.css";
@@ -8,7 +7,6 @@ import {
   ConstructorElement,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useModal } from "../../hooks/useModal";
-import { IngredientType } from "../../utils/types";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
@@ -16,6 +14,7 @@ import {
   ADD_BURGER_BUN,
   ADD_BURGER_INGREDIENT,
   DELETE_BURGER_INGREDIENT,
+  RESET_BURGER_CONSTRUCTOR,
   SWAP_BURGER_INGREDIENT,
 } from "../../services/actions/burger-constructor";
 import cloudIcon from "../../images/cloud.svg";
@@ -48,6 +47,7 @@ export default function BurgerConstructor() {
 
   const handlePostOrder = () => {
     dispatch(postOrder(collectArrayId()));
+    dispatch({ type: RESET_BURGER_CONSTRUCTOR })
   };
 
   const handleMoveItem = (dragItemIndex, dropItemIndex) => {
@@ -116,22 +116,37 @@ export default function BurgerConstructor() {
   // JSX
   return (
     <section className={styles.burger_constructor}>
-      <Modal isModalOpen={isModalOpen} handleClose={closeModal}>
-        <OrderDetails />
-      </Modal>
-      <div ref={dropTargetBunsTop} className={styles.constructor_bun_wrapper}>
-        <ConstructorElement
-          type="top"
-          isLocked={true}
-          text={bunItem.name + " (верх)"}
-          price={bunItem.price}
-          thumbnail={bunItem.image}
-        />
-      </div>
+      {isModalOpen && (
+        <Modal handleClose={closeModal}>
+          <OrderDetails />
+        </Modal>
+      )}
+
+      {bun.length === 0 ? (
+        <div ref={dropTargetBunsTop} className={styles.constructor_bun_wrapper}>
+          <div className={styles.constructor_wrapper_bun_hover}>
+            <div className={styles.dnd_bun_wrapper}>
+              <p className="text text_type_main-default">
+                Drag and drop the bun here
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div ref={dropTargetBunsTop} className={styles.constructor_bun_wrapper}>
+          <ConstructorElement
+            type="top"
+            isLocked={true}
+            text={bunItem.name + " (верх)"}
+            price={bunItem.price}
+            thumbnail={bunItem.image}
+          />
+        </div>
+      )}
       {ingredients.length === 0 ? (
         <div ref={dropTarget} className={styles.constructor_wrapper_hover}>
           <div className={styles.dnd_wrapper}>
-            <img src={cloudIcon} />
+            <img src={cloudIcon} alt="Облако с иконкой загрузки" />
             <p className="text text_type_main-medium mb-6">
               Drag and drop the ingredients here
             </p>
@@ -144,7 +159,7 @@ export default function BurgerConstructor() {
               (item, index) =>
                 item.type !== "bun" && (
                   <BurgerConstructorElement
-                    key={index}
+                    key={item.uniqueId}
                     item={item}
                     index={index}
                     moveItem={handleMoveItem}
@@ -155,18 +170,34 @@ export default function BurgerConstructor() {
           </div>
         </div>
       )}
-      <div
-        ref={dropTargetBunsBottom}
-        className={styles.constructor_bun_wrapper}
-      >
-        <ConstructorElement
-          type="bottom"
-          isLocked={true}
-          text={bunItem.name + " (низ)"}
-          price={bunItem.price}
-          thumbnail={bunItem.image}
-        />
-      </div>
+
+      {bun.length === 0 ? (
+        <div
+          ref={dropTargetBunsBottom}
+          className={styles.constructor_bun_wrapper}
+        >
+          <div className={styles.constructor_wrapper_bun_hover}>
+            <div className={styles.dnd_bun_wrapper}>
+              <p className="text text_type_main-default">
+                Drag and drop the bun here
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div
+          ref={dropTargetBunsBottom}
+          className={styles.constructor_bun_wrapper}
+        >
+          <ConstructorElement
+            type="bottom"
+            isLocked={true}
+            text={bunItem.name + " (низ)"}
+            price={bunItem.price}
+            thumbnail={bunItem.image}
+          />
+        </div>
+      )}
 
       <div className={styles.form_total_wrapper}>
         <div className={styles.price_wrapper}>
@@ -181,6 +212,7 @@ export default function BurgerConstructor() {
           htmlType="button"
           type="primary"
           size="large"
+          disabled={ingredients.length === 0 || bun.length === 0 ? true : false}
         >
           Оформить заказ
         </Button>
@@ -188,7 +220,3 @@ export default function BurgerConstructor() {
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(IngredientType),
-};

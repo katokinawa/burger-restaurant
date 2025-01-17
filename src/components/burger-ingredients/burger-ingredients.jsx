@@ -3,9 +3,7 @@ import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import PropTypes from "prop-types";
 import { useModal } from "../../hooks/useModal";
-import { IngredientType } from "../../utils/types";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "../../services/actions/ingredients";
 import IngredientElement from "../ingredient-element/ingredient-element";
@@ -25,7 +23,7 @@ export default function BurgerIngredients() {
 
   // Redux
   const dispatch = useDispatch();
-  const ingredients = useSelector(state => state.ingredients.items);
+  const ingredients = useSelector((state) => state.ingredients.items);
 
   // UseEffects
   useEffect(() => {
@@ -85,9 +83,11 @@ export default function BurgerIngredients() {
   // JSX
   return (
     <section className={styles.burger_ingredients}>
-      <Modal isModalOpen={isModalOpen} handleClose={closeModal}>
-        <IngredientDetails />
-      </Modal>
+      {isModalOpen && (
+        <Modal handleClose={closeModal}>
+          <IngredientDetails />
+        </Modal>
+      )}
       <p className="text text_type_main-large mb-5">Соберите бургер</p>
       <div className={styles.tabs}>
         <a href="#bun">
@@ -163,7 +163,3 @@ export default function BurgerIngredients() {
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(IngredientType),
-};

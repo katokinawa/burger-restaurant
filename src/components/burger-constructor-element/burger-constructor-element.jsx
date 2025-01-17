@@ -7,7 +7,12 @@ import {
 import { useDrag, useDrop } from "react-dnd";
 import PropTypes from "prop-types";
 
-export default function BurgerConstructorElement({ item, index, moveItem, deleteItem }) {
+export default function BurgerConstructorElement({
+  item,
+  index,
+  moveItem,
+  deleteItem,
+}) {
   // DND (drag and drop)
   const [, dropItemTarget] = useDrop({
     accept: "ingredientItem",
@@ -40,8 +45,8 @@ export default function BurgerConstructorElement({ item, index, moveItem, delete
 }
 
 BurgerConstructorElement.propTypes = {
-  item: IngredientType,
-  index: PropTypes.number,
-  moveItem: PropTypes.func,
-  deleteItem: PropTypes.func,
+  item: IngredientType.isRequired,
+  index: PropTypes.number.isRequired,
+  moveItem: PropTypes.func.isRequired,
+  deleteItem: PropTypes.func.isRequired,
 };

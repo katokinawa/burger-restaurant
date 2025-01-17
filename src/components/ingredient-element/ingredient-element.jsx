@@ -58,7 +58,7 @@ export default function IngredientElement({ item, openModal, type }) {
 }
 
 IngredientElement.propTypes = {
-  item: IngredientType,
-  openModal: PropTypes.func,
-  type: PropTypes.string,
+  item: IngredientType.isRequired,
+  openModal: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
 };

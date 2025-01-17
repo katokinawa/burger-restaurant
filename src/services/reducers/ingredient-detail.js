@@ -18,7 +18,7 @@ export const ingredientDetail = (state = initialState, action) => {
     case DELETE_SELECTED_INGREDIENT: {
       return {
         ...state,
-        data: []
+        data: [],
       };
     }
     default: {

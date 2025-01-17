@@ -1,14 +1,10 @@
 import styles from "./modal-overlay.module.css";
 import PropTypes from "prop-types";
 
-export default function ModalOverlay({ children, isModalOpen, handleClose }) {
-
+export default function ModalOverlay({ children, handleClose }) {
   // JSX
   return (
-    <div
-      onClick={handleClose}
-      className={isModalOpen ? styles.modal_overlay : styles.hidden}
-    >
+    <div onClick={handleClose} className={styles.modal_overlay}>
       {children}
     </div>
   );
@@ -16,6 +12,5 @@ export default function ModalOverlay({ children, isModalOpen, handleClose }) {
 
 ModalOverlay.propTypes = {
   children: PropTypes.element.isRequired,
-  isModalOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };

@@ -1,5 +1,4 @@
 import styles from "./ingredient-details.module.css";
-import { IngredientType } from "../../utils/types";
 import { useSelector } from "react-redux";
 
 export default function IngredientDetails() {
@@ -13,7 +12,11 @@ export default function IngredientDetails() {
         Детали ингредиента
       </p>
       <div className={styles.ingredients_details_wrapper}>
-        <img className="mb-4" src={ingredient.image_large} />
+        <img
+          className="mb-4"
+          src={ingredient.image_large}
+          alt={ingredient.name}
+        />
         <p className="text text_type_main-medium mb-8">{ingredient.name}</p>
         <ul className={styles.energy_value_list}>
           <li className={styles.energy_value_item}>
@@ -57,7 +60,3 @@ export default function IngredientDetails() {
     </div>
   );
 }
-
-IngredientDetails.propTypes = {
-  ingredient: IngredientType,
-};

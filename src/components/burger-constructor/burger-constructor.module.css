@@ -40,6 +40,15 @@
   margin: 0 28px 0 0;
 }
 
+.constructor_wrapper_bun_hover {
+  display: flex;
+  justify-content: center;
+  width: 536px;
+  min-height: 80px;
+  border: 2px #4c4cff solid;
+  border-radius: 35px;
+}
+
 .dnd_wrapper {
   display: flex;
   flex-direction: column;
@@ -48,6 +57,12 @@
   gap: 15px;
   min-height: 200px;
   padding: 0 0 0 64px;
+}
+
+.dnd_bun_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .constructor_list_wrapper {

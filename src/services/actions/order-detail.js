@@ -1,4 +1,4 @@
-import { API_URL_POST_ORDER } from "../../utils/constants";
+import { request } from "../../utils/request";
 export const POST_ORDER_REQUEST = "POST_ORDER_REQUEST";
 export const POST_ORDER_ERROR = "POST_ORDER_ERROR";
 export const POST_ORDER_SUCCESS = "POST_ORDER_SUCCESS";
@@ -9,21 +9,13 @@ export function postOrder(ingredients) {
     dispatch({
       type: POST_ORDER_REQUEST,
     });
-    fetch(API_URL_POST_ORDER, {
+    request("orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(ingredients),
     })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        dispatch({
-          type: POST_ORDER_ERROR,
-        });
-      })
       .then((item) => {
         dispatch({
           type: POST_ORDER_SUCCESS,

@@ -3,18 +3,13 @@ import {
   DELETE_BURGER_INGREDIENT,
   SWAP_BURGER_INGREDIENT,
   ADD_BURGER_BUN,
+  RESET_BURGER_CONSTRUCTOR,
 } from "../actions/burger-constructor";
+import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
   items: [],
-  bun: [
-    {
-      _id: "643d69a5c3f7b9001cfa093d",
-      name: "Флюоресцентная булка R2-D3",
-      price: 988,
-      image: "https://code.s3.yandex.net/react/code/bun-01.png",
-    },
-  ],
+  bun: [],
 };
 
 export const burgerConstructor = (state = initialState, action) => {
@@ -34,7 +29,7 @@ export const burgerConstructor = (state = initialState, action) => {
     case ADD_BURGER_INGREDIENT: {
       return {
         ...state,
-        items: [...state.items, action.item],
+        items: [...state.items, { ...action.item, uniqueId: uuidv4() }],
       };
     }
     case DELETE_BURGER_INGREDIENT: {
@@ -42,6 +37,13 @@ export const burgerConstructor = (state = initialState, action) => {
         ...state,
         items: action.item,
       };
+    }
+    case RESET_BURGER_CONSTRUCTOR: {
+      return {
+        ...state,
+        items: [],
+        bun: []
+      }
     }
     default: {
       return state;

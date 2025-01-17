@@ -4,8 +4,15 @@
 }
 
 .order_details_wrapper {
+  min-height: 467px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   composes: pt-30 pb-30 from global;
+}
+
+.loading_gif {
+  width: 100px;
+  height: 100px;
 }
