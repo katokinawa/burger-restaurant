@@ -12,7 +12,7 @@ import { useDrop } from "react-dnd";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import {
   ADD_BURGER_BUN,
-  ADD_BURGER_INGREDIENT,
+  addIngridient,
   DELETE_BURGER_INGREDIENT,
   RESET_BURGER_CONSTRUCTOR,
   SWAP_BURGER_INGREDIENT,
@@ -47,7 +47,7 @@ export default function BurgerConstructor() {
 
   const handlePostOrder = () => {
     dispatch(postOrder(collectArrayId()));
-    dispatch({ type: RESET_BURGER_CONSTRUCTOR })
+    dispatch({ type: RESET_BURGER_CONSTRUCTOR });
   };
 
   const handleMoveItem = (dragItemIndex, dropItemIndex) => {
@@ -86,10 +86,7 @@ export default function BurgerConstructor() {
   };
 
   const handleDrop = (item) => {
-    dispatch({
-      type: ADD_BURGER_INGREDIENT,
-      item,
-    });
+    dispatch(addIngridient(item));
   };
 
   // DND (drag and drop)

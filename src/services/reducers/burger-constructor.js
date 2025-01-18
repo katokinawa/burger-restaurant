@@ -5,7 +5,6 @@ import {
   ADD_BURGER_BUN,
   RESET_BURGER_CONSTRUCTOR,
 } from "../actions/burger-constructor";
-import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
   items: [],
@@ -29,7 +28,7 @@ export const burgerConstructor = (state = initialState, action) => {
     case ADD_BURGER_INGREDIENT: {
       return {
         ...state,
-        items: [...state.items, { ...action.item, uniqueId: uuidv4() }],
+        items: [...state.items, action.payload],
       };
     }
     case DELETE_BURGER_INGREDIENT: {
