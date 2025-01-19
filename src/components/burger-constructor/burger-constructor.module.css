@@ -4,7 +4,7 @@
   flex-direction: column;
   justify-content: start;
   align-items: end;
-  composes: mt-25 pl-4 pr-4 custom-scroll from global;
+  composes: mt-25 pl-4 pr-4 from global;
 }
 
 .constructor_wrapper {
@@ -12,6 +12,57 @@
   flex-direction: column;
   align-items: end;
   gap: 10px;
+  min-height: 440px;
+  overflow-x: auto;
+  width: 600px;
+  composes: mt-4 mb-4 from global;
+}
+
+.constructor_wrapper_hover {
+  position: relative;
+  display: flex;
+  min-height: 440px;
+  width: 600px;
+  align-items: center;
+  justify-content: center;
+  composes: mt-4 mb-4 ml-4 pr-7 from global;
+}
+
+.constructor_wrapper_hover::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 536px;
+  min-height: 440px;
+  border: 2px #4c4cff solid;
+  border-radius: 50px;
+  margin: 0 28px 0 0;
+}
+
+.constructor_wrapper_bun_hover {
+  display: flex;
+  justify-content: center;
+  width: 536px;
+  min-height: 80px;
+  border: 2px #4c4cff solid;
+  border-radius: 35px;
+}
+
+.dnd_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  min-height: 200px;
+  padding: 0 0 0 64px;
+}
+
+.dnd_bun_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .constructor_list_wrapper {
@@ -20,15 +71,13 @@
   align-items: end;
   overflow-x: auto;
   gap: 10px;
-  max-height: 656px;
+  max-height: 440px;
+  scrollbar-gutter: stable;
+  composes: custom-scroll from global;
 }
 
-.constructor_item_wrapper {
-  width: 568px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.constructor_bun_wrapper {
+  margin: 0 30px 0 0;
 }
 
 .price_wrapper {
@@ -40,5 +89,5 @@
 .form_total_wrapper {
   display: flex;
   gap: 40px;
-  composes: mt-10 from global;
+  composes: mt-10 mr-7 from global;
 }

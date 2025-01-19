@@ -5,7 +5,10 @@ import ModalOverlay from "../modal-overlay/modal-overlay";
 import closeImage from "../../images/close.svg";
 import PropTypes from "prop-types";
 
-export default function Modal({ children, isModalOpen, handleClose }) {
+export default function Modal({ children, handleClose }) {
+  // Consts
+
+  // useEffects
   useEffect(() => {
     function handlePressKey(evt) {
       if (evt.key === "Escape") {
@@ -14,17 +17,14 @@ export default function Modal({ children, isModalOpen, handleClose }) {
     }
     document.addEventListener("keydown", handlePressKey);
     return () => document.removeEventListener("keydown", handlePressKey);
-  }, [isModalOpen, handleClose]);
+  }, [handleClose]);
 
-
+  // JSX
   return createPortal(
-    <ModalOverlay isModalOpen={isModalOpen} handleClose={handleClose}>
-      <div
-        onClick={(evt) => evt.stopPropagation()}
-        className={isModalOpen ? styles.modal : styles.hidden}
-      >
+    <ModalOverlay handleClose={handleClose}>
+      <div onClick={(evt) => evt.stopPropagation()} className={styles.modal}>
         <button className={styles.modal_close_button} onClick={handleClose}>
-          <img src={closeImage} />
+          <img src={closeImage} alt="Крестик" />
         </button>
         {children}
       </div>
@@ -35,6 +35,5 @@ export default function Modal({ children, isModalOpen, handleClose }) {
 
 Modal.propTypes = {
   children: PropTypes.element.isRequired,
-  isModalOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };

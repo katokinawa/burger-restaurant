@@ -1,31 +1,20 @@
-import { useState, useEffect } from "react";
 import styles from "./App.module.css";
-import { API_URL } from "../../utils/constants";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 
 export default function App() {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    fetch(API_URL)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка ${res.status}`);
-      })
-      .then((item) => setData(item.data))
-      .catch((error) => console.log(`Не могу получить данные: ${error}`));
-  }, []);
-
+  // JSX
   return (
     <>
       <AppHeader />
       <main className={styles.main}>
-        <BurgerIngredients data={data} />
-        <BurgerConstructor data={data} />
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </DndProvider>
       </main>
     </>
   );
