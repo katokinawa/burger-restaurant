@@ -1,21 +1,20 @@
-import styles from "./App.module.css";
-import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
+import { AppHeader } from "../app-header/app-header";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Login } from "./pages/login/Login";
+import { Home } from "../home/home";
+import styles from "./app.module.css";
 
 export default function App() {
   // JSX
   return (
-    <>
+    <BrowserRouter>
       <AppHeader />
       <main className={styles.main}>
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </DndProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
       </main>
-    </>
+    </BrowserRouter>
   );
 }

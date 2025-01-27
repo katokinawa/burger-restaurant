@@ -1,4 +1,3 @@
-// import { useState } from 'react'
 import styles from "./app-header.module.css";
 import {
   BurgerIcon,
@@ -7,7 +6,7 @@ import {
   Logo,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-export default function AppHeader() {
+export function AppHeader() {
   // JSX
   return (
     <header className={styles.header}>
