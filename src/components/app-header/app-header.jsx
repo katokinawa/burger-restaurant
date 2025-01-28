@@ -7,7 +7,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 export function AppHeader() {
-  // JSX
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>

@@ -19,7 +19,6 @@ export default function Modal({ children, handleClose }) {
     return () => document.removeEventListener("keydown", handlePressKey);
   }, [handleClose]);
 
-  // JSX
   return createPortal(
     <ModalOverlay handleClose={handleClose}>
       <div onClick={(evt) => evt.stopPropagation()} className={styles.modal}>

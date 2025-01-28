@@ -5,11 +5,9 @@ import { useSelector } from "react-redux";
 import loading from "../../images/loading.gif";
 
 export default function OrderDetails() {
-  // Redux
   const orderData = useSelector((state) => state.order.data);
   const orderRequest = useSelector((state) => state.order.orderRequest);
 
-  // JSX
   return (
     <div className={styles.order_details_wrapper}>
       {orderRequest ? (

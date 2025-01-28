@@ -9,19 +9,16 @@ import { getIngredients } from "../../services/actions/ingredients";
 import IngredientElement from "../ingredient-element/ingredient-element";
 
 export default function BurgerIngredients() {
-  // States
   const [current, setCurrent] = useState("bun");
 
   // Hooks
   const { isModalOpen, closeModal, openModal } = useModal();
 
-  // Refs
   const containerRef = useRef(null);
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
 
-  // Redux
   const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.ingredients.items);
 
@@ -44,7 +41,6 @@ export default function BurgerIngredients() {
     };
   }, []);
 
-  // Functions
   const handleScroll = () => {
     if (
       !containerRef.current ||
@@ -80,7 +76,6 @@ export default function BurgerIngredients() {
     setCurrent(currentTab.name);
   };
 
-  // JSX
   return (
     <section className={styles.burger_ingredients}>
       {isModalOpen && (

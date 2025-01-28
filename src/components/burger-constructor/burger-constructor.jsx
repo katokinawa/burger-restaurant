@@ -24,7 +24,6 @@ export default function BurgerConstructor() {
   // Hooks
   const { isModalOpen, openModal, closeModal } = useModal();
 
-  // Redux
   const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.burger_constructor.items);
   const bun = useSelector((state) => state.burger_constructor.bun);
@@ -36,7 +35,6 @@ export default function BurgerConstructor() {
 
   const bunItem = bun[0];
 
-  // Functions
   const collectArrayId = () => {
     const arr = [
       ...ingredients.map((item) => item._id),
@@ -110,7 +108,6 @@ export default function BurgerConstructor() {
     },
   });
 
-  // JSX
   return (
     <section className={styles.burger_constructor}>
       {isModalOpen && (

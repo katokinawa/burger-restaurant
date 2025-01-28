@@ -4,21 +4,16 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login.module.css";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export function Login() {
-  // States
   const [isEmail, setIsEmail] = useState("");
   const [isPassword, setIsPassword] = useState({
     passwordValue: "",
     passwordVisible: false,
   });
 
-  // Refs
-  const inputRef = useRef(null);
-
-  // Functions
   const onChangeEmail = (e) => {
     setIsEmail(e.target.value);
   };
@@ -37,7 +32,6 @@ export function Login() {
     });
   };
 
-  // JSX
   const { passwordValue, passwordVisible } = isPassword;
   return (
     <section className={styles.login}>
@@ -50,13 +44,12 @@ export function Login() {
       />
       <Input
         type={passwordVisible ? "text" : "password"}
-        placeholder={"Password"}
+        placeholder={"Пароль"}
         onChange={onChangePassword}
         icon={passwordVisible ? "HideIcon" : "ShowIcon"}
         value={passwordValue}
         name={"password"}
         error={false}
-        ref={inputRef}
         onIconClick={onShowPasswordSwitch}
         errorText={"Ошибка"}
         size={"default"}
