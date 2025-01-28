@@ -5,47 +5,26 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./register.module.css";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useForm } from "../../../../hooks/useForm";
 
 export function Register() {
-  const [isEmail, setIsEmail] = useState("");
-  const [isName, setIsName] = useState("");
-  const [isPassword, setIsPassword] = useState({
-    passwordValue: "",
-    passwordVisible: false,
-  });
+  const {
+    onShowPasswordSwitch,
+    onFormChange,
+    name,
+    email,
+    password,
+    passwordVisible,
+  } = useForm();
 
-  const onChangeEmail = (e) => {
-    setIsEmail(e.target.value);
-  };
-
-  const onChangeName = (e) => {
-    setIsName(e.target.value);
-  };
-
-  const onChangePassword = (e) => {
-    setIsPassword({
-      ...isPassword,
-      passwordValue: e.target.value,
-    });
-  };
-
-  const onShowPasswordSwitch = () => {
-    setIsPassword({
-      ...isPassword,
-      passwordVisible: !isPassword.passwordVisible,
-    });
-  };
-
-  const { passwordValue, passwordVisible } = isPassword;
   return (
     <section className={styles.register}>
       <p className="text text_type_main-medium">Регистрация</p>
       <Input
         type={"text"}
         placeholder={"Имя"}
-        onChange={onChangeName}
-        value={isName}
+        onChange={onFormChange}
+        value={name}
         name={"name"}
         error={false}
         onIconClick={onShowPasswordSwitch}
@@ -54,17 +33,17 @@ export function Register() {
         extraClass="ml-1"
       />
       <EmailInput
-        onChange={onChangeEmail}
-        value={isEmail}
+        onChange={onFormChange}
+        value={email}
         name={"email"}
         isIcon={false}
       />
       <Input
         type={passwordVisible ? "text" : "password"}
         placeholder={"Пароль"}
-        onChange={onChangePassword}
+        onChange={onFormChange}
         icon={passwordVisible ? "HideIcon" : "ShowIcon"}
-        value={passwordValue}
+        value={password}
         name={"password"}
         error={false}
         onIconClick={onShowPasswordSwitch}

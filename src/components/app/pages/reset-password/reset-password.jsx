@@ -1,47 +1,29 @@
 import {
   Button,
-  EmailInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./reset-password.module.css";
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useForm } from "../../../../hooks/useForm";
 
 export function ResetPassword() {
-  const [isCode, setIsCode] = useState("");
-  const [isPassword, setIsPassword] = useState({
-    passwordValue: "",
-    passwordVisible: false,
-  });
+  const {
+    onShowPasswordSwitch,
+    onFormChange,
+    password,
+    code,
+    passwordVisible,
+  } = useForm();
 
-  const onChangeCode = (e) => {
-    setIsCode(e.target.value);
-  };
-
-  const onShowPasswordSwitch = () => {
-    setIsPassword({
-      ...isPassword,
-      passwordVisible: !isPassword.passwordVisible,
-    });
-  };
-
-  const onChangePassword = (e) => {
-    setIsPassword({
-      ...isPassword,
-      passwordValue: e.target.value,
-    });
-  };
-
-  const { passwordValue, passwordVisible } = isPassword;
   return (
     <section className={styles.reset_password}>
       <p className="text text_type_main-medium">Восстановление пароля</p>
       <Input
         type={passwordVisible ? "text" : "password"}
         placeholder={"Введите новый пароль"}
-        onChange={onChangePassword}
+        onChange={onFormChange}
         icon={passwordVisible ? "HideIcon" : "ShowIcon"}
-        value={passwordValue}
+        value={password}
         name={"password"}
         error={false}
         onIconClick={onShowPasswordSwitch}
@@ -52,9 +34,9 @@ export function ResetPassword() {
       <Input
         type={"text"}
         placeholder={"Введите код из письма"}
-        onChange={onChangeCode}
+        onChange={onFormChange}
         icon={passwordVisible ? "HideIcon" : "ShowIcon"}
-        value={isCode}
+        value={code}
         name={"code"}
         error={false}
         onIconClick={onShowPasswordSwitch}

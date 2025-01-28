@@ -3,22 +3,19 @@ import {
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./forgot-password.module.css";
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useForm } from "../../../../hooks/useForm";
 
 export function ForgotPassword() {
-  const [isEmail, setIsEmail] = useState("");
+  const { onFormChange, email } = useForm();
 
-  const onChangeEmail = (e) => {
-    setIsEmail(e.target.value);
-  };
   return (
     <section className={styles.forgot_password}>
       <p className="text text_type_main-medium">Восстановление пароля</p>
       <EmailInput
-        onChange={onChangeEmail}
+        onChange={onFormChange}
         placeholder={"Укажите e-mail"}
-        value={isEmail}
+        value={email}
         name={"email"}
         isIcon={false}
       />
