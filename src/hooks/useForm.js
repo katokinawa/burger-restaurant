@@ -8,8 +8,15 @@ export const useForm = () => {
     dispatch({ type: SHOW_PASSWORD_SWITCH });
   };
 
-  const { name, email, password, passwordVisible, code } = useSelector(
-    (state) => state.form.form
+  const {
+    name: nameValue,
+    email: emailValue,
+    password: passwordValue,
+    passwordVisible,
+    code,
+  } = useSelector((state) => state.form.form);
+  const { formRequest, formError, errorMessage } = useSelector(
+    (state) => state.form
   );
 
   const onFormChange = (e) => {
@@ -18,10 +25,13 @@ export const useForm = () => {
   return {
     onShowPasswordSwitch,
     onFormChange,
-    name,
-    email,
-    password,
+    nameValue,
+    emailValue,
+    passwordValue,
     passwordVisible,
     code,
+    formRequest,
+    formError,
+    errorMessage,
   };
 };

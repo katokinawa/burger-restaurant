@@ -6,54 +6,77 @@ import {
 import styles from "./register.module.css";
 import { Link } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
+import { submitRegister } from "../../../../services/actions/form";
+import { useDispatch } from "react-redux";
 
 export function Register() {
   const {
     onShowPasswordSwitch,
     onFormChange,
-    name,
-    email,
-    password,
+    nameValue,
+    emailValue,
+    passwordValue,
     passwordVisible,
+    formRequest,
   } = useForm();
+
+  const dispatch = useDispatch();
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    dispatch(
+      submitRegister({
+        name: nameValue,
+        email: emailValue,
+        password: passwordValue,
+      })
+    );
+  };
 
   return (
     <section className={styles.register}>
-      <p className="text text_type_main-medium">Регистрация</p>
-      <Input
-        type={"text"}
-        placeholder={"Имя"}
-        onChange={onFormChange}
-        value={name}
-        name={"name"}
-        error={false}
-        onIconClick={onShowPasswordSwitch}
-        errorText={"Ошибка"}
-        size={"default"}
-        extraClass="ml-1"
-      />
-      <EmailInput
-        onChange={onFormChange}
-        value={email}
-        name={"email"}
-        isIcon={false}
-      />
-      <Input
-        type={passwordVisible ? "text" : "password"}
-        placeholder={"Пароль"}
-        onChange={onFormChange}
-        icon={passwordVisible ? "HideIcon" : "ShowIcon"}
-        value={password}
-        name={"password"}
-        error={false}
-        onIconClick={onShowPasswordSwitch}
-        errorText={"Ошибка"}
-        size={"default"}
-        extraClass="ml-1"
-      />
-      <Button htmlType="button" type="primary" size="medium">
-        Зарегистрироваться
-      </Button>
+      <form className={styles.register_form} onSubmit={onSubmit}>
+        <p className="text text_type_main-medium">Регистрация</p>
+        <Input
+          type={"text"}
+          placeholder={"Имя"}
+          onChange={onFormChange}
+          value={nameValue}
+          name={"name"}
+          error={false}
+          onIconClick={onShowPasswordSwitch}
+          errorText={"Ошибка"}
+          size={"default"}
+          extraClass="ml-1"
+        />
+        <EmailInput
+          onChange={onFormChange}
+          value={emailValue}
+          name={"email"}
+          isIcon={false}
+        />
+        <Input
+          type={passwordVisible ? "text" : "password"}
+          placeholder={"Пароль"}
+          onChange={onFormChange}
+          icon={passwordVisible ? "HideIcon" : "ShowIcon"}
+          value={passwordValue}
+          name={"password"}
+          error={false}
+          onIconClick={onShowPasswordSwitch}
+          errorText={"Ошибка"}
+          size={"default"}
+          extraClass="ml-1"
+        />
+        <Button
+          htmlType="submit"
+          type="primary"
+          size="medium"
+          disabled={formRequest}
+        >
+          Зарегистрироваться
+        </Button>
+      </form>
       <div className={styles.register_footer}>
         <p className="text text_type_main-default text_color_inactive">
           Уже зарегистрированы?{" "}

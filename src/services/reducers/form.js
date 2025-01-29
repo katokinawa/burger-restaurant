@@ -13,9 +13,11 @@ const initialState = {
     passwordVisible: false,
     email: "",
     code: "",
+    token: "",
   },
   formRequest: false,
   formError: false,
+  errorMessage: "",
 };
 
 export const form = (state = initialState, action) => {
@@ -40,6 +42,7 @@ export const form = (state = initialState, action) => {
         ...state,
         formRequest: false,
         formError: true,
+        errorMessage: action.error,
       };
     }
     case SHOW_PASSWORD_SWITCH: {

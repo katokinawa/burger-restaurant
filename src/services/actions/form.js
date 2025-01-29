@@ -1,3 +1,5 @@
+import { request } from "../../utils/request";
+
 export const ADD_FORM_VALUE = "ADD_FORM_VALUE";
 
 export const FORM_SUBMIT_REQUEST = "FORM_SUBMIT_REQUEST";
@@ -11,3 +13,161 @@ export const setFormValue = (field, value) => ({
   field,
   value,
 });
+
+export function submitLogin(formValues) {
+  return function (dispatch) {
+    dispatch({
+      type: FORM_SUBMIT_REQUEST,
+    });
+    request("auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formValues),
+    })
+      .then((item) => {
+        console.log(item)
+        dispatch({
+          type: FORM_SUBMIT_SUCCESS,
+          item,
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: FORM_SUBMIT_ERROR,
+          error
+        });
+      });
+  };
+}
+
+export function submitRegister(formValues) {
+  return function (dispatch) {
+    dispatch({
+      type: FORM_SUBMIT_REQUEST,
+    });
+    request("auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formValues),
+    })
+      .then((item) => {
+        dispatch({
+          type: FORM_SUBMIT_SUCCESS,
+          item,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: FORM_SUBMIT_ERROR,
+        });
+      });
+  };
+}
+
+export function submitLogout(formValues) {
+  return function (dispatch) {
+    dispatch({
+      type: FORM_SUBMIT_REQUEST,
+    });
+    request("auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formValues),
+    })
+      .then((item) => {
+        dispatch({
+          type: FORM_SUBMIT_SUCCESS,
+          item,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: FORM_SUBMIT_ERROR,
+        });
+      });
+  };
+}
+
+export function submitRefreshToken(formValues) {
+  return function (dispatch) {
+    dispatch({
+      type: FORM_SUBMIT_REQUEST,
+    });
+    request("auth/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formValues),
+    })
+      .then((item) => {
+        dispatch({
+          type: FORM_SUBMIT_SUCCESS,
+          item,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: FORM_SUBMIT_ERROR,
+        });
+      });
+  };
+}
+
+export function submitForgotPassword(formValues) {
+  return function (dispatch) {
+    dispatch({
+      type: FORM_SUBMIT_REQUEST,
+    });
+    request("password-reset", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formValues),
+    })
+      .then((item) => {
+        dispatch({
+          type: FORM_SUBMIT_SUCCESS,
+          item,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: FORM_SUBMIT_ERROR,
+        });
+      });
+  };
+}
+
+export function submitResetPassword(formValues) {
+  return function (dispatch) {
+    dispatch({
+      type: FORM_SUBMIT_REQUEST,
+    });
+    request("password-reset/reset", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formValues),
+    })
+      .then((item) => {
+        dispatch({
+          type: FORM_SUBMIT_SUCCESS,
+          item,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: FORM_SUBMIT_ERROR,
+        });
+      });
+  };
+}
