@@ -6,15 +6,28 @@ import styles from "./forgot-password.module.css";
 import { Link } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
 import { useDispatch } from "react-redux";
-import { submitForgotPassword } from "../../../../services/actions/form";
+import {
+  FORM_SUBMIT_ERROR,
+  RESET_ERROR_STATUS,
+  submitForgotPassword,
+} from "../../../../services/actions/form";
+import { useEffect } from "react";
 
 export function ForgotPassword() {
-  const { onFormChange, emailValue, formRequest } = useForm();
+  const { onFormChange, emailValue, formRequest, formError } = useForm();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: RESET_ERROR_STATUS });
+  }, [dispatch]);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(submitForgotPassword({ email: emailValue }));
+    if (emailValue !== "") {
+      dispatch(submitForgotPassword({ email: emailValue }));
+    } else {
+      dispatch({ type: FORM_SUBMIT_ERROR });
+    }
   };
 
   return (
@@ -27,7 +40,12 @@ export function ForgotPassword() {
           value={emailValue}
           name={"email"}
           isIcon={false}
+          error={formError}
+          errorText={""}
         />
+        {formError && (
+          <p className="text text_type_main-small">Поле не может быть пустым</p>
+        )}
         <Button
           htmlType="submit"
           type="primary"

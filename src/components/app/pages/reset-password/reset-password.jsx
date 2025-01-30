@@ -6,7 +6,11 @@ import styles from "./reset-password.module.css";
 import { Link } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
 import { useDispatch } from "react-redux";
-import { submitResetPassword } from "../../../../services/actions/form";
+import {
+  RESET_ERROR_STATUS,
+  submitResetPassword,
+} from "../../../../services/actions/form";
+import { useEffect } from "react";
 
 export function ResetPassword() {
   const dispatch = useDispatch();
@@ -17,7 +21,12 @@ export function ResetPassword() {
     code,
     passwordVisible,
     formRequest,
+    formError,
   } = useForm();
+
+  useEffect(() => {
+    dispatch({ type: RESET_ERROR_STATUS });
+  }, [dispatch]);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -43,7 +52,7 @@ export function ResetPassword() {
           name={"password"}
           error={false}
           onIconClick={onShowPasswordSwitch}
-          errorText={"Ошибка"}
+          errorText={passwordValue === "" ? "Поле не может быть пустым" : ""}
           size={"default"}
           extraClass="ml-1"
         />
@@ -51,15 +60,18 @@ export function ResetPassword() {
           type={"text"}
           placeholder={"Введите код из письма"}
           onChange={onFormChange}
-          icon={passwordVisible ? "HideIcon" : "ShowIcon"}
           value={code}
           name={"code"}
-          error={false}
-          onIconClick={onShowPasswordSwitch}
-          errorText={"Ошибка"}
+          error={formError}
+          errorText={passwordValue === "" ? "Поле не может быть пустым" : ""}
           size={"default"}
           extraClass="ml-1"
         />
+        {formError && (
+          <p className="text text_type_main-small">
+            Введены некорректные данные
+          </p>
+        )}
         <Button
           htmlType="submit"
           type="primary"

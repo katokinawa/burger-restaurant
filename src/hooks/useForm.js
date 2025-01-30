@@ -15,9 +15,7 @@ export const useForm = () => {
     passwordVisible,
     code,
   } = useSelector((state) => state.form.form);
-  const { formRequest, formError, errorMessage } = useSelector(
-    (state) => state.form
-  );
+  const { formRequest, formError } = useSelector((state) => state.form);
 
   const onFormChange = (e) => {
     dispatch(setFormValue(e.target.name, e.target.value));
@@ -32,6 +30,5 @@ export const useForm = () => {
     code,
     formRequest,
     formError,
-    errorMessage,
   };
 };

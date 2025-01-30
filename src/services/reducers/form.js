@@ -3,6 +3,7 @@ import {
   FORM_SUBMIT_ERROR,
   FORM_SUBMIT_REQUEST,
   FORM_SUBMIT_SUCCESS,
+  RESET_ERROR_STATUS,
   SHOW_PASSWORD_SWITCH,
 } from "../actions/form";
 
@@ -17,7 +18,6 @@ const initialState = {
   },
   formRequest: false,
   formError: false,
-  errorMessage: "",
 };
 
 export const form = (state = initialState, action) => {
@@ -35,6 +35,7 @@ export const form = (state = initialState, action) => {
           ...initialState.form,
         },
         formRequest: false,
+        formError: false,
       };
     }
     case FORM_SUBMIT_ERROR: {
@@ -42,7 +43,6 @@ export const form = (state = initialState, action) => {
         ...state,
         formRequest: false,
         formError: true,
-        errorMessage: action.error,
       };
     }
     case SHOW_PASSWORD_SWITCH: {
@@ -61,6 +61,12 @@ export const form = (state = initialState, action) => {
           ...state.form,
           [action.field]: action.value,
         },
+      };
+    }
+    case RESET_ERROR_STATUS: {
+      return {
+        ...state,
+        formError: false,
       };
     }
     default: {

@@ -4,9 +4,6 @@ function checkResponse(res) {
   if (res.ok) {
     return res.json();
   }
-  if (res.status === 401) {
-    return Promise.reject(`Ошибка. Неправильный логин или пароль`);
-  }
   return Promise.reject(`Ошибка ${res.status}`);
 }
 

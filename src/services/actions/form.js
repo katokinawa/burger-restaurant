@@ -8,6 +8,8 @@ export const FORM_SUBMIT_ERROR = "FORM_SUBMIT_ERROR";
 
 export const SHOW_PASSWORD_SWITCH = "SHOW_PASSWORD_SWITCH";
 
+export const RESET_ERROR_STATUS = "RESET_ERROR_STATUS";
+
 export const setFormValue = (field, value) => ({
   type: ADD_FORM_VALUE,
   field,
@@ -27,16 +29,14 @@ export function submitLogin(formValues) {
       body: JSON.stringify(formValues),
     })
       .then((item) => {
-        console.log(item)
         dispatch({
           type: FORM_SUBMIT_SUCCESS,
           item,
         });
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch({
           type: FORM_SUBMIT_ERROR,
-          error
         });
       });
   };
@@ -125,24 +125,26 @@ export function submitForgotPassword(formValues) {
     dispatch({
       type: FORM_SUBMIT_REQUEST,
     });
-    request("password-reset", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formValues),
-    })
-      .then((item) => {
-        dispatch({
-          type: FORM_SUBMIT_SUCCESS,
-          item,
-        });
+    if (formValues) {
+      request("password-reset", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formValues),
       })
-      .catch(() => {
-        dispatch({
-          type: FORM_SUBMIT_ERROR,
+        .then((item) => {
+          dispatch({
+            type: FORM_SUBMIT_SUCCESS,
+            item,
+          });
+        })
+        .catch(() => {
+          dispatch({
+            type: FORM_SUBMIT_ERROR,
+          });
         });
-      });
+    }
   };
 }
 

@@ -6,8 +6,12 @@ import {
 import styles from "./login.module.css";
 import { Link } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
-import { submitLogin } from "../../../../services/actions/form";
+import {
+  RESET_ERROR_STATUS,
+  submitLogin,
+} from "../../../../services/actions/form";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 export function Login() {
   const {
@@ -17,9 +21,13 @@ export function Login() {
     passwordValue,
     passwordVisible,
     formRequest,
-    errorMessage,
+    formError,
   } = useForm();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: RESET_ERROR_STATUS });
+  }, [dispatch]);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -39,7 +47,8 @@ export function Login() {
           onChange={onFormChange}
           value={emailValue}
           name={"email"}
-          isIcon={false}
+          error={formError}
+          errorText={emailValue === "" ? "Поле не может быть пустым" : ""}
         />
         <Input
           type={passwordVisible ? "text" : "password"}
@@ -48,13 +57,17 @@ export function Login() {
           icon={passwordVisible ? "HideIcon" : "ShowIcon"}
           value={passwordValue}
           name={"password"}
-          error={false}
+          error={formError}
           onIconClick={onShowPasswordSwitch}
-          errorText={"Ошибка"}
+          errorText={passwordValue === "" ? "Поле не может быть пустым" : ""}
           size={"default"}
           extraClass="ml-1"
         />
-        {errorMessage && <p className="text text_type_main-small">Неправильный логин или пароль.</p>}
+        {formError && (
+          <p className="text text_type_main-small">
+            Неправильный логин или пароль
+          </p>
+        )}
         <Button
           htmlType="submit"
           type="primary"

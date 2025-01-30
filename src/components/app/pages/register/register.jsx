@@ -6,8 +6,12 @@ import {
 import styles from "./register.module.css";
 import { Link } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
-import { submitRegister } from "../../../../services/actions/form";
+import {
+  RESET_ERROR_STATUS,
+  submitRegister,
+} from "../../../../services/actions/form";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 export function Register() {
   const {
@@ -18,9 +22,14 @@ export function Register() {
     passwordValue,
     passwordVisible,
     formRequest,
+    formError,
   } = useForm();
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: RESET_ERROR_STATUS });
+  }, [dispatch]);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -43,9 +52,8 @@ export function Register() {
           onChange={onFormChange}
           value={nameValue}
           name={"name"}
-          error={false}
-          onIconClick={onShowPasswordSwitch}
-          errorText={"Ошибка"}
+          error={formError}
+          errorText={nameValue === "" ? "Поле не может быть пустым" : ""}
           size={"default"}
           extraClass="ml-1"
         />
@@ -53,7 +61,8 @@ export function Register() {
           onChange={onFormChange}
           value={emailValue}
           name={"email"}
-          isIcon={false}
+          error={formError}
+          errorText={emailValue === "" ? "Поле не может быть пустым" : ""}
         />
         <Input
           type={passwordVisible ? "text" : "password"}
@@ -62,12 +71,18 @@ export function Register() {
           icon={passwordVisible ? "HideIcon" : "ShowIcon"}
           value={passwordValue}
           name={"password"}
-          error={false}
+          error={formError}
           onIconClick={onShowPasswordSwitch}
-          errorText={"Ошибка"}
+          errorText={passwordValue === "" ? "Поле не может быть пустым" : ""}
           size={"default"}
           extraClass="ml-1"
         />
+        {formError && (
+          <p className="text text_type_main-small">
+            Поля электронной почты, пароля и имени являются обязательными для
+            заполнения
+          </p>
+        )}
         <Button
           htmlType="submit"
           type="primary"
