@@ -6,6 +6,7 @@ import styles from "./app.module.css";
 import { Register } from "./pages/register/Register";
 import { ForgotPassword } from "./pages/forgot-password/forgot-password";
 import { ResetPassword } from "./pages/reset-password/reset-password";
+import { Profile } from "./pages/profile/profile";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </main>

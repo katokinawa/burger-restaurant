@@ -33,8 +33,7 @@ export function ResetPassword() {
     dispatch(
       submitResetPassword({
         password: passwordValue,
-        // TODO
-        token: "",
+        token: code,
       })
     );
   };
