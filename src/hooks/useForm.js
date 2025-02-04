@@ -1,13 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setFormValue, SHOW_PASSWORD_SWITCH } from "../services/actions/form";
+import {
+  RESET_ERROR_STATUS,
+  setFormValue,
+  SHOW_PASSWORD_SWITCH,
+} from "../services/actions/form";
 
 export const useForm = () => {
   const dispatch = useDispatch();
-
-  const onShowPasswordSwitch = () => {
-    dispatch({ type: SHOW_PASSWORD_SWITCH });
-  };
-
   const {
     name: nameValue,
     email: emailValue,
@@ -15,7 +14,34 @@ export const useForm = () => {
     passwordVisible,
     code,
   } = useSelector((state) => state.form.form);
-  const { formRequest, formError } = useSelector((state) => state.form);
+
+  const { formRequest, formError, formErrorMessage } = useSelector(
+    (state) => state.form
+  );
+
+  const onShowPasswordSwitch = () => {
+    dispatch({ type: SHOW_PASSWORD_SWITCH });
+  };
+
+  const handleFocus = () => {
+    dispatch({ type: RESET_ERROR_STATUS });
+  };
+
+  const showError = (message) => {
+    switch (formErrorMessage) {
+      case 403: {
+        return message;
+      }
+      case 500: {
+        return "Сервер временно недоступен";
+      }
+      case 404: {
+        return "Ошибка"
+      }
+      default:
+        return "Пожалуйста, попробуйте позже";
+    }
+  };
 
   const onFormChange = (e) => {
     dispatch(setFormValue(e.target.name, e.target.value));
@@ -23,6 +49,8 @@ export const useForm = () => {
   return {
     onShowPasswordSwitch,
     onFormChange,
+    handleFocus,
+    showError,
     nameValue,
     emailValue,
     passwordValue,

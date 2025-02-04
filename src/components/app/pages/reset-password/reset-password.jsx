@@ -17,6 +17,8 @@ export function ResetPassword() {
   const {
     onShowPasswordSwitch,
     onFormChange,
+    handleFocus,
+    showError,
     passwordValue,
     code,
     passwordVisible,
@@ -51,9 +53,11 @@ export function ResetPassword() {
           name={"password"}
           error={false}
           onIconClick={onShowPasswordSwitch}
-          errorText={passwordValue === "" ? "Поле не может быть пустым" : ""}
+          errorText={""}
           size={"default"}
           extraClass="ml-1"
+          required={true}
+          onFocus={handleFocus}
         />
         <Input
           type={"text"}
@@ -62,15 +66,15 @@ export function ResetPassword() {
           value={code}
           name={"code"}
           error={formError}
-          errorText={passwordValue === "" ? "Поле не может быть пустым" : ""}
+          errorText={""}
           size={"default"}
           extraClass="ml-1"
+          required={true}
+          onFocus={handleFocus}
         />
-        {formError && (
-          <p className="text text_type_main-small">
-            Введены некорректные данные
-          </p>
-        )}
+        <p className="text text_type_main-small">
+          {formError && showError("Введены некорректные данные")}
+        </p>
         <Button
           htmlType="submit"
           type="primary"

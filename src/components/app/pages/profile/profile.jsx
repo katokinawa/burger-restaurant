@@ -34,9 +34,10 @@ export function Profile() {
           {({ isActive }) => (
             <p
               className={
-                isActive
-                  ? "text text_type_main-medium" + " " + styles.linkActive
-                  : "text text_type_main-medium" + " " + styles.link
+                styles.link +
+                ` text text_type_main-medium ${
+                  !isActive && styles.link_disabled
+                }`
               }
             >
               Профиль
@@ -47,9 +48,10 @@ export function Profile() {
           {({ isActive }) => (
             <p
               className={
-                isActive
-                  ? "text text_type_main-medium" + " " + styles.linkActive
-                  : "text text_type_main-medium" + " " + styles.link
+                styles.link +
+                ` text text_type_main-medium ${
+                  !isActive && styles.link_disabled
+                }`
               }
             >
               История заказов
@@ -60,22 +62,26 @@ export function Profile() {
           {({ isActive }) => (
             <p
               className={
-                isActive
-                  ? "text text_type_main-medium" + " " + styles.linkActive
-                  : "text text_type_main-medium" + " " + styles.link
+                styles.link +
+                ` text text_type_main-medium ${
+                  !isActive && styles.link_disabled
+                }`
               }
             >
               Выход
             </p>
           )}
         </NavLink>
+        <p className="text text_type_main-default text_color_inactive mt-20">
+          В этом разделе вы можете изменить свои персональные данные
+        </p>
       </div>
       <div className={styles.profile_inputs}>
         <Input
           type={"text"}
           placeholder={"Имя"}
           onChange={onFormChange}
-          icon={"CurrencyIcon"}
+          icon={"EditIcon"}
           value={nameValue}
           name={"name"}
           error={formError}
@@ -89,7 +95,7 @@ export function Profile() {
           type={"text"}
           placeholder={"Логин"}
           onChange={onFormChange}
-          icon={"CurrencyIcon"}
+          icon={"EditIcon"}
           value={emailValue}
           name={"name"}
           error={formError}
@@ -103,7 +109,7 @@ export function Profile() {
           type={passwordVisible ? "text" : "password"}
           placeholder={"Пароль"}
           onChange={onFormChange}
-          icon={"CurrencyIcon"}
+          icon={"EditIcon"}
           value={passwordValue}
           name={"name"}
           error={formError}

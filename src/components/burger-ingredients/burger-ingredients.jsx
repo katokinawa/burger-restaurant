@@ -53,8 +53,11 @@ export default function BurgerIngredients() {
     const containerTop = containerRef.current.getBoundingClientRect().top;
 
     const bunTop = bunRef.current.getBoundingClientRect().top - containerTop;
+    // Увеличиваем на 30 пикселей, потому что блок с <p></p>
+    // при переходе по якорной ссылке по табу вычисляется как 0,
+    // и в табе активным становится следующий ингредиент
     const sauceTop =
-      sauceRef.current.getBoundingClientRect().top - containerTop;
+      sauceRef.current.getBoundingClientRect().top - containerTop + 30; 
     const mainTop = mainRef.current.getBoundingClientRect().top - containerTop;
 
     const tabs = [

@@ -33,10 +33,13 @@ export function submitLogin(formValues) {
           type: FORM_SUBMIT_SUCCESS,
           item,
         });
+        window.history.pushState(null, "", "/");
+        window.history.go(0);
       })
-      .catch(() => {
+      .catch((error) => {
         dispatch({
           type: FORM_SUBMIT_ERROR,
+          error,
         });
       });
   };
@@ -59,10 +62,13 @@ export function submitRegister(formValues) {
           type: FORM_SUBMIT_SUCCESS,
           item,
         });
+        window.history.pushState(null, "", "/login");
+        window.history.go(0);
       })
-      .catch(() => {
+      .catch((error) => {
         dispatch({
           type: FORM_SUBMIT_ERROR,
+          error,
         });
       });
   };
@@ -85,10 +91,13 @@ export function submitLogout(formValues) {
           type: FORM_SUBMIT_SUCCESS,
           item,
         });
+        window.history.pushState(null, "", "/login");
+        window.history.go(0);
       })
-      .catch(() => {
+      .catch((error) => {
         dispatch({
           type: FORM_SUBMIT_ERROR,
+          error,
         });
       });
   };
@@ -112,9 +121,10 @@ export function submitRefreshToken(formValues) {
           item,
         });
       })
-      .catch(() => {
+      .catch((error) => {
         dispatch({
           type: FORM_SUBMIT_ERROR,
+          error,
         });
       });
   };
@@ -138,6 +148,8 @@ export function submitForgotPassword(formValues) {
             type: FORM_SUBMIT_SUCCESS,
             item,
           });
+          window.history.replaceState(null, "", "/reset-password");
+          window.history.go(0);
         })
         .catch(() => {
           dispatch({
@@ -165,10 +177,13 @@ export function submitResetPassword(formValues) {
           type: FORM_SUBMIT_SUCCESS,
           item,
         });
+        window.history.pushState(null, "", "/login");
+        window.history.go(0);
       })
-      .catch(() => {
+      .catch((error) => {
         dispatch({
           type: FORM_SUBMIT_ERROR,
+          error,
         });
       });
   };

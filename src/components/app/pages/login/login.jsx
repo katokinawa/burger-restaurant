@@ -17,6 +17,8 @@ export function Login() {
   const {
     onShowPasswordSwitch,
     onFormChange,
+    handleFocus,
+    showError,
     emailValue,
     passwordValue,
     passwordVisible,
@@ -48,7 +50,9 @@ export function Login() {
           value={emailValue}
           name={"email"}
           error={formError}
-          errorText={emailValue === "" ? "Поле не может быть пустым" : ""}
+          errorText={""}
+          required={true}
+          onFocus={handleFocus}
         />
         <Input
           type={passwordVisible ? "text" : "password"}
@@ -59,15 +63,15 @@ export function Login() {
           name={"password"}
           error={formError}
           onIconClick={onShowPasswordSwitch}
-          errorText={passwordValue === "" ? "Поле не может быть пустым" : ""}
+          errorText={""}
           size={"default"}
           extraClass="ml-1"
+          required={true}
+          onFocus={handleFocus}
         />
-        {formError && (
-          <p className="text text_type_main-small">
-            Неправильный логин или пароль
-          </p>
-        )}
+        <p className="text text_type_main-small">
+          {formError && showError("Неправильный логин или пароль")}
+        </p>
         <Button
           htmlType="submit"
           type="primary"

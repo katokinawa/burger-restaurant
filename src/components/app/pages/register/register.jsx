@@ -17,6 +17,8 @@ export function Register() {
   const {
     onShowPasswordSwitch,
     onFormChange,
+    handleFocus,
+    showError,
     nameValue,
     emailValue,
     passwordValue,
@@ -53,16 +55,21 @@ export function Register() {
           value={nameValue}
           name={"name"}
           error={formError}
-          errorText={nameValue === "" ? "Поле не может быть пустым" : ""}
+          errorText={""}
           size={"default"}
           extraClass="ml-1"
+          required={true}
+          // При фокусе сбрасывается красный контур ошибки у инпутов, чтобы психологически не давить на юзера
+          onFocus={handleFocus}
         />
         <EmailInput
           onChange={onFormChange}
           value={emailValue}
           name={"email"}
           error={formError}
-          errorText={emailValue === "" ? "Поле не может быть пустым" : ""}
+          errorText={""}
+          required={true}
+          onFocus={handleFocus}
         />
         <Input
           type={passwordVisible ? "text" : "password"}
@@ -73,16 +80,16 @@ export function Register() {
           name={"password"}
           error={formError}
           onIconClick={onShowPasswordSwitch}
-          errorText={passwordValue === "" ? "Поле не может быть пустым" : ""}
+          errorText={""}
           size={"default"}
           extraClass="ml-1"
+          required={true}
+          onFocus={handleFocus}
         />
-        {formError && (
-          <p className="text text_type_main-small">
-            Поля электронной почты, пароля и имени являются обязательными для
-            заполнения
-          </p>
-        )}
+        <p className="text text_type_main-small">
+          {formError && showError("Пользователь уже существует")}
+        </p>
+
         <Button
           htmlType="submit"
           type="primary"

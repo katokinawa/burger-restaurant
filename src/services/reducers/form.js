@@ -18,6 +18,7 @@ const initialState = {
   },
   formRequest: false,
   formError: false,
+  formErrorMessage: "",
 };
 
 export const form = (state = initialState, action) => {
@@ -43,6 +44,7 @@ export const form = (state = initialState, action) => {
         ...state,
         formRequest: false,
         formError: true,
+        formErrorMessage: action.error,
       };
     }
     case SHOW_PASSWORD_SWITCH: {

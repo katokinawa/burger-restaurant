@@ -14,7 +14,14 @@ import {
 import { useEffect } from "react";
 
 export function ForgotPassword() {
-  const { onFormChange, emailValue, formRequest, formError } = useForm();
+  const {
+    onFormChange,
+    handleFocus,
+    showError,
+    emailValue,
+    formRequest,
+    formError,
+  } = useForm();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -42,10 +49,12 @@ export function ForgotPassword() {
           isIcon={false}
           error={formError}
           errorText={""}
+          required={true}
+          onFocus={handleFocus}
         />
-        {formError && (
-          <p className="text text_type_main-small">Поле не может быть пустым</p>
-        )}
+        <p className="text text_type_main-small">
+          {formError && showError("")}
+        </p>
         <Button
           htmlType="submit"
           type="primary"
