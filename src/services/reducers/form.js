@@ -5,6 +5,7 @@ import {
   FORM_SUBMIT_SUCCESS,
   RESET_ERROR_STATUS,
   SHOW_PASSWORD_SWITCH,
+  SWITCH_FIELD_EDIT,
 } from "../actions/form";
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
   },
   formRequest: false,
   formError: false,
+  editDisabled: true,
   formErrorMessage: "",
 };
 
@@ -54,6 +56,12 @@ export const form = (state = initialState, action) => {
           ...state.form,
           passwordVisible: !state.form.passwordVisible,
         },
+      };
+    }
+    case SWITCH_FIELD_EDIT: {
+      return {
+        ...state,
+        editDisabled: !state.editDisabled,
       };
     }
     case ADD_FORM_VALUE: {

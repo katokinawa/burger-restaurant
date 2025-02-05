@@ -6,10 +6,15 @@ import styles from "./profile.module.css";
 import { useForm } from "../../../../hooks/useForm";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import {
+  submitGetPersonValues,
+  submitLogout,
+  SWITCH_FIELD_EDIT,
+} from "../../../../services/actions/form";
+import { useEffect } from "react";
 
 export function Profile() {
   const {
-    onShowPasswordSwitch,
     onFormChange,
     nameValue,
     emailValue,
@@ -17,15 +22,24 @@ export function Profile() {
     passwordVisible,
     formRequest,
     formError,
+    editDisabled,
   } = useForm();
 
   const dispatch = useDispatch();
 
+  // UseEffects
+  useEffect(() => {
+    dispatch(submitGetPersonValues());
+  }, [dispatch]);
+
   function onIconClick() {
-    // dispatch({
-    //     type:
-    // })
+    dispatch({ type: SWITCH_FIELD_EDIT });
   }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    dispatch();
+  };
 
   return (
     <section className={styles.profile}>
@@ -58,7 +72,13 @@ export function Profile() {
             </p>
           )}
         </NavLink>
-        <NavLink to={`/profile/orders/:number`} className={styles.link_button}>
+        <NavLink
+          to={`/login`}
+          className={styles.link_button}
+          onClick={() => {
+            dispatch(submitLogout());
+          }}
+        >
           {({ isActive }) => (
             <p
               className={
@@ -76,59 +96,73 @@ export function Profile() {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      <div className={styles.profile_inputs}>
-        <Input
-          type={"text"}
-          placeholder={"Имя"}
-          onChange={onFormChange}
-          icon={"EditIcon"}
-          value={nameValue}
-          name={"name"}
-          error={formError}
-          onIconClick={onIconClick}
-          errorText={"Ошибка"}
-          size={"default"}
-          extraClass="ml-1"
-          disabled={true}
-        />
-        <Input
-          type={"text"}
-          placeholder={"Логин"}
-          onChange={onFormChange}
-          icon={"EditIcon"}
-          value={emailValue}
-          name={"name"}
-          error={formError}
-          onIconClick={onIconClick}
-          errorText={"Ошибка"}
-          size={"default"}
-          extraClass="ml-1"
-          disabled={true}
-        />
-        <Input
-          type={passwordVisible ? "text" : "password"}
-          placeholder={"Пароль"}
-          onChange={onFormChange}
-          icon={"EditIcon"}
-          value={passwordValue}
-          name={"name"}
-          error={formError}
-          onIconClick={onIconClick}
-          errorText={"Ошибка"}
-          size={"default"}
-          extraClass="ml-1"
-          disabled={true}
-        />
-        <Button
-          htmlType="button"
-          type="primary"
-          size="small"
-          extraClass="ml-2"
-          disabled={formRequest}
-        >
-          Сохранить
-        </Button>
-      </div>
+      <form className={styles.edit_profile_form} onSubmit={onSubmit}>
+        <div className={styles.profile_inputs}>
+          <Input
+            type={"text"}
+            placeholder={"Имя"}
+            onChange={onFormChange}
+            icon={"EditIcon"}
+            value={nameValue}
+            name={"name"}
+            error={formError}
+            onIconClick={onIconClick}
+            errorText={"Ошибка"}
+            size={"default"}
+            extraClass="ml-1"
+            disabled={editDisabled}
+          />
+          <Input
+            type={"text"}
+            placeholder={"Логин"}
+            onChange={onFormChange}
+            icon={"EditIcon"}
+            value={emailValue}
+            name={"name"}
+            error={formError}
+            onIconClick={onIconClick}
+            errorText={"Ошибка"}
+            size={"default"}
+            extraClass="ml-1"
+            required={true}
+            disabled={editDisabled}
+          />
+          <Input
+            type={passwordVisible ? "text" : "password"}
+            placeholder={"Пароль"}
+            onChange={onFormChange}
+            icon={"EditIcon"}
+            value={passwordValue}
+            name={"name"}
+            error={formError}
+            onIconClick={onIconClick}
+            errorText={"Ошибка"}
+            size={"default"}
+            extraClass="ml-1"
+            required={true}
+            disabled={editDisabled}
+          />
+          <Button
+            htmlType="submit"
+            type="primary"
+            size="small"
+            extraClass="ml-2"
+            required={true}
+            disabled={formRequest || editDisabled}
+          >
+            Сохранить
+          </Button>
+          <Button
+            htmlType="submit"
+            type="primary"
+            size="small"
+            extraClass="ml-2"
+            disabled={formRequest || editDisabled}
+          >
+            Отмена
+          </Button>
+        </div>
+      </form>
     </section>
   );
 }

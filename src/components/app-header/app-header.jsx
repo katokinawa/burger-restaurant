@@ -13,7 +13,7 @@ export function AppHeader() {
       <nav className={styles.nav}>
         <ul className={styles.nav_left}>
           <li>
-            <NavLink to={"/"}>
+            <NavLink to={"/"} end>
               {({ isActive }) => (
                 <button className={styles.button}>
                   <BurgerIcon type={!isActive ? "secondary" : "primary"} />
@@ -28,7 +28,7 @@ export function AppHeader() {
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/profile/orders"}>
+            <NavLink to={"/profile/orders"} end>
               {({ isActive }) => (
                 <button className={styles.button}>
                   <ListIcon type={!isActive ? "secondary" : "primary"} />
@@ -49,7 +49,7 @@ export function AppHeader() {
         </div>
         <ul className={styles.nav_right}>
           <li>
-            <NavLink to={"/profile"}>
+            <NavLink to={"/profile"} end>
               {({ isActive }) => (
                 <button className={styles.button}>
                   <ProfileIcon type={!isActive ? "secondary" : "primary"} />

@@ -15,7 +15,7 @@ export const useForm = () => {
     code,
   } = useSelector((state) => state.form.form);
 
-  const { formRequest, formError, formErrorMessage } = useSelector(
+  const { formRequest, formError, formErrorMessage, editDisabled } = useSelector(
     (state) => state.form
   );
 
@@ -32,11 +32,14 @@ export const useForm = () => {
       case 403: {
         return message;
       }
+      case 401: {
+        return message;
+      }
       case 500: {
         return "Сервер временно недоступен";
       }
       case 404: {
-        return "Ошибка"
+        return "Ошибка";
       }
       default:
         return "Пожалуйста, попробуйте позже";
@@ -46,6 +49,7 @@ export const useForm = () => {
   const onFormChange = (e) => {
     dispatch(setFormValue(e.target.name, e.target.value));
   };
+
   return {
     onShowPasswordSwitch,
     onFormChange,
@@ -58,5 +62,6 @@ export const useForm = () => {
     code,
     formRequest,
     formError,
+    editDisabled,
   };
 };
