@@ -10,8 +10,9 @@ export const FORM_SUBMIT_ERROR = "FORM_SUBMIT_ERROR";
 export const SHOW_PASSWORD_SWITCH = "SHOW_PASSWORD_SWITCH";
 
 export const RESET_ERROR_STATUS = "RESET_ERROR_STATUS";
+export const RESET_FORM = "RESET_FORM";
 
-export const SWITCH_FIELD_EDIT = "SWITCH_FIELD_EDIT"
+export const SWITCH_INPUTS_EDIT = "SWITCH_INPUTS_EDIT";
 
 export const setFormValue = (field, value) => ({
   type: ADD_FORM_VALUE,
@@ -196,6 +197,7 @@ export function submitRefreshToken() {
 
         document.cookie = `accessToken=${item.accessToken}; max-age=1200;`;
         document.cookie = `refreshToken=${item.refreshToken};`;
+        window.history.go(0);
       })
       .catch((error) => {
         dispatch({
@@ -206,7 +208,7 @@ export function submitRefreshToken() {
   };
 }
 
-export function submitGetPersonValues() {
+export function submitGetPersonValues(formValues) {
   return async function (dispatch) {
     let token = getCookie().accessToken;
 
@@ -220,16 +222,16 @@ export function submitGetPersonValues() {
           "Content-Type": "application/json",
           authorization: token,
         },
+        body: JSON.stringify(formValues),
       })
         .then((item) => {
           dispatch({
             type: FORM_SUBMIT_SUCCESS,
           });
-
           // Перебираем все поля в объекте с данными пользователя и добавляем в форму
           // так мы точно знаем, что в случае добавления доп. полей мы переберём
           // все ключи и значения
-          for(var key in item.user) {
+          for (var key in item.user) {
             dispatch(setFormValue(key, item.user[key]));
           }
         })

@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
 import {
   RESET_ERROR_STATUS,
+  RESET_FORM,
   submitLogin,
 } from "../../../../services/actions/form";
 import { useDispatch } from "react-redux";
@@ -29,6 +30,9 @@ export function Login() {
 
   useEffect(() => {
     dispatch({ type: RESET_ERROR_STATUS });
+    dispatch({
+      type: RESET_FORM,
+    });
   }, [dispatch]);
 
   const onSubmit = (e) => {

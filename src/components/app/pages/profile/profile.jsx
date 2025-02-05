@@ -9,20 +9,24 @@ import { NavLink } from "react-router-dom";
 import {
   submitGetPersonValues,
   submitLogout,
-  SWITCH_FIELD_EDIT,
 } from "../../../../services/actions/form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export function Profile() {
+  const [isDisallowEdit, setIsDisallowEdit] = useState({
+    name: true,
+    email: true,
+    password: true,
+  });
+  const [isEdit, setIsEdit] = useState(false);
+
   const {
     onFormChange,
     nameValue,
     emailValue,
     passwordValue,
-    passwordVisible,
     formRequest,
     formError,
-    editDisabled,
   } = useForm();
 
   const dispatch = useDispatch();
@@ -32,13 +36,48 @@ export function Profile() {
     dispatch(submitGetPersonValues());
   }, [dispatch]);
 
-  function onIconClick() {
-    dispatch({ type: SWITCH_FIELD_EDIT });
+  function onIconClick(e) {
+    const elementAllowEdit = e.target.closest("div").previousSibling.name;
+    setIsDisallowEdit({
+      ...isDisallowEdit,
+      [elementAllowEdit]: !isDisallowEdit[elementAllowEdit],
+    });
+
+    // Даём кнопкам сохранения и отмены понять, что мы в режиме редактирования
+    // и кнопки можно включать
+    setIsEdit(true);
+
+    // Если пользователь передумал изменять данные - возвращаем исходные данные
+    if (!isDisallowEdit[elementAllowEdit]) {
+      setDefaultProfileForm();
+      dispatch(submitGetPersonValues());
+    }
   }
 
+  const setDefaultProfileForm = () => {
+    setIsDisallowEdit({
+      ...isDisallowEdit,
+      name: true,
+      email: true,
+      password: true,
+    });
+    setIsEdit(false);
+  };
+
   const onSubmit = (e) => {
+    const formName = e.target.name.value;
+    const formEmail = e.target.email.value;
+    const formPassword = e.target.password.value;
+
     e.preventDefault();
-    dispatch();
+    setDefaultProfileForm();
+    dispatch(
+      submitGetPersonValues({
+        name: formName || nameValue,
+        email: formEmail || emailValue,
+        password: formPassword || passwordValue,
+      })
+    );
   };
 
   return (
@@ -73,7 +112,7 @@ export function Profile() {
           )}
         </NavLink>
         <NavLink
-          to={`/login`}
+          to={"/login"}
           className={styles.link_button}
           onClick={() => {
             dispatch(submitLogout());
@@ -96,8 +135,8 @@ export function Profile() {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      <form className={styles.edit_profile_form} onSubmit={onSubmit}>
-        <div className={styles.profile_inputs}>
+      <div className={styles.profile_inputs_wrapper}>
+        <form className={styles.profile_form} onSubmit={onSubmit}>
           <Input
             type={"text"}
             placeholder={"Имя"}
@@ -106,11 +145,11 @@ export function Profile() {
             value={nameValue}
             name={"name"}
             error={formError}
-            onIconClick={onIconClick}
+            onIconClick={!isEdit ? onIconClick : ""}
             errorText={"Ошибка"}
             size={"default"}
             extraClass="ml-1"
-            disabled={editDisabled}
+            disabled={isDisallowEdit.name}
           />
           <Input
             type={"text"}
@@ -118,51 +157,66 @@ export function Profile() {
             onChange={onFormChange}
             icon={"EditIcon"}
             value={emailValue}
-            name={"name"}
+            name={"email"}
             error={formError}
-            onIconClick={onIconClick}
+            onIconClick={!isEdit ? onIconClick : ""}
             errorText={"Ошибка"}
             size={"default"}
             extraClass="ml-1"
             required={true}
-            disabled={editDisabled}
+            disabled={isDisallowEdit.email}
           />
           <Input
-            type={passwordVisible ? "text" : "password"}
+            type={"text"}
             placeholder={"Пароль"}
             onChange={onFormChange}
             icon={"EditIcon"}
-            value={passwordValue}
-            name={"name"}
+            value={isDisallowEdit.password ? "******" : passwordValue}
+            name={"password"}
             error={formError}
-            onIconClick={onIconClick}
+            onIconClick={!isEdit ? onIconClick : ""}
             errorText={"Ошибка"}
             size={"default"}
             extraClass="ml-1"
             required={true}
-            disabled={editDisabled}
+            disabled={isDisallowEdit.password}
           />
           <Button
-            htmlType="submit"
+            htmlType={"submit"}
+            name={"save"}
             type="primary"
             size="small"
-            extraClass="ml-2"
+            extraClass={
+              "ml-2" +
+              " " +
+              styles.button_form +
+              " " +
+              (isEdit && styles.button_form_show)
+            }
             required={true}
-            disabled={formRequest || editDisabled}
+            disabled={formRequest || !isEdit}
           >
             Сохранить
           </Button>
           <Button
-            htmlType="submit"
-            type="primary"
+            htmlType={"button"}
+            onClick={onIconClick}
+            name={"cancel"}
+            type="secondary"
             size="small"
-            extraClass="ml-2"
-            disabled={formRequest || editDisabled}
+            extraClass={
+              "ml-2" +
+              " " +
+              styles.button_form +
+              " " +
+              (isEdit && styles.button_form_show)
+            }
+            disabled={formRequest || !isEdit}
           >
             Отмена
           </Button>
-        </div>
-      </form>
+        </form>
+      </div>
     </section>
   );
 }

@@ -4,8 +4,8 @@ import {
   FORM_SUBMIT_REQUEST,
   FORM_SUBMIT_SUCCESS,
   RESET_ERROR_STATUS,
+  RESET_FORM,
   SHOW_PASSWORD_SWITCH,
-  SWITCH_FIELD_EDIT,
 } from "../actions/form";
 
 const initialState = {
@@ -19,7 +19,6 @@ const initialState = {
   },
   formRequest: false,
   formError: false,
-  editDisabled: true,
   formErrorMessage: "",
 };
 
@@ -58,12 +57,6 @@ export const form = (state = initialState, action) => {
         },
       };
     }
-    case SWITCH_FIELD_EDIT: {
-      return {
-        ...state,
-        editDisabled: !state.editDisabled,
-      };
-    }
     case ADD_FORM_VALUE: {
       return {
         ...state,
@@ -78,6 +71,9 @@ export const form = (state = initialState, action) => {
         ...state,
         formError: false,
       };
+    }
+    case RESET_FORM: {
+      return initialState;
     }
     default: {
       return state;
