@@ -7,77 +7,80 @@ import { useForm } from "../../../../hooks/useForm";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import {
+  RESET_ERROR_STATUS,
   submitGetPersonValues,
   submitLogout,
 } from "../../../../services/actions/form";
 import { useEffect, useState } from "react";
 
 export function Profile() {
-  const [isDisallowEdit, setIsDisallowEdit] = useState({
-    name: true,
-    email: true,
-    password: true,
-  });
-  const [isEdit, setIsEdit] = useState(false);
-
   const {
-    onFormChange,
     nameValue,
     emailValue,
     passwordValue,
     formRequest,
     formError,
+    formSuccess,
   } = useForm();
 
   const dispatch = useDispatch();
 
-  // UseEffects
   useEffect(() => {
     dispatch(submitGetPersonValues());
   }, [dispatch]);
 
-  function onIconClick(e) {
-    const elementAllowEdit = e.target.closest("div").previousSibling.name;
-    setIsDisallowEdit({
-      ...isDisallowEdit,
-      [elementAllowEdit]: !isDisallowEdit[elementAllowEdit],
-    });
+  const [isEditable, setIsEditable] = useState({
+    name: true,
+    email: true,
+    password: true,
+  });
 
-    // Даём кнопкам сохранения и отмены понять, что мы в режиме редактирования
-    // и кнопки можно включать
+  const [user, setUser] = useState({ name: "", email: "", password: "" });
+  const [isEdit, setIsEdit] = useState(false);
+
+  function onIconClick(fieldName) {
     setIsEdit(true);
-
-    // Если пользователь передумал изменять данные - возвращаем исходные данные
-    if (!isDisallowEdit[elementAllowEdit]) {
-      setDefaultProfileForm();
-      dispatch(submitGetPersonValues());
+    setIsEditable((prev) => ({
+      ...prev,
+      [fieldName]: !prev[fieldName],
+    }));
+    if (!isEditable[fieldName]) {
+      resetProfileForm();
     }
   }
 
-  const setDefaultProfileForm = () => {
-    setIsDisallowEdit({
-      ...isDisallowEdit,
-      name: true,
-      email: true,
-      password: true,
+  useEffect(() => {
+    setUser({
+      name: nameValue || "Загрузка...",
+      email: emailValue || "Загрузка...",
+      password: passwordValue || "",
     });
+  }, [nameValue, emailValue, passwordValue]);
+
+  function handleSetValue(e) {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  }
+
+  function resetProfileForm() {
+    setUser({
+      name: nameValue || "Загрузка...",
+      email: emailValue || "Загрузка...",
+      password: passwordValue || "",
+    });
+    setIsEditable({ name: true, email: true, password: true });
     setIsEdit(false);
-  };
+  }
 
   const onSubmit = (e) => {
-    const formName = e.target.name.value;
-    const formEmail = e.target.email.value;
-    const formPassword = e.target.password.value;
-
     e.preventDefault();
-    setDefaultProfileForm();
     dispatch(
       submitGetPersonValues({
-        name: formName || nameValue,
-        email: formEmail || emailValue,
-        password: formPassword || passwordValue,
+        name: user.name ?? nameValue,
+        email: user.email ?? emailValue,
+        password: user.password ?? passwordValue,
       })
     );
+    resetProfileForm();
   };
 
   return (
@@ -140,46 +143,46 @@ export function Profile() {
           <Input
             type={"text"}
             placeholder={"Имя"}
-            onChange={onFormChange}
+            onChange={handleSetValue}
             icon={"EditIcon"}
-            value={nameValue}
+            value={user.name}
             name={"name"}
             error={formError}
-            onIconClick={!isEdit ? onIconClick : ""}
+            onIconClick={!isEdit ? () => onIconClick("name") : null}
             errorText={"Ошибка"}
             size={"default"}
             extraClass="ml-1"
-            disabled={isDisallowEdit.name}
+            disabled={isEditable.name}
           />
           <Input
             type={"text"}
             placeholder={"Логин"}
-            onChange={onFormChange}
+            onChange={handleSetValue}
             icon={"EditIcon"}
-            value={emailValue}
+            value={user.email}
             name={"email"}
             error={formError}
-            onIconClick={!isEdit ? onIconClick : ""}
+            onIconClick={!isEdit ? () => onIconClick("email") : null}
             errorText={"Ошибка"}
             size={"default"}
             extraClass="ml-1"
             required={true}
-            disabled={isDisallowEdit.email}
+            disabled={isEditable.email}
           />
           <Input
             type={"text"}
             placeholder={"Пароль"}
-            onChange={onFormChange}
+            onChange={handleSetValue}
             icon={"EditIcon"}
-            value={isDisallowEdit.password ? "******" : passwordValue}
+            value={isEditable.password ? "******" : user.password}
             name={"password"}
             error={formError}
-            onIconClick={!isEdit ? onIconClick : ""}
+            onIconClick={!isEdit ? () => onIconClick("password") : null}
             errorText={"Ошибка"}
             size={"default"}
             extraClass="ml-1"
             required={true}
-            disabled={isDisallowEdit.password}
+            disabled={isEditable.password}
           />
           <Button
             htmlType={"submit"}
@@ -200,7 +203,7 @@ export function Profile() {
           </Button>
           <Button
             htmlType={"button"}
-            onClick={onIconClick}
+            onClick={resetProfileForm}
             name={"cancel"}
             type="secondary"
             size="small"

@@ -8,6 +8,18 @@
   width: 320px;
 }
 
+.profile_inputs_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 480px;
+}
+
+.loading_gif {
+  width: 100px;
+  height: 100px;
+}
+
 .profile_form {
   display: flex;
   flex-direction: column;

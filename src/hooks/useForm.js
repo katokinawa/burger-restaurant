@@ -15,7 +15,7 @@ export const useForm = () => {
     code,
   } = useSelector((state) => state.form.form);
 
-  const { formRequest, formError, formErrorMessage } = useSelector(
+  const { formRequest, formSuccess, formError, formErrorMessage } = useSelector(
     (state) => state.form
   );
 
@@ -62,5 +62,6 @@ export const useForm = () => {
     code,
     formRequest,
     formError,
+    formSuccess,
   };
 };

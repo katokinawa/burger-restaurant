@@ -19,6 +19,7 @@ const initialState = {
   },
   formRequest: false,
   formError: false,
+  formSuccess: false,
   formErrorMessage: "",
 };
 
@@ -38,6 +39,7 @@ export const form = (state = initialState, action) => {
         },
         formRequest: false,
         formError: false,
+        formSuccess: true,
       };
     }
     case FORM_SUBMIT_ERROR: {
@@ -45,6 +47,7 @@ export const form = (state = initialState, action) => {
         ...state,
         formRequest: false,
         formError: true,
+        formSuccess: false,
         formErrorMessage: action.error,
       };
     }
@@ -70,6 +73,7 @@ export const form = (state = initialState, action) => {
       return {
         ...state,
         formError: false,
+        formSuccess: false,
       };
     }
     case RESET_FORM: {

@@ -227,10 +227,8 @@ export function submitGetPersonValues(formValues) {
         .then((item) => {
           dispatch({
             type: FORM_SUBMIT_SUCCESS,
+            item
           });
-          // Перебираем все поля в объекте с данными пользователя и добавляем в форму
-          // так мы точно знаем, что в случае добавления доп. полей мы переберём
-          // все ключи и значения
           for (var key in item.user) {
             dispatch(setFormValue(key, item.user[key]));
           }
