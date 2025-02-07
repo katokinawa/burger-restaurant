@@ -18,9 +18,9 @@ const initialState = {
     token: "",
   },
   formRequest: false,
-  formError: false,
+  formErrorStatus: false,
   formSuccess: false,
-  formErrorMessage: "",
+  formErrorStatusMessage: "",
 };
 
 export const form = (state = initialState, action) => {
@@ -35,10 +35,12 @@ export const form = (state = initialState, action) => {
       return {
         ...state,
         form: {
-          ...initialState.form,
+          ...state.form,
+          name: action.name,
+          email: action.email,
         },
         formRequest: false,
-        formError: false,
+        formErrorStatus: false,
         formSuccess: true,
       };
     }
@@ -46,9 +48,9 @@ export const form = (state = initialState, action) => {
       return {
         ...state,
         formRequest: false,
-        formError: true,
+        formErrorStatus: true,
         formSuccess: false,
-        formErrorMessage: action.error,
+        formErrorStatusMessage: action.error,
       };
     }
     case SHOW_PASSWORD_SWITCH: {
@@ -72,7 +74,7 @@ export const form = (state = initialState, action) => {
     case RESET_ERROR_STATUS: {
       return {
         ...state,
-        formError: false,
+        formErrorStatus: false,
         formSuccess: false,
       };
     }

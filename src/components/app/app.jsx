@@ -7,6 +7,8 @@ import { Register } from "./pages/register/Register";
 import { ForgotPassword } from "./pages/forgot-password/forgot-password";
 import { ResetPassword } from "./pages/reset-password/reset-password";
 import { Profile } from "./pages/profile/profile";
+import { ProtectedRouteElement } from "../protected-route";
+import { ErrorPage } from "../error-page/error-page";
 
 export default function App() {
   return (
@@ -18,8 +20,9 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<ProtectedRouteElement element={<Profile />} />} />
           <Route path="/" element={<Home />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </main>
     </BrowserRouter>

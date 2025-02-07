@@ -15,9 +15,8 @@ export const useForm = () => {
     code,
   } = useSelector((state) => state.form.form);
 
-  const { formRequest, formSuccess, formError, formErrorMessage } = useSelector(
-    (state) => state.form
-  );
+  const { formRequest, formSuccess, formErrorStatus, formErrorStatusMessage } =
+    useSelector((state) => state.form);
 
   const onShowPasswordSwitch = () => {
     dispatch({ type: SHOW_PASSWORD_SWITCH });
@@ -27,8 +26,8 @@ export const useForm = () => {
     dispatch({ type: RESET_ERROR_STATUS });
   };
 
-  const showError = (message) => {
-    switch (formErrorMessage) {
+  const showMessageStatus = (message) => {
+    switch (formErrorStatusMessage) {
       case 403: {
         return message;
       }
@@ -54,14 +53,14 @@ export const useForm = () => {
     onShowPasswordSwitch,
     onFormChange,
     handleFocus,
-    showError,
+    showMessageStatus,
     nameValue,
     emailValue,
     passwordValue,
     passwordVisible,
     code,
     formRequest,
-    formError,
+    formErrorStatus,
     formSuccess,
   };
 };

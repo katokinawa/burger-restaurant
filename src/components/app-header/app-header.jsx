@@ -6,8 +6,10 @@ import {
   ProfileIcon,
   Logo,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { getCookie } from "../../utils/getCookieValue";
 
 export function AppHeader() {
+  const token = getCookie().refreshToken;
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
@@ -58,7 +60,7 @@ export function AppHeader() {
                       !isActive && "text_color_inactive"
                     }`}
                   >
-                    Личный кабинет
+                    {token ? "Личный кабинет" : "Авторизация"}
                   </p>
                 </button>
               )}

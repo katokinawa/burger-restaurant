@@ -3,7 +3,7 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./reset-password.module.css";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
 import { useDispatch } from "react-redux";
 import {
@@ -11,6 +11,7 @@ import {
   submitResetPassword,
 } from "../../../../services/actions/form";
 import { useEffect } from "react";
+import { getCookie } from "../../../../utils/getCookieValue";
 
 export function ResetPassword() {
   const dispatch = useDispatch();
@@ -18,13 +19,14 @@ export function ResetPassword() {
     onShowPasswordSwitch,
     onFormChange,
     handleFocus,
-    showError,
+    showMessageStatus,
     passwordValue,
     code,
     passwordVisible,
     formRequest,
-    formError,
+    formErrorStatus,
   } = useForm();
+  const token = getCookie().refreshToken;
 
   useEffect(() => {
     dispatch({ type: RESET_ERROR_STATUS });
@@ -40,6 +42,7 @@ export function ResetPassword() {
     );
   };
 
+  if (token) return <Navigate to="/" replace />;
   return (
     <section className={styles.reset_password}>
       <form className={styles.reset_password_form} onSubmit={onSubmit}>
@@ -65,7 +68,7 @@ export function ResetPassword() {
           onChange={onFormChange}
           value={code}
           name={"code"}
-          error={formError}
+          error={formErrorStatus}
           errorText={""}
           size={"default"}
           extraClass="ml-1"
@@ -73,7 +76,7 @@ export function ResetPassword() {
           onFocus={handleFocus}
         />
         <p className="text text_type_main-small">
-          {formError && showError("Введены некорректные данные")}
+          {formErrorStatus && showMessageStatus("Введены некорректные данные")}
         </p>
         <Button
           htmlType="submit"

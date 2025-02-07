@@ -163,9 +163,9 @@ export function submitLogout() {
         dispatch({
           type: FORM_SUBMIT_SUCCESS,
         });
-
         document.cookie = "accessToken=;max-age=0";
         document.cookie = "refreshToken=;max-age=0";
+        window.history.go(0);
       })
       .catch((error) => {
         dispatch({
@@ -209,9 +209,8 @@ export function submitRefreshToken() {
 }
 
 export function submitGetPersonValues(formValues) {
-  return async function (dispatch) {
+  return function (dispatch) {
     let token = getCookie().accessToken;
-
     if (token) {
       dispatch({
         type: FORM_SUBMIT_REQUEST,
@@ -225,13 +224,12 @@ export function submitGetPersonValues(formValues) {
         body: JSON.stringify(formValues),
       })
         .then((item) => {
+          const res = item.user;
           dispatch({
             type: FORM_SUBMIT_SUCCESS,
-            item
+            name: res.name,
+            email: res.email,
           });
-          for (var key in item.user) {
-            dispatch(setFormValue(key, item.user[key]));
-          }
         })
         .catch((error) => {
           dispatch({
@@ -240,14 +238,7 @@ export function submitGetPersonValues(formValues) {
           });
         });
     } else {
-      try {
-        dispatch(submitRefreshToken());
-      } catch (error) {
-        dispatch({
-          type: FORM_SUBMIT_ERROR,
-          error,
-        });
-      }
+      dispatch(submitRefreshToken());
     }
   };
 }

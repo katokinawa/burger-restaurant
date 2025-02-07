@@ -5,38 +5,34 @@ import {
 import styles from "./profile.module.css";
 import { useForm } from "../../../../hooks/useForm";
 import { useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
-  RESET_ERROR_STATUS,
   submitGetPersonValues,
   submitLogout,
 } from "../../../../services/actions/form";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function Profile() {
-  const {
-    nameValue,
-    emailValue,
-    passwordValue,
-    formRequest,
-    formError,
-    formSuccess,
-  } = useForm();
-
+  const { nameValue, emailValue, passwordValue, formRequest, formErrorStatus } =
+    useForm();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(submitGetPersonValues());
   }, [dispatch]);
 
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [isEditable, setIsEditable] = useState({
     name: true,
     email: true,
     password: true,
   });
-
-  const [user, setUser] = useState({ name: "", email: "", password: "" });
   const [isEdit, setIsEdit] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   function onIconClick(fieldName) {
     setIsEdit(true);
@@ -47,9 +43,14 @@ export function Profile() {
     if (!isEditable[fieldName]) {
       resetProfileForm();
     }
+    setIsSuccess(false);
   }
 
-  useEffect(() => {
+  function handleSetValue(e) {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  }
+
+  const handleSetUser = useCallback(() => {
     setUser({
       name: nameValue || "Загрузка...",
       email: emailValue || "Загрузка...",
@@ -57,16 +58,8 @@ export function Profile() {
     });
   }, [nameValue, emailValue, passwordValue]);
 
-  function handleSetValue(e) {
-    setUser({ ...user, [e.target.name]: e.target.value });
-  }
-
   function resetProfileForm() {
-    setUser({
-      name: nameValue || "Загрузка...",
-      email: emailValue || "Загрузка...",
-      password: passwordValue || "",
-    });
+    handleSetUser();
     setIsEditable({ name: true, email: true, password: true });
     setIsEdit(false);
   }
@@ -80,9 +73,15 @@ export function Profile() {
         password: user.password ?? passwordValue,
       })
     );
+    setIsSuccess(true);
     resetProfileForm();
   };
 
+  useEffect(() => {
+    handleSetUser();
+  }, [handleSetUser]);
+
+  const { name, email, password } = user;
   return (
     <section className={styles.profile}>
       <div className={styles.profile_navlinks}>
@@ -145,11 +144,11 @@ export function Profile() {
             placeholder={"Имя"}
             onChange={handleSetValue}
             icon={"EditIcon"}
-            value={user.name}
+            value={name}
             name={"name"}
-            error={formError}
+            error={formErrorStatus}
             onIconClick={!isEdit ? () => onIconClick("name") : null}
-            errorText={"Ошибка"}
+            errorText={""}
             size={"default"}
             extraClass="ml-1"
             disabled={isEditable.name}
@@ -159,11 +158,11 @@ export function Profile() {
             placeholder={"Логин"}
             onChange={handleSetValue}
             icon={"EditIcon"}
-            value={user.email}
+            value={email}
             name={"email"}
-            error={formError}
+            error={formErrorStatus}
             onIconClick={!isEdit ? () => onIconClick("email") : null}
-            errorText={"Ошибка"}
+            errorText={""}
             size={"default"}
             extraClass="ml-1"
             required={true}
@@ -174,16 +173,24 @@ export function Profile() {
             placeholder={"Пароль"}
             onChange={handleSetValue}
             icon={"EditIcon"}
-            value={isEditable.password ? "******" : user.password}
+            value={isEditable.password ? "******" : password}
             name={"password"}
-            error={formError}
+            error={formErrorStatus}
             onIconClick={!isEdit ? () => onIconClick("password") : null}
-            errorText={"Ошибка"}
+            errorText={""}
             size={"default"}
             extraClass="ml-1"
             required={true}
             disabled={isEditable.password}
           />
+          {isSuccess && !formErrorStatus && (
+            <p className="text text_type_main-small">Успешно</p>
+          )}
+          {formErrorStatus && (
+            <p className="text text_type_main-small">
+              Пожалуйста, попробуйте позже
+            </p>
+          )}
           <Button
             htmlType={"submit"}
             name={"save"}

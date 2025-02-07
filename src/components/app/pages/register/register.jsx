@@ -4,7 +4,7 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./register.module.css";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
 import {
   RESET_ERROR_STATUS,
@@ -12,22 +12,23 @@ import {
 } from "../../../../services/actions/form";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { getCookie } from "../../../../utils/getCookieValue";
 
 export function Register() {
+  const dispatch = useDispatch();
   const {
     onShowPasswordSwitch,
     onFormChange,
     handleFocus,
-    showError,
+    showMessageStatus,
     nameValue,
     emailValue,
     passwordValue,
     passwordVisible,
     formRequest,
-    formError,
+    formErrorStatus,
   } = useForm();
-
-  const dispatch = useDispatch();
+  const token = getCookie().refreshToken;
 
   useEffect(() => {
     dispatch({ type: RESET_ERROR_STATUS });
@@ -44,6 +45,7 @@ export function Register() {
     );
   };
 
+  if (token) return <Navigate to="/" replace />;
   return (
     <section className={styles.register}>
       <form className={styles.register_form} onSubmit={onSubmit}>
@@ -54,7 +56,7 @@ export function Register() {
           onChange={onFormChange}
           value={nameValue}
           name={"name"}
-          error={formError}
+          error={formErrorStatus}
           errorText={""}
           size={"default"}
           extraClass="ml-1"
@@ -66,7 +68,7 @@ export function Register() {
           onChange={onFormChange}
           value={emailValue}
           name={"email"}
-          error={formError}
+          error={formErrorStatus}
           errorText={""}
           required={true}
           onFocus={handleFocus}
@@ -78,7 +80,7 @@ export function Register() {
           icon={passwordVisible ? "HideIcon" : "ShowIcon"}
           value={passwordValue}
           name={"password"}
-          error={formError}
+          error={formErrorStatus}
           onIconClick={onShowPasswordSwitch}
           errorText={""}
           size={"default"}
@@ -87,7 +89,7 @@ export function Register() {
           onFocus={handleFocus}
         />
         <p className="text text_type_main-small">
-          {formError && showError("Пользователь уже существует")}
+          {formErrorStatus && showMessageStatus("Пользователь уже существует")}
         </p>
 
         <Button

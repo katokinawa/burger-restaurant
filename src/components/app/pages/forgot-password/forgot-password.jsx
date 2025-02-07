@@ -3,7 +3,7 @@ import {
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./forgot-password.module.css";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
 import { useDispatch } from "react-redux";
 import {
@@ -12,17 +12,19 @@ import {
   submitForgotPassword,
 } from "../../../../services/actions/form";
 import { useEffect } from "react";
+import { getCookie } from "../../../../utils/getCookieValue";
 
 export function ForgotPassword() {
+  const dispatch = useDispatch();
   const {
     onFormChange,
     handleFocus,
-    showError,
+    showMessageStatus,
     emailValue,
     formRequest,
-    formError,
+    formErrorStatus,
   } = useForm();
-  const dispatch = useDispatch();
+  const token = getCookie().refreshToken;
 
   useEffect(() => {
     dispatch({ type: RESET_ERROR_STATUS });
@@ -36,7 +38,7 @@ export function ForgotPassword() {
       dispatch({ type: FORM_SUBMIT_ERROR });
     }
   };
-
+  if (token) return <Navigate to="/" replace />;
   return (
     <section className={styles.forgot_password}>
       <form className={styles.forgot_password_form} onSubmit={onSubmit}>
@@ -47,13 +49,13 @@ export function ForgotPassword() {
           value={emailValue}
           name={"email"}
           isIcon={false}
-          error={formError}
+          error={formErrorStatus}
           errorText={""}
           required={true}
           onFocus={handleFocus}
         />
         <p className="text text_type_main-small">
-          {formError && showError("")}
+          {formErrorStatus && showMessageStatus("")}
         </p>
         <Button
           htmlType="submit"
