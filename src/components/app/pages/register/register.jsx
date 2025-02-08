@@ -45,7 +45,9 @@ export function Register() {
     );
   };
 
-  if (token) return <Navigate to="/" replace />;
+  if (token) {
+    return <Navigate to="/" replace />;
+  }
   return (
     <section className={styles.register}>
       <form className={styles.register_form} onSubmit={onSubmit}>
@@ -66,6 +68,7 @@ export function Register() {
         />
         <EmailInput
           onChange={onFormChange}
+          placeholder={"Почта"}
           value={emailValue}
           name={"email"}
           error={formErrorStatus}

@@ -10,13 +10,13 @@ export default function IngredientDetails() {
   const ingredients = useSelector((state) => state.ingredients.items);
 
   const ingredient = ingredients.find((item) => {
-    return item._id === ingredientId
+    return item._id === ingredientId;
   });
 
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
-  
+
   return (
     <div className={styles.ingredients_modal_wrapper}>
       <p className={styles.heading + " text text_type_main-large"}>

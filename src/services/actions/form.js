@@ -40,9 +40,6 @@ export function submitLogin(formValues) {
 
         document.cookie = `accessToken=${item.accessToken}; max-age=1200;`;
         document.cookie = `refreshToken=${item.refreshToken};`;
-
-        window.history.pushState(null, "", "/");
-        window.history.go(0);
       })
       .catch((error) => {
         dispatch({
@@ -70,10 +67,8 @@ export function submitRegister(formValues) {
           type: FORM_SUBMIT_SUCCESS,
           item,
         });
-
         document.cookie = `accessToken=${item.accessToken}; max-age=1200;`;
         document.cookie = `refreshToken=${item.refreshToken};`;
-
         window.history.pushState(null, "", "/");
         window.history.go(0);
       })
@@ -104,8 +99,6 @@ export function submitForgotPassword(formValues) {
             type: FORM_SUBMIT_SUCCESS,
             item,
           });
-          window.history.replaceState(null, "", "/reset-password");
-          window.history.go(0);
         })
         .catch(() => {
           dispatch({
@@ -165,6 +158,7 @@ export function submitLogout() {
         });
         document.cookie = "accessToken=;max-age=0";
         document.cookie = "refreshToken=;max-age=0";
+        window.history.pushState(null, "", "/login");
         window.history.go(0);
       })
       .catch((error) => {

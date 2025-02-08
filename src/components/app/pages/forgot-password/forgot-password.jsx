@@ -3,11 +3,10 @@ import {
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./forgot-password.module.css";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
 import { useDispatch } from "react-redux";
 import {
-  FORM_SUBMIT_ERROR,
   RESET_ERROR_STATUS,
   submitForgotPassword,
 } from "../../../../services/actions/form";
@@ -16,6 +15,7 @@ import { getCookie } from "../../../../utils/getCookieValue";
 
 export function ForgotPassword() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     onFormChange,
     handleFocus,
@@ -32,13 +32,12 @@ export function ForgotPassword() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (emailValue !== "") {
-      dispatch(submitForgotPassword({ email: emailValue }));
-    } else {
-      dispatch({ type: FORM_SUBMIT_ERROR });
-    }
+    dispatch(submitForgotPassword({ email: emailValue }));
+    navigate("/reset-password", { state: { forgot_password: true } });
   };
-  if (token) return <Navigate to="/" replace />;
+  if (token) {
+    return <Navigate to="/" replace />;
+  }
   return (
     <section className={styles.forgot_password}>
       <form className={styles.forgot_password_form} onSubmit={onSubmit}>

@@ -4,7 +4,7 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login.module.css";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
 import {
   RESET_ERROR_STATUS,
@@ -16,6 +16,7 @@ import { useEffect } from "react";
 import { getCookie } from "../../../../utils/getCookieValue";
 
 export function Login() {
+  const location = useLocation();
   const {
     onShowPasswordSwitch,
     onFormChange,
@@ -47,13 +48,16 @@ export function Login() {
     );
   };
 
-  if (token) return <Navigate to="/profile" replace />;
+  if (token) {
+    return <Navigate to={location.state.from} replace />;
+  }
   return (
     <section className={styles.login}>
       <form className={styles.login_form} onSubmit={onSubmit}>
         <p className="text text_type_main-medium">Вход</p>
         <EmailInput
           onChange={onFormChange}
+          placeholder={"Почта"}
           value={emailValue}
           name={"email"}
           error={formErrorStatus}

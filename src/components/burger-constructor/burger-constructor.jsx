@@ -10,16 +10,20 @@ import { useDrop } from "react-dnd";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import {
   ADD_BURGER_BUN,
-  addIngridient,
+  addIngredient,
   DELETE_BURGER_INGREDIENT,
   RESET_BURGER_CONSTRUCTOR,
   SWAP_BURGER_INGREDIENT,
 } from "../../services/actions/burger-constructor";
 import cloudIcon from "../../images/cloud.svg";
 import { postOrder } from "../../services/actions/order-detail";
+import { getCookie } from "../../utils/getCookieValue";
+import { useNavigate } from "react-router-dom";
 
 export default function BurgerConstructor() {
   const { openModal } = useModal();
+  const token = getCookie().refreshToken;
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.burger_constructor.items);
@@ -80,7 +84,7 @@ export default function BurgerConstructor() {
   };
 
   const handleDrop = (item) => {
-    dispatch(addIngridient(item));
+    dispatch(addIngredient(item));
   };
 
   // DND (drag and drop)
@@ -190,8 +194,12 @@ export default function BurgerConstructor() {
         </div>
         <Button
           onClick={() => {
-            handlePostOrder();
-            openModal();
+            if (token) {
+              handlePostOrder();
+              openModal({}, "postorder");
+            } else {
+              navigate("/login");
+            }
           }}
           htmlType="button"
           type="primary"

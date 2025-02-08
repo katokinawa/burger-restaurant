@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux";
 import {
   DELETE_SELECTED_INGREDIENT,
-  SET_MODAL_OPEN,
   SET_SELECTED_INGREDIENT,
 } from "../services/actions/ingredient-detail";
 import { ORDER_SET_INITIAL_STATE } from "../services/actions/order-detail";
@@ -12,15 +11,23 @@ export const useModal = () => {
   const navigate = useNavigate();
 
   const openModal = (item, ingredientType) => {
-    dispatch({ type: SET_MODAL_OPEN });
     dispatch({
       type: SET_SELECTED_INGREDIENT,
       item,
       ingredientType,
     });
-    ingredientType === "ingredient"
-      ? navigate(`/ingredient/${item._id}`)
-      : navigate("/order");
+    switch (ingredientType) {
+      case "ingredient": {
+        navigate(`/ingredient/${item._id}`);
+        break;
+      }
+      case "postorder": {
+        navigate("/order");
+        break;
+      }
+      default:
+        navigate("/");
+    }
   };
 
   const closeModal = () => {

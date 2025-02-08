@@ -1,16 +1,18 @@
 import {
   Button,
+  EmailInput,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./profile.module.css";
 import { useForm } from "../../../../hooks/useForm";
 import { useDispatch } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   submitGetPersonValues,
   submitLogout,
 } from "../../../../services/actions/form";
 import { useCallback, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 
 export function Profile() {
   const { nameValue, emailValue, passwordValue, formRequest, formErrorStatus } =
@@ -54,9 +56,9 @@ export function Profile() {
     setUser({
       name: nameValue || "Загрузка...",
       email: emailValue || "Загрузка...",
-      password: passwordValue || "",
+      password: "",
     });
-  }, [nameValue, emailValue, passwordValue]);
+  }, [nameValue, emailValue]);
 
   function resetProfileForm() {
     handleSetUser();
@@ -74,18 +76,20 @@ export function Profile() {
       })
     );
     setIsSuccess(true);
+    setTimeout(() => {
+      setIsSuccess(false);
+    }, 3000);
     resetProfileForm();
   };
 
   useEffect(() => {
     handleSetUser();
   }, [handleSetUser]);
-
   const { name, email, password } = user;
   return (
     <section className={styles.profile}>
       <div className={styles.profile_navlinks}>
-        <NavLink to={"/profile"} className={styles.link_button}>
+        <NavLink to={"/profile"} className={styles.link_button} end>
           {({ isActive }) => (
             <p
               className={
@@ -99,7 +103,7 @@ export function Profile() {
             </p>
           )}
         </NavLink>
-        <NavLink to={"/profile/orders"} className={styles.link_button}>
+        <NavLink to={"/profile/orders"} className={styles.link_button} end>
           {({ isActive }) => (
             <p
               className={
@@ -119,6 +123,7 @@ export function Profile() {
           onClick={() => {
             dispatch(submitLogout());
           }}
+          end
         >
           {({ isActive }) => (
             <p
@@ -153,18 +158,15 @@ export function Profile() {
             extraClass="ml-1"
             disabled={isEditable.name}
           />
-          <Input
-            type={"text"}
-            placeholder={"Логин"}
+          <EmailInput
             onChange={handleSetValue}
+            placeholder={"Почта"}
             icon={"EditIcon"}
             value={email}
             name={"email"}
             error={formErrorStatus}
             onIconClick={!isEdit ? () => onIconClick("email") : null}
             errorText={""}
-            size={"default"}
-            extraClass="ml-1"
             required={true}
             disabled={isEditable.email}
           />
@@ -183,12 +185,21 @@ export function Profile() {
             required={true}
             disabled={isEditable.password}
           />
-          {isSuccess && !formErrorStatus && (
-            <p className="text text_type_main-small">Успешно</p>
-          )}
+          <AnimatePresence>
+            {isSuccess && !formErrorStatus && (
+              <motion.div key="success" exit={{ opacity: 0 }}>
+                <p className="text text_type_main-small">Успешно</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
           {formErrorStatus && (
             <p className="text text_type_main-small">
-              Пожалуйста, попробуйте позже
+              Пожалуйста, попробуйте еще раз
+            </p>
+          )}
+          {formErrorStatus === 403 && (
+            <p className="text text_type_main-small">
+              Эти данные уже используются другим пользователем
             </p>
           )}
           <Button

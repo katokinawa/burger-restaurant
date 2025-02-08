@@ -41,7 +41,7 @@ export const useForm = () => {
         return "Ошибка";
       }
       default:
-        return "Пожалуйста, попробуйте позже";
+        return "Пожалуйста, попробуйте еще раз";
     }
   };
 

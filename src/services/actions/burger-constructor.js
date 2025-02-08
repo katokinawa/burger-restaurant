@@ -7,7 +7,7 @@ export const SWAP_BURGER_INGREDIENT = "SWAP_BURGER_INGREDIENT";
 
 export const RESET_BURGER_CONSTRUCTOR = "RESET_BURGER_CONSTRUCTOR";
 
-export const addIngridient = (item) => {
+export const addIngredient = (item) => {
   return {
     type: ADD_BURGER_INGREDIENT,
     payload: {

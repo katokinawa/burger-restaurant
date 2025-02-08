@@ -3,6 +3,7 @@ import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { submitGetPersonValues } from "../services/actions/form";
 import { getCookie } from "../utils/getCookieValue";
+import PropTypes from "prop-types";
 
 export const ProtectedRouteElement = ({ element }) => {
   const dispatch = useDispatch();
@@ -21,6 +22,10 @@ export const ProtectedRouteElement = ({ element }) => {
   if (token) {
     return element;
   } else {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
+};
+
+ProtectedRouteElement.propTypes = {
+  element: PropTypes.node.isRequired,
 };
