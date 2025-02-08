@@ -110,29 +110,22 @@ export function Login() {
       </div>
     </section>
   );
-  console.log(location.state)
   if (!token && !location.state) {
-    console.log("если нет токена, и нет стейт, возвращаем <Login>");
     return element;
   }
   if (!token && location.state) {
-    console.log("если нет токена, но есть стейт, возвращаем <Login>");
     return element;
   }
   if (token && !location.state) {
-    console.log("если есть токен, но нет стейта, переводим на главную");
     return <Navigate to={"/"} replace />;
   }
   if (token && location.state.from) {
-    console.log("если есть токен и стейт, переводим на стейт");
     return <Navigate to={location.state.from} replace />;
   }
   if (location.state === null) {
-    console.log("если нет стейта");
     return element;
   }
   if (location.state === undefined) {
-    console.log("если нет стейта");
     return element;
   }
 }
