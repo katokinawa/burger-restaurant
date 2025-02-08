@@ -27,5 +27,5 @@ export const ProtectedRouteElement = ({ element }) => {
 };
 
 ProtectedRouteElement.propTypes = {
-  element: PropTypes.node.isRequired,
+  element: PropTypes.element,
 };

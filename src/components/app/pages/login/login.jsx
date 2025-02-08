@@ -48,17 +48,17 @@ export function Login() {
     );
   };
 
-  if (token) {
-    return <Navigate to={location.state.from} replace />;
-  }
-  return (
+  const element = (
     <section className={styles.login}>
       <form className={styles.login_form} onSubmit={onSubmit}>
         <p className="text text_type_main-medium">Вход</p>
         <EmailInput
           onChange={onFormChange}
           placeholder={"Почта"}
-          value={emailValue}
+          // Начал ловить ошибку после того, как я назначил JSX константе,
+          // пока не смог выяснить как починить иначе
+          // Warning: Failed prop type: The prop `value` is marked as required in `EmailInput`, but its value is `undefined`.
+          value={emailValue === undefined ? '' : emailValue}
           name={"email"}
           error={formErrorStatus}
           errorText={""}
@@ -70,6 +70,7 @@ export function Login() {
           placeholder={"Пароль"}
           onChange={onFormChange}
           icon={passwordVisible ? "HideIcon" : "ShowIcon"}
+          // При этом здесь ошибки не выпадает
           value={passwordValue}
           name={"password"}
           error={formErrorStatus}
@@ -109,4 +110,29 @@ export function Login() {
       </div>
     </section>
   );
+  console.log(location.state)
+  if (!token && !location.state) {
+    console.log("если нет токена, и нет стейт, возвращаем <Login>");
+    return element;
+  }
+  if (!token && location.state) {
+    console.log("если нет токена, но есть стейт, возвращаем <Login>");
+    return element;
+  }
+  if (token && !location.state) {
+    console.log("если есть токен, но нет стейта, переводим на главную");
+    return <Navigate to={"/"} replace />;
+  }
+  if (token && location.state.from) {
+    console.log("если есть токен и стейт, переводим на стейт");
+    return <Navigate to={location.state.from} replace />;
+  }
+  if (location.state === null) {
+    console.log("если нет стейта");
+    return element;
+  }
+  if (location.state === undefined) {
+    console.log("если нет стейта");
+    return element;
+  }
 }
