@@ -19,7 +19,7 @@ export default function OrderDetails() {
       ) : (
         <>
           <p className={styles.heading + " text text_type_digits-large mb-8"}>
-            {orderData?.order?.number}
+            {orderData?.order?.number || "—"}
           </p>
           <p className="text text_type_main-default mb-15">
             идентификатор заказа

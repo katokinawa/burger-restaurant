@@ -11,7 +11,6 @@ export default function IngredientElement({ item, openModal, type }) {
   const ingredients = useSelector((state) => state.burger_constructor.items);
   const counterBuns = useSelector((state) => state.burger_constructor.bun);
 
-  // Consts
   const countIngredient = ingredients.filter((e) => e._id === item._id);
   const countBuns = counterBuns.filter((e) => e._id === item._id);
 
@@ -24,9 +23,10 @@ export default function IngredientElement({ item, openModal, type }) {
   return (
     <article
       onClick={() => {
-        openModal(item);
+        openModal(item, "ingredient");
       }}
       className={styles.article}
+      name={"ingredients"}
       ref={dragTarget}
     >
       {countIngredient.length !== 0 && (

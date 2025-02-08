@@ -9,6 +9,7 @@ const initialState = {
   data: {},
   orderRequest: false,
   orderFailed: false,
+  orderType: 'postorder',
 };
 
 export const orderDetail = (state = initialState, action) => {

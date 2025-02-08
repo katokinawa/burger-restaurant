@@ -6,9 +6,6 @@ import closeImage from "../../images/close.svg";
 import PropTypes from "prop-types";
 
 export default function Modal({ children, handleClose }) {
-  // Consts
-
-  // useEffects
   useEffect(() => {
     function handlePressKey(evt) {
       if (evt.key === "Escape") {

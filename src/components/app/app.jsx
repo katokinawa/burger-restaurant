@@ -3,12 +3,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Login } from "./pages/login/Login";
 import { Home } from "../home/home";
 import styles from "./app.module.css";
-import { Register } from "./pages/register/Register";
+import { Register } from "./pages/register/register";
 import { ForgotPassword } from "./pages/forgot-password/forgot-password";
 import { ResetPassword } from "./pages/reset-password/reset-password";
 import { Profile } from "./pages/profile/profile";
 import { ProtectedRouteElement } from "../protected-route";
 import { ErrorPage } from "../error-page/error-page";
+import IngredientModalHandler from "../Ingredient-modal-handler";
+import OrderModalHandler from "../order-modal-handler";
+import Ingredient from "./ingredient/ingredient"
 
 export default function App() {
   return (
@@ -20,8 +23,16 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/profile" element={<ProtectedRouteElement element={<Profile />} />} />
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/profile"
+            element={<ProtectedRouteElement element={<Profile />} />}
+          />
+          <Route
+            path="/ingredient/:ingredientId"
+            element={<IngredientModalHandler />}
+          />
+          <Route path="/order" element={<OrderModalHandler />} />
+          <Route path="/*" element={<Home />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </main>

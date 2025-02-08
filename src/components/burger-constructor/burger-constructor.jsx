@@ -1,5 +1,3 @@
-import Modal from "../modal/modal";
-import OrderDetails from "../order-details/order-details";
 import styles from "./burger-constructor.module.css";
 import {
   CurrencyIcon,
@@ -21,14 +19,12 @@ import cloudIcon from "../../images/cloud.svg";
 import { postOrder } from "../../services/actions/order-detail";
 
 export default function BurgerConstructor() {
-  // Hooks
-  const { isModalOpen, openModal, closeModal } = useModal();
+  const { openModal } = useModal();
 
   const dispatch = useDispatch();
   const ingredients = useSelector((state) => state.burger_constructor.items);
   const bun = useSelector((state) => state.burger_constructor.bun);
 
-  // Consts
   const sum =
     ingredients.reduce((sum, { price }) => sum + price, 0) +
     bun.reduce((sum, { price }) => sum + price * 2, 0);
@@ -110,12 +106,6 @@ export default function BurgerConstructor() {
 
   return (
     <section className={styles.burger_constructor}>
-      {isModalOpen && (
-        <Modal handleClose={closeModal}>
-          <OrderDetails />
-        </Modal>
-      )}
-
       {bun.length === 0 ? (
         <div ref={dropTargetBunsTop} className={styles.constructor_bun_wrapper}>
           <div className={styles.constructor_wrapper_bun_hover}>
@@ -199,9 +189,9 @@ export default function BurgerConstructor() {
           <CurrencyIcon type="primary" />
         </div>
         <Button
-          onClick={(e) => {
+          onClick={() => {
             handlePostOrder();
-            openModal(e);
+            openModal();
           }}
           htmlType="button"
           type="primary"
