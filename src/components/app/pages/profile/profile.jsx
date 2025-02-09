@@ -6,7 +6,7 @@ import {
 import styles from "./profile.module.css";
 import { useForm } from "../../../../hooks/useForm";
 import { useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
   submitGetPersonValues,
   submitLogout,
@@ -117,27 +117,24 @@ export function Profile() {
             </p>
           )}
         </NavLink>
-        <NavLink
-          to={"/login"}
+        <Link
           className={styles.link_button}
           onClick={() => {
             dispatch(submitLogout());
           }}
-          end
         >
-          {({ isActive }) => (
-            <p
-              className={
-                styles.link +
-                ` text text_type_main-medium ${
-                  !isActive && styles.link_disabled
-                }`
-              }
-            >
-              Выход
-            </p>
-          )}
-        </NavLink>
+          <p
+            className={
+              styles.link +
+              " " +
+              "text text_type_main-medium" +
+              " " +
+              styles.link_disabled
+            }
+          >
+            Выход
+          </p>
+        </Link>
         <p className="text text_type_main-default text_color_inactive mt-20">
           В этом разделе вы можете изменить свои персональные данные
         </p>
