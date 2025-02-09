@@ -3,7 +3,7 @@ import {
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./forgot-password.module.css";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
 import { useDispatch } from "react-redux";
 import {
@@ -15,7 +15,6 @@ import { getCookie } from "../../../../utils/getCookieValue";
 
 export function ForgotPassword() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const {
     onFormChange,
     handleFocus,
@@ -33,7 +32,6 @@ export function ForgotPassword() {
   const onSubmit = (e) => {
     e.preventDefault();
     dispatch(submitForgotPassword({ email: emailValue }));
-    navigate("/reset-password", { state: { forgot_password: true } });
   };
   if (token) {
     return <Navigate to="/" replace />;
@@ -45,7 +43,7 @@ export function ForgotPassword() {
         <EmailInput
           onChange={onFormChange}
           placeholder={"Укажите e-mail"}
-          value={emailValue}
+          value={emailValue === undefined ? "" : emailValue}
           name={"email"}
           isIcon={false}
           error={formErrorStatus}

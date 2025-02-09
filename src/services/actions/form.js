@@ -99,6 +99,9 @@ export function submitForgotPassword(formValues) {
             type: FORM_SUBMIT_SUCCESS,
             item,
           });
+          localStorage.setItem("forgot_password", true);
+          window.history.pushState(null, "", "/reset-password");
+          window.history.go(0);
         })
         .catch(() => {
           dispatch({

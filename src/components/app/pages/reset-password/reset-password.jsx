@@ -3,19 +3,18 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./reset-password.module.css";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
 import { useDispatch } from "react-redux";
 import {
   RESET_ERROR_STATUS,
   submitResetPassword,
 } from "../../../../services/actions/form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getCookie } from "../../../../utils/getCookieValue";
 
 export function ResetPassword() {
   const dispatch = useDispatch();
-  const location = useLocation();
   const {
     onShowPasswordSwitch,
     onFormChange,
@@ -28,10 +27,15 @@ export function ResetPassword() {
     formErrorStatus,
   } = useForm();
   const token = getCookie().refreshToken;
+  const [ fromForgotPassword ] = useState(localStorage.getItem("forgot_password"));
 
   useEffect(() => {
     dispatch({ type: RESET_ERROR_STATUS });
   }, [dispatch]);
+
+  useEffect(() => {
+    localStorage.removeItem('forgot_password')
+  }, []);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -42,13 +46,10 @@ export function ResetPassword() {
       })
     );
   };
-  if (location.state === null) {
-    return <Navigate to="/forgot-password" replace />;
-  }
   if (token) {
     return <Navigate to="/" replace />;
   }
-  if (location.state.forgot_password === true) {
+  if (fromForgotPassword) {
     return (
       <section className={styles.reset_password}>
         <form className={styles.reset_password_form} onSubmit={onSubmit}>
@@ -104,5 +105,8 @@ export function ResetPassword() {
         </div>
       </section>
     );
+  }
+  if (!fromForgotPassword) {
+    return <Navigate to="/forgot-password" replace />;
   }
 }
