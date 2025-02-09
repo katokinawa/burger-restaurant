@@ -18,7 +18,7 @@ export const useModal = () => {
     });
     switch (ingredientType) {
       case "ingredient": {
-        navigate(`/ingredient/${item._id}`);
+        navigate(`/ingredient/${item._id}`, { state: { background: true } });
         break;
       }
       case "postorder": {

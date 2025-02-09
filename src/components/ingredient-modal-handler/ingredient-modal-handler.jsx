@@ -8,8 +8,10 @@ export default function IngredientModalHandler() {
   const { closeModal } = useModal();
   const { isModalOpen } = useSelector((state) => state.ingredient);
   const location = useLocation();
+  const isModal = location.state?.background; 
+  console.log(location)
 
-  if (isModalOpen || location.key !== "default") {
+  if (isModalOpen || isModal) {
     return (
       <Modal isModalOpen={isModalOpen} handleClose={closeModal}>
         <IngredientDetails />

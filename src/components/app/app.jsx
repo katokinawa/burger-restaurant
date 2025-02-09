@@ -31,13 +31,12 @@ export default function App() {
             path="/profile"
             element={<ProtectedRouteElement element={<Profile />} />}
           />
-
           <Route path="/" element={<Home />}>
             <Route
-              path="/ingredient/:ingredientId"
+              path="ingredient/:ingredientId"
               element={<IngredientModalHandler />}
             />
-            <Route path="/order" element={<OrderModalHandler />} />
+            <Route path="order" element={<OrderModalHandler />} />
           </Route>
           <Route path="*" element={<ErrorPage />} />
         </Routes>
