@@ -1,14 +1,19 @@
+// typescript ✅
 import styles from "./modal.module.css";
 import { createPortal } from "react-dom";
-import { useEffect } from "react";
+import { useEffect, ReactNode } from "react";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import closeImage from "../../images/close.svg";
-import PropTypes from "prop-types";
 import { AnimatePresence, motion } from "motion/react";
 
-export default function Modal({ children, handleClose }) {
+interface TModal {
+  handleClose: () => void;
+  children: ReactNode;
+};
+
+export default function Modal({ handleClose, children }: TModal) {
   useEffect(() => {
-    function handlePressKey(evt) {
+    function handlePressKey(evt: KeyboardEvent) {
       if (evt.key === "Escape") {
         handleClose();
       }
@@ -38,12 +43,6 @@ export default function Modal({ children, handleClose }) {
         </ModalOverlay>
       </motion.div>
     </AnimatePresence>,
-
-    document.getElementById("modal")
+    document.getElementById("modal")!
   );
 }
-
-Modal.propTypes = {
-  children: PropTypes.element.isRequired,
-  handleClose: PropTypes.func.isRequired,
-};
