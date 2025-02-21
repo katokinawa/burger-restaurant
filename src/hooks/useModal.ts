@@ -15,7 +15,6 @@ export const useModal = () => {
     item: IItem | { _id?: null },
     ingredientType: string
   ): void => {
-    console.log(item);
     dispatch({
       type: SET_SELECTED_INGREDIENT,
       item,

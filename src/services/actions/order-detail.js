@@ -17,6 +17,7 @@ export function postOrder(ingredients) {
       body: JSON.stringify(ingredients),
     })
       .then((item) => {
+        document.cookie = `orderNumber=${item.order.number};`;
         dispatch({
           type: POST_ORDER_SUCCESS,
           item,
