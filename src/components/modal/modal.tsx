@@ -1,15 +1,10 @@
-// typescript ✅
 import styles from "./modal.module.css";
 import { createPortal } from "react-dom";
-import { useEffect, ReactNode } from "react";
+import { useEffect } from "react";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import closeImage from "../../images/close.svg";
 import { AnimatePresence, motion } from "motion/react";
-
-interface TModal {
-  handleClose: () => void;
-  children: ReactNode;
-};
+import { TModal } from "../../utils/types";
 
 export default function Modal({ handleClose, children }: TModal) {
   useEffect(() => {

@@ -1,13 +1,8 @@
-// typescript ✅
-import { ReactNode } from "react";
+import { TModal } from "../../utils/types";
 import styles from "./modal-overlay.module.css";
 import PropTypes from "prop-types";
 
-interface TModalOverlay {
-  handleClose: () => void;
-  children: ReactNode;
-}
-export default function ModalOverlay({ handleClose, children }: TModalOverlay) {
+export default function ModalOverlay({ handleClose, children }: TModal) {
   return (
     <div onClick={handleClose} className={styles.modal_overlay}>
       {children}

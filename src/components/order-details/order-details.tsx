@@ -1,11 +1,12 @@
 import styles from "./order-details.module.css";
 import doneImage from "../../images/done.svg";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import loading from "../../images/loading.gif";
 
 export default function OrderDetails() {
+  // @ts-expect-error Пока игнорируем redux типизацию
   const orderData = useSelector((state) => state.order.data);
+  // @ts-expect-error Пока игнорируем redux типизацию
   const orderRequest = useSelector((state) => state.order.orderRequest);
 
   return (
@@ -36,11 +37,3 @@ export default function OrderDetails() {
     </div>
   );
 }
-
-OrderDetails.propTypes = {
-  orderData: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-    })
-  ),
-};

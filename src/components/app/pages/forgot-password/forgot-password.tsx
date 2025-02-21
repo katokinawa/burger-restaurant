@@ -10,8 +10,9 @@ import {
   RESET_ERROR_STATUS,
   submitForgotPassword,
 } from "../../../../services/actions/form";
-import { useEffect } from "react";
+import { FormEvent, useEffect } from "react";
 import { getCookie } from "../../../../utils/getCookieValue";
+import { TUseFormReturn } from "../../../../utils/types";
 
 export function ForgotPassword() {
   const dispatch = useDispatch();
@@ -22,15 +23,16 @@ export function ForgotPassword() {
     emailValue,
     formRequest,
     formErrorStatus,
-  } = useForm();
+  }: TUseFormReturn = useForm();
   const token = getCookie().refreshToken;
 
   useEffect(() => {
     dispatch({ type: RESET_ERROR_STATUS });
   }, [dispatch]);
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent): void => {
     e.preventDefault();
+    // @ts-expect-error Пока игнорируем redux типизацию
     dispatch(submitForgotPassword({ email: emailValue }));
   };
   if (token) {
@@ -43,10 +45,10 @@ export function ForgotPassword() {
         <EmailInput
           onChange={onFormChange}
           placeholder={"Укажите e-mail"}
-          value={emailValue === undefined ? "" : emailValue}
+          value={emailValue ?? ""}
           name={"email"}
           isIcon={false}
-          error={formErrorStatus}
+          aria-errormessage={""}
           errorText={""}
           required={true}
           onFocus={handleFocus}

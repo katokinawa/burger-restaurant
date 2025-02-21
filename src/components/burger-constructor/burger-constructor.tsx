@@ -19,6 +19,7 @@ import cloudIcon from "../../images/cloud.svg";
 import { postOrder } from "../../services/actions/order-detail";
 import { getCookie } from "../../utils/getCookieValue";
 import { useNavigate } from "react-router-dom";
+import { IItem } from "../../utils/types";
 
 export default function BurgerConstructor() {
   const { openModal } = useModal();
@@ -26,84 +27,96 @@ export default function BurgerConstructor() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+  // @ts-expect-error Пока игнорируем redux типизацию
   const ingredients = useSelector((state) => state.burger_constructor.items);
+  // @ts-expect-error Пока игнорируем redux типизацию
   const bun = useSelector((state) => state.burger_constructor.bun);
 
   const sum =
-    ingredients.reduce((sum, { price }) => sum + price, 0) +
-    bun.reduce((sum, { price }) => sum + price * 2, 0);
+    ingredients.reduce(
+      (sum: number, { price }: { price: number }) => sum + price,
+      0
+    ) +
+    bun.reduce(
+      (sum: number, { price }: { price: number }) => sum + price * 2,
+      0
+    );
 
   const bunItem = bun[0];
 
-  const collectArrayId = () => {
+  const collectArrayId = (): { ingredients: IItem[] } => {
     const arr = [
-      ...ingredients.map((item) => item._id),
-      ...bun.map((item) => item._id),
+      ...ingredients.map((item: IItem) => item._id),
+      ...bun.map((item: IItem) => item._id),
     ];
     return { ingredients: arr };
   };
 
-  const handlePostOrder = () => {
+  const handlePostOrder = (): void => {
+    // @ts-expect-error Пока игнорируем redux типизацию
     dispatch(postOrder(collectArrayId()));
     dispatch({ type: RESET_BURGER_CONSTRUCTOR });
   };
 
-  const handleMoveItem = (dragItemIndex, dropItemIndex) => {
+  const handleMoveItem = (
+    dragItemIndex: number,
+    dropItemIndex: number
+  ): void => {
     const updatedIngredients = [...ingredients];
-    let temp = updatedIngredients[dropItemIndex];
+    const temp = updatedIngredients[dropItemIndex];
     updatedIngredients[dropItemIndex] = updatedIngredients[dragItemIndex];
     updatedIngredients[dragItemIndex] = temp;
     handleSwapBurgerIngredient(updatedIngredients);
   };
 
-  const handleDeleteItem = (index) => {
+  const handleDeleteItem = (index: number): void => {
     const deleteIngredient = [...ingredients];
     deleteIngredient.splice(index, 1);
     handleDeleteIngredient(deleteIngredient);
   };
 
-  const handleDeleteIngredient = (item) => {
+  const handleDeleteIngredient = (item: IItem[]): void => {
     dispatch({
       type: DELETE_BURGER_INGREDIENT,
       item,
     });
   };
 
-  const handleSwapBurgerIngredient = (item) => {
+  const handleSwapBurgerIngredient = (item: IItem[]) => {
     dispatch({
       type: SWAP_BURGER_INGREDIENT,
       item,
     });
   };
 
-  const handleDropBun = (item) => {
+  const handleDropBun = (item: IItem) => {
     dispatch({
       type: ADD_BURGER_BUN,
       item,
     });
   };
 
-  const handleDrop = (item) => {
+  const handleDrop = (item: IItem) => {
     dispatch(addIngredient(item));
   };
 
   // DND (drag and drop)
   const [, dropTargetBunsTop] = useDrop({
     accept: "bun",
-    drop(item) {
+    drop(item: IItem) {
       handleDropBun(item);
     },
   });
   const [, dropTargetBunsBottom] = useDrop({
     accept: "bun",
-    drop(item) {
+    drop(item: IItem) {
       handleDropBun(item);
     },
   });
 
   const [, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(item) {
+    drop(item: IItem) {
       handleDrop(item);
     },
   });
@@ -144,7 +157,7 @@ export default function BurgerConstructor() {
         <div ref={dropTarget} className={styles.constructor_wrapper}>
           <div className={styles.constructor_list_wrapper}>
             {ingredients.map(
-              (item, index) =>
+              (item: IItem, index: number) =>
                 item.type !== "bun" && (
                   <BurgerConstructorElement
                     key={item.uniqueId}

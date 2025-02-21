@@ -3,17 +3,20 @@ import styles from "./ingredient-details.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getIngredients } from "../../services/actions/ingredients";
+import { IItem } from "../../utils/types";
 
 export default function IngredientDetails() {
   const dispatch = useDispatch();
   const { ingredientId } = useParams();
+  // @ts-expect-error Пока игнорируем redux типизацию
   const ingredients = useSelector((state) => state.ingredients.items);
 
-  const ingredient = ingredients.find((item) => {
+  const ingredient = ingredients.find((item: IItem) => {
     return item._id === ingredientId;
   });
 
   useEffect(() => {
+    // @ts-expect-error Пока игнорируем redux типизацию
     dispatch(getIngredients());
   }, [dispatch]);
 

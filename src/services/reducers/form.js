@@ -20,7 +20,7 @@ const initialState = {
   formRequest: false,
   formErrorStatus: false,
   formSuccess: false,
-  formErrorStatusMessage: "",
+  formErrorStatusMessage: 0,
 };
 
 export const form = (state = initialState, action) => {

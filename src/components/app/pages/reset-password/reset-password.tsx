@@ -10,8 +10,9 @@ import {
   RESET_ERROR_STATUS,
   submitResetPassword,
 } from "../../../../services/actions/form";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { getCookie } from "../../../../utils/getCookieValue";
+import { TUseFormReturn } from "../../../../utils/types";
 
 export function ResetPassword() {
   const dispatch = useDispatch();
@@ -25,21 +26,24 @@ export function ResetPassword() {
     passwordVisible,
     formRequest,
     formErrorStatus,
-  } = useForm();
+  }: TUseFormReturn = useForm();
   const token = getCookie().refreshToken;
-  const [ fromForgotPassword ] = useState(localStorage.getItem("forgot_password"));
+  const [fromForgotPassword] = useState(
+    localStorage.getItem("forgot_password")
+  );
 
   useEffect(() => {
     dispatch({ type: RESET_ERROR_STATUS });
   }, [dispatch]);
 
   useEffect(() => {
-    localStorage.removeItem('forgot_password')
+    localStorage.removeItem("forgot_password");
   }, []);
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent): void => {
     e.preventDefault();
     dispatch(
+      // @ts-expect-error Пока игнорируем redux типизацию
       submitResetPassword({
         password: passwordValue,
         token: code,

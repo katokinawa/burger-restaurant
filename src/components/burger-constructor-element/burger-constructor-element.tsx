@@ -1,22 +1,26 @@
 import styles from "./burger-constructor-element.module.css";
-import { IngredientType } from "../../utils/types";
 import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, useDrop } from "react-dnd";
-import PropTypes from "prop-types";
+import { IItem } from "../../utils/types";
 
 export default function BurgerConstructorElement({
   item,
   index,
   moveItem,
   deleteItem,
+}: {
+  item: IItem;
+  index: number;
+  moveItem: (dragItemIndex: number, dropItemIndex: number) => void;
+  deleteItem: (index: number) => void;
 }) {
   // DND (drag and drop)
   const [, dropItemTarget] = useDrop({
     accept: "ingredientItem",
-    drop(draggedItem) {
+    drop(draggedItem: { item: IItem; index: number }) {
       moveItem(draggedItem.index, index);
     },
   });
@@ -42,10 +46,3 @@ export default function BurgerConstructorElement({
     </article>
   );
 }
-
-BurgerConstructorElement.propTypes = {
-  item: IngredientType.isRequired,
-  index: PropTypes.number.isRequired,
-  moveItem: PropTypes.func.isRequired,
-  deleteItem: PropTypes.func.isRequired,
-};
