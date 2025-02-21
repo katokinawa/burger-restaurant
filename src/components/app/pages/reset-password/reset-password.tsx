@@ -44,10 +44,7 @@ export function ResetPassword() {
     e.preventDefault();
     dispatch(
       // @ts-expect-error Пока игнорируем redux типизацию
-      submitResetPassword({
-        password: passwordValue,
-        token: code,
-      })
+      submitResetPassword({ password: passwordValue, token: code })
     );
   };
   if (token) {
