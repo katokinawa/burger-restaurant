@@ -11,8 +11,9 @@ import {
   submitRegister,
 } from "../../../../services/actions/form";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { FormEvent, useEffect } from "react";
 import { getCookie } from "../../../../utils/getCookieValue";
+import { TUseFormReturn } from "../../../../utils/types";
 
 export function Register() {
   const dispatch = useDispatch();
@@ -27,16 +28,17 @@ export function Register() {
     passwordVisible,
     formRequest,
     formErrorStatus,
-  } = useForm();
+  }: TUseFormReturn = useForm();
   const token = getCookie().refreshToken;
 
   useEffect(() => {
     dispatch({ type: RESET_ERROR_STATUS });
   }, [dispatch]);
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent): void => {
     e.preventDefault();
     dispatch(
+      // @ts-expect-error Пока игнорируем redux типизацию
       submitRegister({
         name: nameValue,
         email: emailValue,
@@ -69,10 +71,9 @@ export function Register() {
         <EmailInput
           onChange={onFormChange}
           placeholder={"Почта"}
-          value={emailValue}
+          value={emailValue ?? ""}
           name={"email"}
-          error={formErrorStatus}
-          errorText={""}
+          errorText={"Email должен быть формата @domain.ru"}
           required={true}
           onFocus={handleFocus}
         />

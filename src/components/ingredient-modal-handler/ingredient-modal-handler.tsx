@@ -6,10 +6,10 @@ import { useLocation } from "react-router-dom";
 
 export default function IngredientModalHandler() {
   const { closeModal } = useModal();
+  // @ts-expect-error Пока игнорируем redux типизацию
   const { isModalOpen } = useSelector((state) => state.ingredient);
   const location = useLocation();
-  const isModal = location.state?.background; 
-  console.log(location)
+  const isModal: { background: boolean } = location.state?.background;
 
   if (isModalOpen || isModal) {
     return (

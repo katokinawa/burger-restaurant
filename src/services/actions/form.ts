@@ -1,5 +1,6 @@
 import { request } from "../../utils/request";
 import { getCookie } from "../../utils/getCookieValue";
+import { Dispatch } from "redux";
 
 export const ADD_FORM_VALUE = "ADD_FORM_VALUE";
 
@@ -14,17 +15,25 @@ export const RESET_FORM = "RESET_FORM";
 
 export const SWITCH_INPUTS_EDIT = "SWITCH_INPUTS_EDIT";
 
-export const setFormValue = (field, value) => ({
+export const setFormValue = (field: string, value: string | number) => ({
   type: ADD_FORM_VALUE,
   field,
   value,
 });
 
-export function submitLogin(formValues) {
-  return function (dispatch) {
+interface IUser {
+  name?: string;
+  email: string;
+  password: string;
+  code?: string;
+}
+
+export function submitLogin(formValues: IUser) {
+  return function (dispatch: Dispatch) {
     dispatch({
       type: FORM_SUBMIT_REQUEST,
     });
+
     request("auth/login", {
       method: "POST",
       headers: {
@@ -50,8 +59,8 @@ export function submitLogin(formValues) {
   };
 }
 
-export function submitRegister(formValues) {
-  return function (dispatch) {
+export function submitRegister(formValues: IUser) {
+  return function (dispatch: Dispatch) {
     dispatch({
       type: FORM_SUBMIT_REQUEST,
     });
@@ -81,8 +90,8 @@ export function submitRegister(formValues) {
   };
 }
 
-export function submitForgotPassword(formValues) {
-  return function (dispatch) {
+export function submitForgotPassword(formValues: IUser) {
+  return function (dispatch: Dispatch) {
     dispatch({
       type: FORM_SUBMIT_REQUEST,
     });
@@ -99,7 +108,7 @@ export function submitForgotPassword(formValues) {
             type: FORM_SUBMIT_SUCCESS,
             item,
           });
-          localStorage.setItem("forgot_password", true);
+          localStorage.setItem("forgot_password", "true");
           window.history.pushState(null, "", "/reset-password");
           window.history.go(0);
         })
@@ -112,8 +121,8 @@ export function submitForgotPassword(formValues) {
   };
 }
 
-export function submitResetPassword(formValues) {
-  return function (dispatch) {
+export function submitResetPassword(formValues: IUser) {
+  return function (dispatch: Dispatch) {
     dispatch({
       type: FORM_SUBMIT_REQUEST,
     });
@@ -142,8 +151,8 @@ export function submitResetPassword(formValues) {
 }
 
 export function submitLogout() {
-  return function (dispatch) {
-    let refreshToken = getCookie().refreshToken;
+  return function (dispatch: Dispatch) {
+    const refreshToken = getCookie().refreshToken;
 
     dispatch({
       type: FORM_SUBMIT_REQUEST,
@@ -174,8 +183,8 @@ export function submitLogout() {
 }
 
 export function submitRefreshToken() {
-  return function (dispatch) {
-    let refreshToken = getCookie().refreshToken;
+  return function (dispatch: Dispatch) {
+    const refreshToken = getCookie().refreshToken;
     dispatch({
       type: FORM_SUBMIT_REQUEST,
     });
@@ -205,9 +214,9 @@ export function submitRefreshToken() {
   };
 }
 
-export function submitGetPersonValues(formValues) {
-  return function (dispatch) {
-    let token = getCookie().accessToken;
+export function submitGetPersonValues(formValues: IUser) {
+  return function (dispatch: Dispatch) {
+    const token = getCookie().accessToken;
     if (token) {
       dispatch({
         type: FORM_SUBMIT_REQUEST,
@@ -221,11 +230,10 @@ export function submitGetPersonValues(formValues) {
         body: JSON.stringify(formValues),
       })
         .then((item) => {
-          const res = item.user;
           dispatch({
             type: FORM_SUBMIT_SUCCESS,
-            name: res.name,
-            email: res.email,
+            name: item.user.name,
+            email: item.user.email,
           });
         })
         .catch((error) => {
@@ -235,6 +243,7 @@ export function submitGetPersonValues(formValues) {
           });
         });
     } else {
+      // @ts-expect-error Пока игнорируем redux типизацию
       dispatch(submitRefreshToken());
     }
   };

@@ -1,11 +1,16 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useCallback, useEffect } from "react";
+import { ReactNode, useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { submitGetPersonValues } from "../services/actions/form";
 import { getCookie } from "../utils/getCookieValue";
-import PropTypes from "prop-types";
 
-export const ProtectedRouteElement = ({ element, anonymous = false }) => {
+export const ProtectedRouteElement = ({
+  element,
+  anonymous = false,
+}: {
+  element: ReactNode;
+  anonymous?: boolean;
+}) => {
   const dispatch = useDispatch();
   const token = getCookie().refreshToken;
   const location = useLocation();
@@ -13,6 +18,7 @@ export const ProtectedRouteElement = ({ element, anonymous = false }) => {
 
   const init = useCallback(() => {
     if (token) {
+      // @ts-expect-error Пока игнорируем redux типизацию
       dispatch(submitGetPersonValues());
     }
   }, [dispatch, token]);
@@ -34,9 +40,4 @@ export const ProtectedRouteElement = ({ element, anonymous = false }) => {
   }
 
   return element;
-};
-
-ProtectedRouteElement.propTypes = {
-  element: PropTypes.element,
-  anonymous: PropTypes.bool,
 };

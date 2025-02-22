@@ -11,48 +11,71 @@ import {
   submitGetPersonValues,
   submitLogout,
 } from "../../../../services/actions/form";
-import { useCallback, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { TUseFormReturn } from "../../../../utils/types";
+
+interface IUser {
+  name: string;
+  email: string;
+  password: string;
+}
+
+interface IEdit {
+  name: boolean;
+  email: boolean;
+  password: boolean;
+}
 
 export function Profile() {
-  const { nameValue, emailValue, passwordValue, formRequest, formErrorStatus } =
-    useForm();
+  const {
+    nameValue,
+    emailValue,
+    passwordValue,
+    formRequest,
+    formErrorStatus,
+    formErrorStatusMessage,
+  }: TUseFormReturn = useForm();
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // @ts-expect-error Пока игнорируем redux типизацию
     dispatch(submitGetPersonValues());
   }, [dispatch]);
 
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<IUser>({
     name: "",
     email: "",
     password: "",
   });
-  const [isEditable, setIsEditable] = useState({
+  const [isEditable, setIsEditable] = useState<IEdit>({
     name: true,
     email: true,
     password: true,
   });
-  const [isEdit, setIsEdit] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-  function onIconClick(fieldName) {
+  function onIconClick(fieldName: string): void {
     setIsEdit(true);
     setIsEditable((prev) => ({
       ...prev,
-      [fieldName]: !prev[fieldName],
+      [fieldName]: !prev,
     }));
-    if (!isEditable[fieldName]) {
-      resetProfileForm();
-    }
     setIsSuccess(false);
   }
 
-  function handleSetValue(e) {
+  function handleSetValue(e: ChangeEvent<HTMLInputElement>): void {
     setUser({ ...user, [e.target.name]: e.target.value });
   }
 
-  const handleSetUser = useCallback(() => {
+  const handleSetUser = useCallback((): void => {
     setUser({
       name: nameValue || "Загрузка...",
       email: emailValue || "Загрузка...",
@@ -66,9 +89,10 @@ export function Profile() {
     setIsEdit(false);
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent): void => {
     e.preventDefault();
     dispatch(
+      // @ts-expect-error Пока игнорируем redux типизацию
       submitGetPersonValues({
         name: user.name ?? nameValue,
         email: user.email ?? emailValue,
@@ -86,6 +110,7 @@ export function Profile() {
     handleSetUser();
   }, [handleSetUser]);
   const { name, email, password } = user;
+  const isEditableEmail = isEditable.email;
   return (
     <section className={styles.profile}>
       <div className={styles.profile_navlinks}>
@@ -118,9 +143,13 @@ export function Profile() {
           )}
         </NavLink>
         <Link
+          to=""
           className={styles.link_button}
           onClick={() => {
-            dispatch(submitLogout());
+            dispatch(
+              // @ts-expect-error Пока игнорируем redux типизацию
+              submitLogout()
+            );
           }}
         >
           <p
@@ -149,7 +178,7 @@ export function Profile() {
             value={name}
             name={"name"}
             error={formErrorStatus}
-            onIconClick={!isEdit ? () => onIconClick("name") : null}
+            onIconClick={!isEdit ? () => onIconClick("name") : undefined}
             errorText={""}
             size={"default"}
             extraClass="ml-1"
@@ -158,14 +187,16 @@ export function Profile() {
           <EmailInput
             onChange={handleSetValue}
             placeholder={"Почта"}
-            icon={"EditIcon"}
-            value={email}
+            isIcon={isEditableEmail}
+            value={email ?? ""}
             name={"email"}
-            error={formErrorStatus}
-            onIconClick={!isEdit ? () => onIconClick("email") : null}
-            errorText={""}
+            // @ts-expect-error Разве не логично, что если есть свойство isIcon,
+            // то должен быть и event на него...
+            // Типизация так не считает
+            onIconClick={!isEdit ? () => onIconClick("email") : undefined}
+            errorText={"Email должен быть формата @domain.ru"}
             required={true}
-            disabled={isEditable.email}
+            disabled={isEditableEmail}
           />
           <Input
             type={"text"}
@@ -175,7 +206,7 @@ export function Profile() {
             value={isEditable.password ? "******" : password}
             name={"password"}
             error={formErrorStatus}
-            onIconClick={!isEdit ? () => onIconClick("password") : null}
+            onIconClick={!isEdit ? () => onIconClick("password") : undefined}
             errorText={""}
             size={"default"}
             extraClass="ml-1"
@@ -189,14 +220,14 @@ export function Profile() {
               </motion.div>
             )}
           </AnimatePresence>
-          {formErrorStatus && (
+          {formErrorStatus && formErrorStatusMessage !== 403 && (
             <p className="text text_type_main-small">
               Пожалуйста, попробуйте еще раз
             </p>
           )}
-          {formErrorStatus === 403 && (
+          {formErrorStatusMessage === 403 && (
             <p className="text text_type_main-small">
-              Эти данные уже используются другим пользователем
+              Этот email уже использует другой пользователь
             </p>
           )}
           <Button

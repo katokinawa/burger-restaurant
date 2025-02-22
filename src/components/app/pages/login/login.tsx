@@ -12,8 +12,9 @@ import {
   submitLogin,
 } from "../../../../services/actions/form";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { FormEvent, useEffect } from "react";
 import { getCookie } from "../../../../utils/getCookieValue";
+import { TUseFormReturn } from "../../../../utils/types";
 
 export function Login() {
   const location = useLocation();
@@ -27,26 +28,20 @@ export function Login() {
     passwordVisible,
     formRequest,
     formErrorStatus,
-  } = useForm();
+  }: TUseFormReturn = useForm();
   const dispatch = useDispatch();
   const token = getCookie().refreshToken;
   const from = location.state?.from || "/";
 
   useEffect(() => {
     dispatch({ type: RESET_ERROR_STATUS });
-    dispatch({
-      type: RESET_FORM,
-    });
+    dispatch({ type: RESET_FORM });
   }, [dispatch]);
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent): void => {
     e.preventDefault();
-    dispatch(
-      submitLogin({
-        email: emailValue,
-        password: passwordValue,
-      })
-    );
+    // @ts-expect-error Пока игнорируем redux типизацию
+    dispatch(submitLogin({ email: emailValue, password: passwordValue }));
   };
 
   if (token) {
@@ -60,13 +55,9 @@ export function Login() {
           <EmailInput
             onChange={onFormChange}
             placeholder={"Почта"}
-            // Начал ловить ошибку после того, как я назначил JSX константе,
-            // пока не смог выяснить как починить иначе
-            // Warning: Failed prop type: The prop `value` is marked as required in `EmailInput`, but its value is `undefined`.
-            value={emailValue === undefined ? "" : emailValue}
+            value={emailValue ?? ""}
             name={"email"}
-            error={formErrorStatus}
-            errorText={""}
+            errorText={"Email должен быть формата @domain.ru"}
             required={true}
             onFocus={handleFocus}
           />
@@ -75,7 +66,6 @@ export function Login() {
             placeholder={"Пароль"}
             onChange={onFormChange}
             icon={passwordVisible ? "HideIcon" : "ShowIcon"}
-            // При этом здесь ошибки не выпадает
             value={passwordValue}
             name={"password"}
             error={formErrorStatus}

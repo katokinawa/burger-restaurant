@@ -5,21 +5,23 @@ import { useModal } from "../../hooks/useModal";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "../../services/actions/ingredients";
 import IngredientElement from "../ingredient-element/ingredient-element";
+import { IItem } from "../../utils/types";
 
 export default function BurgerIngredients() {
   const [current, setCurrent] = useState("bun");
-
   const { openModal } = useModal();
 
-  const containerRef = useRef(null);
-  const bunRef = useRef(null);
-  const sauceRef = useRef(null);
-  const mainRef = useRef(null);
+  const containerRef = useRef<HTMLInputElement>(null);
+  const bunRef = useRef<HTMLInputElement>(null);
+  const sauceRef = useRef<HTMLInputElement>(null);
+  const mainRef = useRef<HTMLInputElement>(null);
 
   const dispatch = useDispatch();
+  // @ts-expect-error Пока игнорируем redux типизацию
   const ingredients = useSelector((state) => state.ingredients.items);
 
   useEffect(() => {
+    // @ts-expect-error Пока игнорируем redux типизацию
     dispatch(getIngredients());
   }, [dispatch]);
 
@@ -67,9 +69,16 @@ export default function BurgerIngredients() {
     let currentTab;
     if (visibleTabs.length > 0) {
       currentTab = tabs.find((item) => item.position >= 0);
-    } else {
+    } else if (visibleTabs.length < 0) {
       // в случае, если никакой заголовок не виден на экране, показывать последний из таба
       currentTab = tabs[tabs.length - 1];
+    } else {
+      currentTab = { name: "bun", position: 0 };
+    }
+
+    if (!currentTab) {
+      // если currentTab все еще undefined, назначаем дефолтное значение
+      currentTab = { name: "bun", position: 0 };
     }
 
     setCurrent(currentTab.name);
@@ -101,7 +110,7 @@ export default function BurgerIngredients() {
         </p>
         <div className={styles.ingredients_list}>
           {ingredients.map(
-            (item) =>
+            (item: IItem) =>
               item.type === "bun" && (
                 <IngredientElement
                   key={item._id}
@@ -121,7 +130,7 @@ export default function BurgerIngredients() {
         </p>
         <div className={styles.ingredients_list}>
           {ingredients.map(
-            (item) =>
+            (item: IItem) =>
               item.type === "sauce" && (
                 <IngredientElement
                   key={item._id}
@@ -137,7 +146,7 @@ export default function BurgerIngredients() {
         </p>
         <div className={styles.ingredients_list}>
           {ingredients.map(
-            (item) =>
+            (item: IItem) =>
               item.type === "main" && (
                 <IngredientElement
                   key={item._id}

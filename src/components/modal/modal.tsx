@@ -3,12 +3,12 @@ import { createPortal } from "react-dom";
 import { useEffect } from "react";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import closeImage from "../../images/close.svg";
-import PropTypes from "prop-types";
 import { AnimatePresence, motion } from "motion/react";
+import { TModal } from "../../utils/types";
 
-export default function Modal({ children, handleClose }) {
+export default function Modal({ handleClose, children }: TModal) {
   useEffect(() => {
-    function handlePressKey(evt) {
+    function handlePressKey(evt: KeyboardEvent) {
       if (evt.key === "Escape") {
         handleClose();
       }
@@ -38,12 +38,6 @@ export default function Modal({ children, handleClose }) {
         </ModalOverlay>
       </motion.div>
     </AnimatePresence>,
-
-    document.getElementById("modal")
+    document.getElementById("modal")!
   );
 }
-
-Modal.propTypes = {
-  children: PropTypes.element.isRequired,
-  handleClose: PropTypes.func.isRequired,
-};

@@ -5,12 +5,16 @@ import {
 } from "../services/actions/ingredient-detail";
 import { ORDER_SET_INITIAL_STATE } from "../services/actions/order-detail";
 import { useNavigate } from "react-router-dom";
+import { IItem } from "../utils/types";
 
 export const useModal = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const openModal = (item, ingredientType) => {
+  const openModal = (
+    item: IItem | { _id?: null },
+    ingredientType: string
+  ): void => {
     dispatch({
       type: SET_SELECTED_INGREDIENT,
       item,

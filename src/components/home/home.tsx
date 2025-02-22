@@ -7,8 +7,7 @@ import { useLocation } from "react-router";
 
 export function Home() {
   const location = useLocation();
-  console.log(location);
-  const isModal = location.state?.background;
+  const isModal: { background: boolean } = location.state?.background;
   const isIngredientDetailRoute = location.pathname.startsWith("/ingredient/");
   return (
     <>

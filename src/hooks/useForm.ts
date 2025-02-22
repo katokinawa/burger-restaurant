@@ -4,6 +4,7 @@ import {
   setFormValue,
   SHOW_PASSWORD_SWITCH,
 } from "../services/actions/form";
+import { ChangeEvent } from "react";
 
 export const useForm = () => {
   const dispatch = useDispatch();
@@ -13,9 +14,11 @@ export const useForm = () => {
     password: passwordValue,
     passwordVisible,
     code,
+    // @ts-expect-error Пока игнорируем redux типизацию
   } = useSelector((state) => state.form.form);
 
   const { formRequest, formSuccess, formErrorStatus, formErrorStatusMessage } =
+    // @ts-expect-error Пока игнорируем redux типизацию
     useSelector((state) => state.form);
 
   const onShowPasswordSwitch = () => {
@@ -26,7 +29,7 @@ export const useForm = () => {
     dispatch({ type: RESET_ERROR_STATUS });
   };
 
-  const showMessageStatus = (message) => {
+  const showMessageStatus = (message: string): string => {
     switch (formErrorStatusMessage) {
       case 403: {
         return message;
@@ -45,7 +48,7 @@ export const useForm = () => {
     }
   };
 
-  const onFormChange = (e) => {
+  const onFormChange = (e: ChangeEvent<HTMLInputElement>): void => {
     dispatch(setFormValue(e.target.name, e.target.value));
   };
 
@@ -62,5 +65,6 @@ export const useForm = () => {
     formRequest,
     formErrorStatus,
     formSuccess,
+    formErrorStatusMessage,
   };
 };

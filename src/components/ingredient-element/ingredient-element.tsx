@@ -3,16 +3,25 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ingredient-element.module.css";
-import PropTypes from "prop-types";
-import { IngredientType } from "../../utils/types";
 import { useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
-export default function IngredientElement({ item, openModal, type }) {
+import { IItem } from "../../utils/types";
+export default function IngredientElement({
+  item,
+  openModal,
+  type,
+}: {
+  item: IItem;
+  openModal: (item: IItem, ingredientType: string) => void;
+  type: string;
+}) {
+  // @ts-expect-error Пока игнорируем redux типизацию
   const ingredients = useSelector((state) => state.burger_constructor.items);
+  // @ts-expect-error Пока игнорируем redux типизацию
   const counterBuns = useSelector((state) => state.burger_constructor.bun);
 
-  const countIngredient = ingredients.filter((e) => e._id === item._id);
-  const countBuns = counterBuns.filter((e) => e._id === item._id);
+  const countIngredient = ingredients.filter((e: IItem) => e._id === item._id);
+  const countBuns = counterBuns.filter((e: IItem) => e._id === item._id);
 
   // DND (drag and drop)
   const [, dragTarget] = useDrag({
@@ -26,7 +35,6 @@ export default function IngredientElement({ item, openModal, type }) {
         openModal(item, "ingredient");
       }}
       className={styles.article}
-      name={"ingredients"}
       ref={dragTarget}
     >
       {countIngredient.length !== 0 && (
@@ -34,16 +42,10 @@ export default function IngredientElement({ item, openModal, type }) {
           count={countIngredient.length}
           size="default"
           extraClass="m-1"
-          className={styles.counter}
         />
       )}
       {countBuns.length !== 0 && (
-        <Counter
-          count={countBuns.length + 1}
-          size="default"
-          extraClass="m-1"
-          className={styles.counter}
-        />
+        <Counter count={countBuns.length + 1} size="default" extraClass="m-1" />
       )}
       <img className={styles.img} src={item.image_large} alt={item.name}></img>
       <div className={styles.price_wrapper}>
@@ -54,9 +56,3 @@ export default function IngredientElement({ item, openModal, type }) {
     </article>
   );
 }
-
-IngredientElement.propTypes = {
-  item: IngredientType.isRequired,
-  openModal: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired,
-};

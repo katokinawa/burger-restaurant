@@ -1,12 +1,13 @@
 import styles from "./order-details.module.css";
 import doneImage from "../../images/done.svg";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import loading from "../../images/loading.gif";
+import { getCookie } from "../../utils/getCookieValue";
 
 export default function OrderDetails() {
-  const orderData = useSelector((state) => state.order.data);
+  // @ts-expect-error Пока игнорируем redux типизацию
   const orderRequest = useSelector((state) => state.order.orderRequest);
+  const orderNumber = getCookie().orderNumber;
 
   return (
     <div className={styles.order_details_wrapper}>
@@ -19,7 +20,7 @@ export default function OrderDetails() {
       ) : (
         <>
           <p className={styles.heading + " text text_type_digits-large mb-8"}>
-            {orderData?.order?.number || "—"}
+            {orderNumber || "—"}
           </p>
           <p className="text text_type_main-default mb-15">
             идентификатор заказа
@@ -36,11 +37,3 @@ export default function OrderDetails() {
     </div>
   );
 }
-
-OrderDetails.propTypes = {
-  orderData: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-    })
-  ),
-};
