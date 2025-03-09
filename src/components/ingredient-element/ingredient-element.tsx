@@ -4,8 +4,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ingredient-element.module.css";
 import { useDrag } from "react-dnd";
-import { useSelector } from "react-redux";
+
 import { IItem } from "../../utils/types";
+import { useSelector } from "../../utils/reduxCustomBoilerplate";
 export default function IngredientElement({
   item,
   openModal,
@@ -15,13 +16,16 @@ export default function IngredientElement({
   openModal: (item: IItem, ingredientType: string) => void;
   type: string;
 }) {
-  // @ts-expect-error Пока игнорируем redux типизацию
+  let countBuns = [];
   const ingredients = useSelector((state) => state.burger_constructor.items);
-  // @ts-expect-error Пока игнорируем redux типизацию
-  const counterBuns = useSelector((state) => state.burger_constructor.bun);
+  const counterBuns = useSelector((state) => state.burger_constructor.buns);
 
   const countIngredient = ingredients.filter((e: IItem) => e._id === item._id);
-  const countBuns = counterBuns.filter((e: IItem) => e._id === item._id);
+
+  if(counterBuns && counterBuns.length !== 0) {
+    countBuns = counterBuns.filter((e: IItem) => e._id === item._id);
+  }
+
 
   // DND (drag and drop)
   const [, dragTarget] = useDrag({

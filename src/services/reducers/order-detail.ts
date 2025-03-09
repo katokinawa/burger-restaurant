@@ -3,15 +3,28 @@ import {
   POST_ORDER_ERROR,
   POST_ORDER_REQUEST,
   POST_ORDER_SUCCESS,
+  TOrderDetail,
 } from "../actions/order-detail";
 
-const initialState = {
+interface IOrderDetailData {
+  name: string;
+  order: { number: number };
+  success: boolean;
+}
+
+type TOrderDetailState = {
+  data: IOrderDetailData | object;
+  orderRequest: boolean;
+  orderFailed: boolean;
+};
+
+const initialState: TOrderDetailState = {
   data: {},
   orderRequest: false,
   orderFailed: false,
 };
 
-export const orderDetail = (state = initialState, action) => {
+export const orderDetail = (state = initialState, action: TOrderDetail) => {
   switch (action.type) {
     case POST_ORDER_REQUEST: {
       return {

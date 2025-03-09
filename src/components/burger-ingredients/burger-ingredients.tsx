@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useModal } from "../../hooks/useModal";
-import { useDispatch, useSelector } from "react-redux";
+
 import { getIngredients } from "../../services/actions/ingredients";
 import IngredientElement from "../ingredient-element/ingredient-element";
 import { IItem } from "../../utils/types";
+import { useDispatch, useSelector } from "../../utils/reduxCustomBoilerplate";
 
 export default function BurgerIngredients() {
   const [current, setCurrent] = useState("bun");
@@ -17,11 +18,10 @@ export default function BurgerIngredients() {
   const mainRef = useRef<HTMLInputElement>(null);
 
   const dispatch = useDispatch();
-  // @ts-expect-error Пока игнорируем redux типизацию
+
   const ingredients = useSelector((state) => state.ingredients.items);
 
   useEffect(() => {
-    // @ts-expect-error Пока игнорируем redux типизацию
     dispatch(getIngredients());
   }, [dispatch]);
 

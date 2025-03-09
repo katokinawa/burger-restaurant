@@ -11,10 +11,11 @@ import {
   RESET_FORM,
   submitLogin,
 } from "../../../../services/actions/form";
-import { useDispatch } from "react-redux";
+
 import { FormEvent, useEffect } from "react";
 import { getCookie } from "../../../../utils/getCookieValue";
 import { TUseFormReturn } from "../../../../utils/types";
+import { useDispatch } from "../../../../utils/reduxCustomBoilerplate";
 
 export function Login() {
   const location = useLocation();
@@ -40,7 +41,7 @@ export function Login() {
 
   const onSubmit = (e: FormEvent): void => {
     e.preventDefault();
-    // @ts-expect-error Пока игнорируем redux типизацию
+
     dispatch(submitLogin({ email: emailValue, password: passwordValue }));
   };
 

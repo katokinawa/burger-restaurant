@@ -10,10 +10,11 @@ import {
   RESET_ERROR_STATUS,
   submitRegister,
 } from "../../../../services/actions/form";
-import { useDispatch } from "react-redux";
+
 import { FormEvent, useEffect } from "react";
 import { getCookie } from "../../../../utils/getCookieValue";
 import { TUseFormReturn } from "../../../../utils/types";
+import { useDispatch } from "../../../../utils/reduxCustomBoilerplate";
 
 export function Register() {
   const dispatch = useDispatch();
@@ -38,7 +39,6 @@ export function Register() {
   const onSubmit = (e: FormEvent): void => {
     e.preventDefault();
     dispatch(
-      // @ts-expect-error Пока игнорируем redux типизацию
       submitRegister({
         name: nameValue,
         email: emailValue,

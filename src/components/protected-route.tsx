@@ -1,8 +1,9 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { ReactNode, useCallback, useEffect } from "react";
-import { useDispatch } from "react-redux";
+
 import { submitGetPersonValues } from "../services/actions/form";
 import { getCookie } from "../utils/getCookieValue";
+import { useDispatch } from "../utils/reduxCustomBoilerplate";
 
 export const ProtectedRouteElement = ({
   element,
@@ -18,7 +19,6 @@ export const ProtectedRouteElement = ({
 
   const init = useCallback(() => {
     if (token) {
-      // @ts-expect-error Пока игнорируем redux типизацию
       dispatch(submitGetPersonValues());
     }
   }, [dispatch, token]);

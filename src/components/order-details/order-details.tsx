@@ -1,11 +1,11 @@
 import styles from "./order-details.module.css";
 import doneImage from "../../images/done.svg";
-import { useSelector } from "react-redux";
+
 import loading from "../../images/loading.gif";
 import { getCookie } from "../../utils/getCookieValue";
+import { useSelector } from "../../utils/reduxCustomBoilerplate";
 
 export default function OrderDetails() {
-  // @ts-expect-error Пока игнорируем redux типизацию
   const orderRequest = useSelector((state) => state.order.orderRequest);
   const orderNumber = getCookie().orderNumber;
 

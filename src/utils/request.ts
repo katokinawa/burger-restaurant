@@ -5,15 +5,19 @@ import { IItem } from "./types";
 
 interface ApiResponse {
   user: {
-    name?: string;
-    email?: string;
-    password?: string;
-    code?: string;
-  };
-  accessToken?: string;
-  refreshToken?: string;
-  data?: IItem[];
-  order?: { number: number };
+    name: string;
+    email: string;
+  }
+  name: string;
+  email: string;
+  password: string;
+  code: string;
+  token: string;
+  accessToken: string;
+  refreshToken: string;
+  data: IItem[];
+  order: { number: number };
+  success: boolean;
 }
 
 // Функция для обработки ответа

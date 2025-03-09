@@ -1,4 +1,3 @@
-import { useDispatch } from "react-redux";
 import {
   DELETE_SELECTED_INGREDIENT,
   SET_SELECTED_INGREDIENT,
@@ -6,6 +5,7 @@ import {
 import { ORDER_SET_INITIAL_STATE } from "../services/actions/order-detail";
 import { useNavigate } from "react-router-dom";
 import { IItem } from "../utils/types";
+import { useDispatch } from "../utils/reduxCustomBoilerplate";
 
 export const useModal = () => {
   const dispatch = useDispatch();

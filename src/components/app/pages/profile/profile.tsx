@@ -5,7 +5,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./profile.module.css";
 import { useForm } from "../../../../hooks/useForm";
-import { useDispatch } from "react-redux";
+
 import { Link, NavLink } from "react-router-dom";
 import {
   submitGetPersonValues,
@@ -19,14 +19,8 @@ import {
   useState,
 } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { TUseFormReturn } from "../../../../utils/types";
-
-interface IUser {
-  name: string;
-  email: string;
-  password: string;
-}
-
+import { IUser, TUseFormReturn } from "../../../../utils/types";
+import { useDispatch } from "../../../../utils/reduxCustomBoilerplate";
 interface IEdit {
   name: boolean;
   email: boolean;
@@ -40,12 +34,11 @@ export function Profile() {
     passwordValue,
     formRequest,
     formErrorStatus,
-    formErrorStatusMessage,
+    formErrorStatusCode,
   }: TUseFormReturn = useForm();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // @ts-expect-error Пока игнорируем redux типизацию
     dispatch(submitGetPersonValues());
   }, [dispatch]);
 
@@ -91,14 +84,12 @@ export function Profile() {
 
   const onSubmit = (e: FormEvent): void => {
     e.preventDefault();
-    dispatch(
-      // @ts-expect-error Пока игнорируем redux типизацию
-      submitGetPersonValues({
-        name: user.name ?? nameValue,
-        email: user.email ?? emailValue,
-        password: user.password ?? passwordValue,
-      })
-    );
+    const personValues = {
+      name: user.name ?? nameValue,
+      email: user.email ?? emailValue,
+      password: user.password ?? passwordValue,
+    };
+    dispatch(submitGetPersonValues(personValues));
     setIsSuccess(true);
     setTimeout(() => {
       setIsSuccess(false);
@@ -146,10 +137,7 @@ export function Profile() {
           to=""
           className={styles.link_button}
           onClick={() => {
-            dispatch(
-              // @ts-expect-error Пока игнорируем redux типизацию
-              submitLogout()
-            );
+            dispatch(submitLogout());
           }}
         >
           <p
@@ -175,7 +163,7 @@ export function Profile() {
             placeholder={"Имя"}
             onChange={handleSetValue}
             icon={"EditIcon"}
-            value={name}
+            value={name ?? ""}
             name={"name"}
             error={formErrorStatus}
             onIconClick={!isEdit ? () => onIconClick("name") : undefined}
@@ -203,7 +191,7 @@ export function Profile() {
             placeholder={"Пароль"}
             onChange={handleSetValue}
             icon={"EditIcon"}
-            value={isEditable.password ? "******" : password}
+            value={isEditable.password ? "******" : password ?? ''}
             name={"password"}
             error={formErrorStatus}
             onIconClick={!isEdit ? () => onIconClick("password") : undefined}
@@ -220,12 +208,12 @@ export function Profile() {
               </motion.div>
             )}
           </AnimatePresence>
-          {formErrorStatus && formErrorStatusMessage !== 403 && (
+          {formErrorStatus && formErrorStatusCode !== 403 && (
             <p className="text text_type_main-small">
               Пожалуйста, попробуйте еще раз
             </p>
           )}
-          {formErrorStatusMessage === 403 && (
+          {formErrorStatusCode === 403 && (
             <p className="text text_type_main-small">
               Этот email уже использует другой пользователь
             </p>

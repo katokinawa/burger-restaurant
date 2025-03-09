@@ -5,7 +5,7 @@ import {
 import styles from "./reset-password.module.css";
 import { Link, Navigate } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
-import { useDispatch } from "react-redux";
+
 import {
   RESET_ERROR_STATUS,
   submitResetPassword,
@@ -13,6 +13,7 @@ import {
 import { FormEvent, useEffect, useState } from "react";
 import { getCookie } from "../../../../utils/getCookieValue";
 import { TUseFormReturn } from "../../../../utils/types";
+import { useDispatch } from "../../../../utils/reduxCustomBoilerplate";
 
 export function ResetPassword() {
   const dispatch = useDispatch();
@@ -42,10 +43,7 @@ export function ResetPassword() {
 
   const onSubmit = (e: FormEvent): void => {
     e.preventDefault();
-    dispatch(
-      // @ts-expect-error Пока игнорируем redux типизацию
-      submitResetPassword({ password: passwordValue, token: code })
-    );
+    dispatch(submitResetPassword({ password: passwordValue, token: code }));
   };
   if (token) {
     return <Navigate to="/" replace />;

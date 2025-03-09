@@ -1,15 +1,23 @@
+import { IItem } from "../../utils/types";
 import {
   SET_SELECTED_INGREDIENT,
   DELETE_SELECTED_INGREDIENT,
+  TIngredientDetailActions,
 } from "../actions/ingredient-detail";
 
-const initialState = {
+type TIngredientDetailState = {
+  data: IItem | object;
+  isModalOpen: boolean;
+  ingredientType: string;
+}
+
+const initialState: TIngredientDetailState = {
   data: {},
   isModalOpen: false,
   ingredientType: "",
 };
 
-export const ingredientDetail = (state = initialState, action) => {
+export const ingredientDetail = (state = initialState, action: TIngredientDetailActions) => {
   switch (action.type) {
     case SET_SELECTED_INGREDIENT: {
       return {

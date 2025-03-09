@@ -1,35 +1,79 @@
 import { request } from "../../utils/request";
 import { getCookie } from "../../utils/getCookieValue";
-import { Dispatch } from "redux";
+import { AppDispatch, AppThunk, IUser } from "../../utils/types";
 
-export const ADD_FORM_VALUE = "ADD_FORM_VALUE";
+export const ADD_FORM_VALUE: 'ADD_FORM_VALUE' = "ADD_FORM_VALUE";
 
-export const FORM_SUBMIT_REQUEST = "FORM_SUBMIT_REQUEST";
-export const FORM_SUBMIT_SUCCESS = "FORM_SUBMIT_SUCCESS";
-export const FORM_SUBMIT_ERROR = "FORM_SUBMIT_ERROR";
+export const FORM_SUBMIT_REQUEST: 'FORM_SUBMIT_REQUEST' = "FORM_SUBMIT_REQUEST";
+export const FORM_SUBMIT_SUCCESS: 'FORM_SUBMIT_SUCCESS' = "FORM_SUBMIT_SUCCESS";
+export const FORM_SUBMIT_ERROR: 'FORM_SUBMIT_ERROR' = "FORM_SUBMIT_ERROR";
 
-export const SHOW_PASSWORD_SWITCH = "SHOW_PASSWORD_SWITCH";
+export const SHOW_PASSWORD_SWITCH: 'SHOW_PASSWORD_SWITCH' =
+  "SHOW_PASSWORD_SWITCH";
 
-export const RESET_ERROR_STATUS = "RESET_ERROR_STATUS";
-export const RESET_FORM = "RESET_FORM";
+export const RESET_ERROR_STATUS: 'RESET_ERROR_STATUS' = "RESET_ERROR_STATUS";
+export const RESET_FORM: 'RESET_FORM' = "RESET_FORM";
 
-export const SWITCH_INPUTS_EDIT = "SWITCH_INPUTS_EDIT";
+export const SWITCH_INPUTS_EDIT: 'SWITCH_INPUTS_EDIT' = "SWITCH_INPUTS_EDIT";
 
-export const setFormValue = (field: string, value: string | number) => ({
+export interface ISubmitItem {
+  name: string;
+  password?: string;
+  email: string;
+  code?: string;
+  token?: string;
+}
+
+export interface IAddFormValue {
+  readonly type: typeof ADD_FORM_VALUE;
+  readonly field: string;
+  readonly value: string | number;
+}
+export interface IFormSubmitRequest {
+  readonly type: typeof FORM_SUBMIT_REQUEST;
+}
+export interface IFormSubmitSuccess {
+  readonly type: typeof FORM_SUBMIT_SUCCESS;
+  readonly item?: ISubmitItem;
+}
+export interface IFormSubmitError {
+  readonly type: typeof FORM_SUBMIT_ERROR;
+  errorStatusCode?: number;
+}
+export interface IShowPasswordSwitch {
+  readonly type: typeof SHOW_PASSWORD_SWITCH;
+}
+export interface IResetErrorStatus {
+  readonly type: typeof RESET_ERROR_STATUS;
+}
+export interface IResetForm {
+  readonly type: typeof RESET_FORM;
+}
+export interface ISwitchInputsEdit {
+  readonly type: typeof SWITCH_INPUTS_EDIT;
+}
+
+export type TFormsActions =
+  | IAddFormValue
+  | IFormSubmitRequest
+  | IFormSubmitSuccess
+  | IFormSubmitError
+  | IShowPasswordSwitch
+  | IResetErrorStatus
+  | IResetForm
+  | ISwitchInputsEdit;
+
+export const setFormValue = (
+  field: string,
+  value: string | number
+): IAddFormValue => ({
   type: ADD_FORM_VALUE,
   field,
   value,
 });
 
-interface IUser {
-  name?: string;
-  email: string;
-  password: string;
-  code?: string;
-}
-
-export function submitLogin(formValues: IUser) {
-  return function (dispatch: Dispatch) {
+export const submitLogin =
+  (formValues: IUser): AppThunk => (dispatch: AppDispatch) => {
     dispatch({
       type: FORM_SUBMIT_REQUEST,
     });
@@ -50,17 +94,16 @@ export function submitLogin(formValues: IUser) {
         document.cookie = `accessToken=${item.accessToken}; max-age=1200;`;
         document.cookie = `refreshToken=${item.refreshToken};`;
       })
-      .catch((error) => {
+      .catch((errorStatusCode) => {
         dispatch({
           type: FORM_SUBMIT_ERROR,
-          error,
+          errorStatusCode,
         });
       });
   };
-}
 
-export function submitRegister(formValues: IUser) {
-  return function (dispatch: Dispatch) {
+export const submitRegister =
+  (formValues: IUser): AppThunk => (dispatch: AppDispatch) => {
     dispatch({
       type: FORM_SUBMIT_REQUEST,
     });
@@ -81,17 +124,16 @@ export function submitRegister(formValues: IUser) {
         window.history.pushState(null, "", "/");
         window.history.go(0);
       })
-      .catch((error) => {
+      .catch((errorStatusCode) => {
         dispatch({
           type: FORM_SUBMIT_ERROR,
-          error,
+          errorStatusCode,
         });
       });
   };
-}
 
-export function submitForgotPassword(formValues: IUser) {
-  return function (dispatch: Dispatch) {
+export const submitForgotPassword =
+  (formValues: IUser): AppThunk => (dispatch: AppDispatch) => {
     dispatch({
       type: FORM_SUBMIT_REQUEST,
     });
@@ -112,17 +154,17 @@ export function submitForgotPassword(formValues: IUser) {
           window.history.pushState(null, "", "/reset-password");
           window.history.go(0);
         })
-        .catch(() => {
+        .catch((errorStatusCode) => {
           dispatch({
             type: FORM_SUBMIT_ERROR,
+            errorStatusCode,
           });
         });
     }
   };
-}
 
-export function submitResetPassword(formValues: IUser) {
-  return function (dispatch: Dispatch) {
+export const submitResetPassword =
+  (formValues: IUser): AppThunk => (dispatch: AppDispatch) => {
     dispatch({
       type: FORM_SUBMIT_REQUEST,
     });
@@ -141,81 +183,76 @@ export function submitResetPassword(formValues: IUser) {
         window.history.pushState(null, "", "/login");
         window.history.go(0);
       })
-      .catch((error) => {
+      .catch((errorStatusCode) => {
         dispatch({
           type: FORM_SUBMIT_ERROR,
-          error,
+          errorStatusCode,
         });
       });
   };
-}
 
-export function submitLogout() {
-  return function (dispatch: Dispatch) {
-    const refreshToken = getCookie().refreshToken;
+export const submitLogout = (): AppThunk => (dispatch: AppDispatch) => {
+  const refreshToken = getCookie().refreshToken;
 
-    dispatch({
-      type: FORM_SUBMIT_REQUEST,
-    });
-    request("auth/logout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token: refreshToken }),
+  dispatch({
+    type: FORM_SUBMIT_REQUEST,
+  });
+  request("auth/logout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token: refreshToken }),
+  })
+    .then(() => {
+      dispatch({
+        type: FORM_SUBMIT_SUCCESS,
+      });
+      document.cookie = "accessToken=;max-age=0";
+      document.cookie = "refreshToken=;max-age=0";
+      window.history.pushState(null, "", "/login");
+      window.history.go(0);
     })
-      .then(() => {
-        dispatch({
-          type: FORM_SUBMIT_SUCCESS,
-        });
-        document.cookie = "accessToken=;max-age=0";
-        document.cookie = "refreshToken=;max-age=0";
-        window.history.pushState(null, "", "/login");
-        window.history.go(0);
-      })
-      .catch((error) => {
-        dispatch({
-          type: FORM_SUBMIT_ERROR,
-          error,
-        });
+    .catch((errorStatusCode) => {
+      dispatch({
+        type: FORM_SUBMIT_ERROR,
+        errorStatusCode,
       });
-  };
-}
-
-export function submitRefreshToken() {
-  return function (dispatch: Dispatch) {
-    const refreshToken = getCookie().refreshToken;
-    dispatch({
-      type: FORM_SUBMIT_REQUEST,
     });
-    request("auth/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token: refreshToken }),
-    })
-      .then((item) => {
-        dispatch({
-          type: FORM_SUBMIT_SUCCESS,
-          item,
-        });
+};
 
-        document.cookie = `accessToken=${item.accessToken}; max-age=1200;`;
-        document.cookie = `refreshToken=${item.refreshToken};`;
-        window.history.go(0);
-      })
-      .catch((error) => {
-        dispatch({
-          type: FORM_SUBMIT_ERROR,
-          error,
-        });
+export const submitRefreshToken = (): AppThunk => (dispatch: AppDispatch) => {
+  const refreshToken = getCookie().refreshToken;
+  dispatch({
+    type: FORM_SUBMIT_REQUEST,
+  });
+  request("auth/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token: refreshToken }),
+  })
+    .then((item) => {
+      dispatch({
+        type: FORM_SUBMIT_SUCCESS,
+        item,
       });
-  };
-}
 
-export function submitGetPersonValues(formValues: IUser) {
-  return function (dispatch: Dispatch) {
+      document.cookie = `accessToken=${item.accessToken}; max-age=1200;`;
+      document.cookie = `refreshToken=${item.refreshToken};`;
+      window.history.go(0);
+    })
+    .catch((errorStatusCode) => {
+      dispatch({
+        type: FORM_SUBMIT_ERROR,
+        errorStatusCode,
+      });
+    });
+};
+
+export const submitGetPersonValues =
+  (formValues?: IUser): AppThunk => (dispatch: AppDispatch) => {
     const token = getCookie().accessToken;
     if (token) {
       dispatch({
@@ -229,22 +266,23 @@ export function submitGetPersonValues(formValues: IUser) {
         },
         body: JSON.stringify(formValues),
       })
-        .then((item) => {
+        .then((userData) => {
+          const item = {
+            name: userData.user.name,
+            email: userData.user.email,
+          }
           dispatch({
             type: FORM_SUBMIT_SUCCESS,
-            name: item.user.name,
-            email: item.user.email,
+            item
           });
         })
-        .catch((error) => {
+        .catch((errorStatusCode) => {
           dispatch({
             type: FORM_SUBMIT_ERROR,
-            error,
+            errorStatusCode,
           });
         });
     } else {
-      // @ts-expect-error Пока игнорируем redux типизацию
       dispatch(submitRefreshToken());
     }
   };
-}
