@@ -24,6 +24,10 @@ export default function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route
+            path="/feed"
+            element={<Orders />}
+          />
+          <Route
             path="/profile/orders"
             element={<ProtectedRouteElement element={<Orders />} />}
           />
