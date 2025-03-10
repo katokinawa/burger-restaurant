@@ -29,6 +29,14 @@ export const useModal = () => {
         navigate("/order");
         break;
       }
+      case "order": {
+        navigate(`/feed/${item._id}`, { state: { background: true } });
+        break;
+      }
+      case "profile-order": {
+        navigate(`/profile/orders/${item._id}`, { state: { background: true } });
+        break;
+      }
       default:
         navigate("/");
     }
