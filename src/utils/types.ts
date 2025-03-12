@@ -6,6 +6,14 @@ import { TFormsActions } from "../services/actions/form";
 import { TIngredientDetailActions } from "../services/actions/ingredient-detail";
 import { TIngredients } from "../services/actions/ingredients";
 import { TOrderDetail } from "../services/actions/order-detail";
+import {
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_ERROR,
+  WS_CONNECTION_START,
+  WS_CONNECTION_SUCCESS,
+  WS_GET_ITEMS,
+  WS_SEND_ITEMS,
+} from "../services/actions/websocket";
 
 export interface IItem {
   _id: string;
@@ -81,3 +89,27 @@ export type AppDispatch = ThunkDispatch<
   unknown,
   TApplicationActions
 >;
+
+export type TWebsocketActions = {
+  wsInit: typeof WS_CONNECTION_START;
+  wsSendMessage: typeof WS_SEND_ITEMS;
+  onOpen: typeof WS_CONNECTION_SUCCESS;
+  onClose: typeof WS_CONNECTION_CLOSED;
+  onError: typeof WS_CONNECTION_ERROR;
+  onMessage: typeof WS_GET_ITEMS;
+};
+
+type TItemsResponseOrders = {
+  ingredients: string[];
+  _id: string;
+  status: string;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+};
+export interface IItemsResponse {
+  success: boolean;
+  orders: TItemsResponseOrders[];
+  total: number;
+  totalToday: number;
+}

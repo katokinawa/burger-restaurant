@@ -6,8 +6,16 @@ import styles from "./feed-orders.module.css";
 import test from "../../../../images/illustration.png";
 import { Outlet, useLocation } from "react-router-dom";
 import { useModal } from "../../../../hooks/useModal";
+import {
+  useDispatch,
+  useSelector,
+} from "../../../../utils/reduxCustomBoilerplate";
+import { WS_CONNECTION_START } from "../../../../services/actions/websocket";
+import { useEffect } from "react";
 
 export default function FeedOrders() {
+  const dispatch = useDispatch();
+  const { items } = useSelector((state) => state.websocket);
   const format_date = () => {
     const date_from_server = "2022-10-10T17:33:32.877Z";
     return <FormattedDate date={new Date(date_from_server)} />;
@@ -16,6 +24,13 @@ export default function FeedOrders() {
   const { openModal } = useModal();
   const isModal: { background: boolean } = location.state?.background;
   const isOrderDetailRoute = location.pathname.startsWith("/feed/");
+
+  useEffect(() => {
+    dispatch({ type: WS_CONNECTION_START });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+
+  console.log(items);
   return (
     <>
       <Outlet />
@@ -24,7 +39,7 @@ export default function FeedOrders() {
           <article className={styles.order_feed_wrapper}>
             <p className="text text_type_main-large">Лента заказов</p>
             <ul className={styles.order_items_list}>
-              {[...Array(6)].map((_, i) => (
+              {items.map((_, i) => (
                 <li
                   key={i}
                   className={styles.order_item_card}
@@ -68,29 +83,43 @@ export default function FeedOrders() {
               <div className={styles.statistics_wrapper}>
                 <p className="text text_type_main-medium mb-6">Готовы:</p>
                 <ul className={styles.statistics_orders_list}>
-                  {[...Array(10)].map((_, i) => (
-                    <li key={i}>
-                      <p
-                        className={
-                          styles.text_blue +
-                          " " +
-                          "text text_type_digits-default"
-                        }
-                      >
-                        123456
-                      </p>
-                    </li>
-                  ))}
+                  {items
+                    .flatMap((current) => current.orders)
+                    .slice(0, 10)
+                    .map((current, i) => {
+                      if (current.status === "done") {
+                        return (
+                          <li key={i}>
+                            <p
+                              className={
+                                styles.text_blue +
+                                " " +
+                                "text text_type_digits-default"
+                              }
+                            >
+                              {current.number}
+                            </p>
+                          </li>
+                        );
+                      }
+                    })}
                 </ul>
               </div>
               <div className={styles.statistics_wrapper}>
                 <p className="text text_type_main-medium mb-6">В работе:</p>
                 <ul className={styles.statistics_orders_list}>
-                  {[...Array(10)].map((_, i) => (
-                    <li key={i}>
-                      <p className="text text_type_digits-default">123456</p>
-                    </li>
-                  ))}
+                  {items
+                    .flatMap((current) => current.orders)
+                    .slice(0, 10)
+                    .map((current, i) => {
+                      return (
+                        <li key={i}>
+                          <p className="text text_type_digits-default">
+                            {current.number}
+                          </p>
+                        </li>
+                      );
+                    })}
                 </ul>
               </div>
             </section>
@@ -102,9 +131,7 @@ export default function FeedOrders() {
                 className={
                   styles.digits_glow + " " + "text text_type_digits-large"
                 }
-              >
-                123456
-              </p>
+              >{items[0]?.total}</p>
             </section>
             <section className={styles.statistics_counters}>
               <p className="text text_type_main-medium">
@@ -115,7 +142,7 @@ export default function FeedOrders() {
                   styles.digits_glow + " " + "text text_type_digits-large"
                 }
               >
-                123456
+                {items[0]?.totalToday}
               </p>
             </section>
           </article>
