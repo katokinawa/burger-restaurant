@@ -2,10 +2,10 @@
 .profile_form {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 24px;
   composes: mt-30 from global;
-  width: 480px;
+  min-width: 844px;
 }
 
 .button_form {

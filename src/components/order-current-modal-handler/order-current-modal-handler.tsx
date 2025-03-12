@@ -11,6 +11,7 @@ export default function OrderCurrentModalHandler() {
   const { isModalOpen } = useSelector((state) => state.ingredient);
   const location = useLocation();
   const isModal: { background: boolean } = location.state?.background;
+  console.log(isModal, isModalOpen)
   if (isModalOpen || isModal) {
     return (
       <Modal isModalOpen={isModalOpen} handleClose={closeModal}>

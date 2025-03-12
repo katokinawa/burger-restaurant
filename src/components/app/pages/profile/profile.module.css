@@ -1,12 +1,17 @@
 .profile {
   display: flex;
-  gap: 60px;
-  width: 1232px;
+  width: 1240px;
+  justify-content: center;
+}
+
+.active {
+  justify-content: center;
+  align-items: center;
 }
 
 .profile_navlinks {
   width: 320px;
-  composes: mt-30 from global;
+  composes: mt-30 mr-15 from global;
 }
 
 .profile_inputs_wrapper {

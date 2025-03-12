@@ -25,6 +25,10 @@
   width: 1280px;
 }
 
+.nav ul:last-child {
+  margin-left: auto;
+}
+
 .nav_left,
 .nav_center,
 .nav_right {

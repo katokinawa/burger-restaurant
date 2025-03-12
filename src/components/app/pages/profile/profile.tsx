@@ -8,10 +8,29 @@ export function Profile() {
   const location = useLocation();
   const isModal: { background: boolean } = location.state?.background;
   const isOrderDetailRoute = location.pathname.startsWith("/profile/orders/");
+
+  const currentLocation = () => {
+    switch (location.pathname) {
+      case "/profile":
+        return (
+          <p className="text text_type_main-default text_color_inactive mt-20">
+            В этом разделе вы можете изменить свои персональные данные
+          </p>
+        );
+      case "/profile/orders":
+        return (
+          <p className="text text_type_main-default text_color_inactive mt-20">
+            В этом разделе вы можете просмотреть свою историю заказов
+          </p>
+        );
+      default:
+        return null;
+    }
+  };
   return (
     <>
-      {!isOrderDetailRoute || isModal ? (
-        <section className={styles.profile}>
+      <section className={styles.profile}>
+        {!isOrderDetailRoute || isModal ? (
           <div className={styles.profile_navlinks}>
             <NavLink to={"/profile"} className={styles.link_button} end>
               {({ isActive }) => (
@@ -60,15 +79,13 @@ export function Profile() {
                 Выход
               </p>
             </Link>
-            <p className="text text_type_main-default text_color_inactive mt-20">
-              В этом разделе вы можете изменить свои персональные данные
-            </p>
+            {currentLocation()}
           </div>
-          <div className={styles.profile_inputs_wrapper}>
-            <Outlet />
-          </div>
-        </section>
-      ) : null}
+        ) : null}
+        <div className={styles.profile_inputs_wrapper}>
+          <Outlet />
+        </div>
+      </section>
     </>
   );
 }

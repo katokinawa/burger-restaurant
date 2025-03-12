@@ -28,10 +28,11 @@ export default function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/feed" element={<FeedOrders />}>
             <Route
-              path="/feed/:orderCurrentId"
+              path=":orderCurrentId"
               element={<OrderCurrentModalHandler />}
             />
           </Route>
+
           <Route
             path="/profile"
             element={<ProtectedRouteElement element={<Profile />} />}
@@ -43,10 +44,15 @@ export default function App() {
             >
               <Route
                 path=":orderCurrentId"
-                element={<OrderCurrentModalHandler />}
+                element={
+                  <ProtectedRouteElement
+                    element={<OrderCurrentModalHandler />}
+                  />
+                }
               />
             </Route>
           </Route>
+
           <Route path="/" element={<Home />}>
             <Route
               path="ingredient/:ingredientId"

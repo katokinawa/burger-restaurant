@@ -1,0 +1,64 @@
+.order_current {
+  composes: pt-10 pr-10 pb-10 pl-10 from global;
+}
+
+.order_current_center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.order_current_status {
+  color: #00cccc;
+}
+
+.order_items_list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 312px;
+  overflow-x: auto;
+  padding-right: 24px;
+  composes: mb-10 from global;
+}
+
+.order_item_card {
+  height: 64px;
+}
+
+.order_item_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.order_ingredient_icon_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(#4c4cff, #801ab2);
+  transform: rotate(45deg);
+}
+
+.order_ingredient_icon_image {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background-color: black;
+  transform: rotate(-45deg);
+}
+
+.order_price_wrapper {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  gap: 8px;
+}
+
+.order_current_modal_footer {
+  display: flex;
+  justify-content: space-between;
+}
