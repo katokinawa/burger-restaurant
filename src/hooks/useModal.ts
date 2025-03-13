@@ -12,7 +12,7 @@ export const useModal = () => {
   const navigate = useNavigate();
 
   const openModal = (
-    item: IItem | { _id?: null },
+    item: IItem | { _id?: null | string },
     ingredientType: string
   ): void => {
     dispatch({

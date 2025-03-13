@@ -5,7 +5,7 @@ export const DELETE_SELECTED_INGREDIENT: 'DELETE_SELECTED_INGREDIENT' = "DELETE_
 
 export interface ISetSelectedIngredient {
   readonly type: typeof SET_SELECTED_INGREDIENT;
-  readonly item: IItem | { _id?: null },
+  readonly item: IItem | { _id?: null | string },
   readonly ingredientType: string,
 }
 export interface IDeleteSelectedIngredient {

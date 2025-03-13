@@ -41,7 +41,7 @@ export const websocket = (state = initialState, action: TWebsocket) => {
       return {
         ...state,
         error: undefined,
-        items: [...state.items, action.payload]
+        items: [action.payload]
       };
 
     default:

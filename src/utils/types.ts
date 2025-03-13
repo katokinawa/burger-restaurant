@@ -100,6 +100,7 @@ export type TWebsocketActions = {
 };
 
 type TItemsResponseOrders = {
+  name: string;
   ingredients: string[];
   _id: string;
   status: string;

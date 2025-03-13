@@ -3,23 +3,24 @@ import {
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./feed-orders.module.css";
-import test from "../../../../images/illustration.png";
 import { Outlet, useLocation } from "react-router-dom";
 import { useModal } from "../../../../hooks/useModal";
 import {
   useDispatch,
   useSelector,
 } from "../../../../utils/reduxCustomBoilerplate";
-import { WS_CONNECTION_START } from "../../../../services/actions/websocket";
+import {
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_START,
+} from "../../../../services/actions/websocket";
 import { useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { getIngredients } from "../../../../services/actions/ingredients";
 
 export default function FeedOrders() {
   const dispatch = useDispatch();
   const { items } = useSelector((state) => state.websocket);
-  const format_date = () => {
-    const date_from_server = "2022-10-10T17:33:32.877Z";
-    return <FormattedDate date={new Date(date_from_server)} />;
-  };
+  const ingredients = useSelector((state) => state.ingredients);
   const location = useLocation();
   const { openModal } = useModal();
   const isModal: { background: boolean } = location.state?.background;
@@ -27,10 +28,12 @@ export default function FeedOrders() {
 
   useEffect(() => {
     dispatch({ type: WS_CONNECTION_START });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    dispatch(getIngredients());
+    return () => {
+      dispatch({ type: WS_CONNECTION_CLOSED });
+    };
   }, [dispatch]);
 
-  console.log(items);
   return (
     <>
       <Outlet />
@@ -39,43 +42,102 @@ export default function FeedOrders() {
           <article className={styles.order_feed_wrapper}>
             <p className="text text_type_main-large">Лента заказов</p>
             <ul className={styles.order_items_list}>
-              {items.map((_, i) => (
-                <li
-                  key={i}
-                  className={styles.order_item_card}
-                  onClick={() => {
-                    openModal({ _id: 1 }, "order");
-                  }}
-                >
-                  <div className={styles.order_item_header}>
-                    <p className="text text_type_digits-default">#123456</p>
-                    <p className="text text_type_main-default text_color_inactive">
-                      {format_date()}
-                    </p>
-                  </div>
-                  <p className="text text_type_main-medium">Бургер</p>
-                  <div className={styles.order_item_header}>
-                    <div className={styles.order_ingredients_wrapper}>
-                      {[...Array(6)].map((_, i) => (
-                        <div
-                          key={i}
-                          className={styles.order_ingredient_icon_wrapper}
-                        >
-                          <img
-                            className={styles.order_ingredient_icon_image}
-                            src={test}
-                            alt="Ингредиент"
+              {items.map((items) => {
+                return items.orders.map((order_item) => {
+                  const totalPrice = order_item.ingredients.reduce(
+                    (sum, ingredientId: string) => {
+                      const ingredient = ingredients.items.find(
+                        (item) => item._id === ingredientId
+                      );
+                      return sum + (ingredient?.price || 0);
+                    },
+                    0
+                  );
+
+                  const remainingIngredients =
+                    order_item.ingredients.length - 6;
+
+                  return (
+                    <li
+                      key={uuidv4()}
+                      className={styles.order_item_card}
+                      onClick={() => {
+                        openModal({ _id: order_item._id }, "order");
+                      }}
+                    >
+                      <div className={styles.order_item_header}>
+                        <p className="text text_type_digits-default">
+                          #{order_item.number}
+                        </p>
+                        <p className="text text_type_main-default text_color_inactive">
+                          <FormattedDate
+                            date={new Date(order_item.createdAt)}
                           />
+                        </p>
+                      </div>
+                      <p className="text text_type_main-medium">
+                        {order_item.name}
+                      </p>
+                      <div className={styles.order_item_header}>
+                        <div className={styles.order_ingredients_wrapper}>
+                          {order_item.ingredients
+                            .slice(0, 6)
+                            .map((ingredientId, index) => {
+                              const ingredient = ingredients.items.find(
+                                (item) => item._id === ingredientId
+                              );
+                              const isLast =
+                                index === 0 && remainingIngredients > 0;
+                              return (
+                                ingredient && (
+                                  <div
+                                    key={index}
+                                    className={
+                                      styles.order_ingredient_icon_wrapper
+                                    }
+                                  >
+                                    <div
+                                      className={
+                                        styles.order_ingredient_icon_wrapper_black
+                                      }
+                                    >
+                                      <img
+                                        className={
+                                          isLast
+                                            ? styles.order_ingredient_icon_low_opacity
+                                            : styles.order_ingredient_icon_image
+                                        }
+                                        src={ingredient.image}
+                                        alt={ingredient.name}
+                                      />
+                                      {isLast && (
+                                        <p
+                                          className={
+                                            styles.remaining_ingredients +
+                                            " " +
+                                            "text text_type_digits-default"
+                                          }
+                                        >
+                                          +{remainingIngredients}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </div>
+                                )
+                              );
+                            })}
                         </div>
-                      ))}
-                    </div>
-                    <div className={styles.order_price_wrapper}>
-                      <p className="text text_type_main-medium">0</p>
-                      <CurrencyIcon type="primary" />
-                    </div>
-                  </div>
-                </li>
-              ))}
+                        <div className={styles.order_price_wrapper}>
+                          <p className="text text_type_main-medium">
+                            {totalPrice}
+                          </p>
+                          <CurrencyIcon type="primary" />
+                        </div>
+                      </div>
+                    </li>
+                  );
+                });
+              })}
             </ul>
           </article>
           <article className={styles.statistics_panel}>
@@ -87,6 +149,7 @@ export default function FeedOrders() {
                     .flatMap((current) => current.orders)
                     .slice(0, 10)
                     .map((current, i) => {
+                      console.log(current);
                       if (current.status === "done") {
                         return (
                           <li key={i}>
@@ -112,13 +175,15 @@ export default function FeedOrders() {
                     .flatMap((current) => current.orders)
                     .slice(0, 10)
                     .map((current, i) => {
-                      return (
-                        <li key={i}>
-                          <p className="text text_type_digits-default">
-                            {current.number}
-                          </p>
-                        </li>
-                      );
+                      if (current.status !== "done") {
+                        return (
+                          <li key={i}>
+                            <p className="text text_type_digits-default">
+                              {current.number}
+                            </p>
+                          </li>
+                        );
+                      }
                     })}
                 </ul>
               </div>
@@ -131,7 +196,9 @@ export default function FeedOrders() {
                 className={
                   styles.digits_glow + " " + "text text_type_digits-large"
                 }
-              >{items[0]?.total}</p>
+              >
+                {items[0]?.total}
+              </p>
             </section>
             <section className={styles.statistics_counters}>
               <p className="text text_type_main-medium">

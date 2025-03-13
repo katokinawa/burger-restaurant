@@ -10,6 +10,7 @@ import { getCookie } from "../../utils/getCookieValue";
 import {
   AppDispatch,
   IItemsResponse,
+  RootState,
   TWebsocketActions,
 } from "../../utils/types";
 import { Middleware, MiddlewareAPI } from "redux";
@@ -53,7 +54,7 @@ export const socketMiddleware = (
   wsUrl: string,
   wsActions: TWebsocketActions
 ): Middleware => {
-  return ((store: MiddlewareAPI<AppDispatch>) => {
+  return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
 
     return (next) => (action: TWebsocket) => {
@@ -76,7 +77,7 @@ export const socketMiddleware = (
         };
 
         socket.onmessage = (event) => {
-          console.log("Получено сообщение:", event.data);
+          console.log("Получено сообщение");
           const { data } = event;
           const parsedData: IItemsResponse = JSON.parse(data);
           const { ...restParsedData } = parsedData;
@@ -89,6 +90,7 @@ export const socketMiddleware = (
         socket.onclose = (event) => {
           console.log("WebSocket соединение закрыто");
           dispatch({ type: onClose, payload: event });
+          socket = null;
         };
 
         if (type === wsSendMessage) {
