@@ -149,7 +149,6 @@ export default function FeedOrders() {
                     .flatMap((current) => current.orders)
                     .slice(0, 10)
                     .map((current, i) => {
-                      console.log(current);
                       if (current.status === "done") {
                         return (
                           <li key={i}>
