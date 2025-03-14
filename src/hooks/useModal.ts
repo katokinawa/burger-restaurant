@@ -1,10 +1,11 @@
 import {
+  CLEAR_INGREDIENT_DATA,
   DELETE_SELECTED_INGREDIENT,
   SET_SELECTED_INGREDIENT,
 } from "../services/actions/ingredient-detail";
 import { ORDER_SET_INITIAL_STATE } from "../services/actions/order-detail";
 import { useNavigate } from "react-router-dom";
-import { IItem } from "../utils/types";
+import { IItem, TItemsResponseOrders } from "../utils/types";
 import { useDispatch } from "../utils/reduxCustomBoilerplate";
 
 export const useModal = () => {
@@ -12,7 +13,7 @@ export const useModal = () => {
   const navigate = useNavigate();
 
   const openModal = (
-    item: IItem | { _id?: null | string },
+    item: IItem | TItemsResponseOrders,
     ingredientType: string
   ): void => {
     dispatch({
@@ -46,6 +47,9 @@ export const useModal = () => {
     dispatch({
       type: DELETE_SELECTED_INGREDIENT,
     });
+    setTimeout(() => {
+      dispatch({ type: CLEAR_INGREDIENT_DATA });
+    }, 300);
     dispatch({
       type: ORDER_SET_INITIAL_STATE,
     });

@@ -1,17 +1,68 @@
-import { IItem } from "../../utils/types";
+import { AppDispatch, IItem, TItemsResponseOrders } from "../../utils/types";
+import { request } from "../../utils/request";
 
-export const SET_SELECTED_INGREDIENT: 'SET_SELECTED_INGREDIENT' = "SET_SELECTED_INGREDIENT";
-export const DELETE_SELECTED_INGREDIENT: 'DELETE_SELECTED_INGREDIENT' = "DELETE_SELECTED_INGREDIENT";
+export const SET_SELECTED_INGREDIENT: "SET_SELECTED_INGREDIENT" =
+  "SET_SELECTED_INGREDIENT";
+export const DELETE_SELECTED_INGREDIENT: "DELETE_SELECTED_INGREDIENT" =
+  "DELETE_SELECTED_INGREDIENT";
+export const CLEAR_INGREDIENT_DATA: "CLEAR_INGREDIENT_DATA" =
+  "CLEAR_INGREDIENT_DATA";
+export const GET_ORDER_REQUEST: "GET_ORDER_REQUEST" = "GET_ORDER_REQUEST";
+export const GET_ORDER_SUCCESS: "GET_ORDER_SUCCESS" = "GET_ORDER_SUCCESS";
+export const GET_ORDER_ERROR: "GET_ORDER_ERROR" = "GET_ORDER_ERROR";
 
 export interface ISetSelectedIngredient {
   readonly type: typeof SET_SELECTED_INGREDIENT;
-  readonly item: IItem | { _id?: null | string },
-  readonly ingredientType: string,
+  readonly item: IItem | { _id?: null | string };
+  readonly ingredientType: string;
 }
 export interface IDeleteSelectedIngredient {
   readonly type: typeof DELETE_SELECTED_INGREDIENT;
 }
 
+export interface IClearIngredientData {
+  readonly type: typeof CLEAR_INGREDIENT_DATA;
+}
+
+export interface IGetOrderRequest {
+  readonly type: typeof GET_ORDER_REQUEST;
+}
+export interface IGetOrderSuccess {
+  readonly type: typeof GET_ORDER_SUCCESS;
+  readonly payload: TItemsResponseOrders;
+}
+export interface IGetOrderError {
+  readonly type: typeof GET_ORDER_ERROR;
+}
+
 export type TIngredientDetailActions =
   | ISetSelectedIngredient
   | IDeleteSelectedIngredient
+  | IClearIngredientData
+  | IGetOrderRequest
+  | IGetOrderSuccess
+  | IGetOrderError
+
+export const getOrder = (orderId: string) => (dispatch: AppDispatch) => {
+  dispatch({
+    type: GET_ORDER_REQUEST,
+  });
+  request(`api/orders/${orderId}`, {})
+    .then((item) => {
+      if (item.data) {
+        dispatch({
+          type: GET_ORDER_SUCCESS,
+          payload: item.data,
+        });
+      } else {
+        dispatch({
+          type: GET_ORDER_ERROR,
+        });
+      }
+    })
+    .catch(() => {
+      dispatch({
+        type: GET_ORDER_ERROR,
+      });
+    });
+};

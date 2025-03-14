@@ -99,7 +99,7 @@ export type TWebsocketActions = {
   onMessage: typeof WS_GET_ITEMS;
 };
 
-type TItemsResponseOrders = {
+export type TItemsResponseOrders = {
   name: string;
   ingredients: string[];
   _id: string;

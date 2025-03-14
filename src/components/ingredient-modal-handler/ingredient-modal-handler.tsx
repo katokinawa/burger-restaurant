@@ -1,7 +1,6 @@
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { useModal } from "../../hooks/useModal";
-
 import { useLocation } from "react-router-dom";
 import { useSelector } from "../../utils/reduxCustomBoilerplate";
 

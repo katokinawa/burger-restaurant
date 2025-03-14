@@ -44,6 +44,7 @@ export default function FeedOrders() {
             <ul className={styles.order_items_list}>
               {items.map((items) => {
                 return items.orders.map((order_item) => {
+                  
                   const totalPrice = order_item.ingredients.reduce(
                     (sum, ingredientId: string) => {
                       const ingredient = ingredients.items.find(
@@ -62,7 +63,7 @@ export default function FeedOrders() {
                       key={uuidv4()}
                       className={styles.order_item_card}
                       onClick={() => {
-                        openModal({ _id: order_item._id }, "order");
+                        openModal(order_item, "order");
                       }}
                     >
                       <div className={styles.order_item_header}>

@@ -28,7 +28,7 @@ export default function Orders() {
                 key={i}
                 className={styles.order_item_card}
                 onClick={() => {
-                  openModal({ _id: 1 }, "profile-order");
+                  openModal(order_item, "profile-order");
                 }}
               >
                 <div className={styles.order_item_header}>

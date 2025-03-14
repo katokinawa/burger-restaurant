@@ -2,71 +2,89 @@ import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import test from "../../images/illustration.png";
 import styles from "./order-current.module.css";
+import { useDispatch, useSelector } from "../../utils/reduxCustomBoilerplate";
+import { useParams } from "react-router-dom";
+import { getOrder } from "../../services/actions/ingredient-detail";
+import { useEffect } from "react";
 
-export default function OrderCurrent() {
-  const format_date = () => {
-    const date_from_server = "2022-10-10T17:33:32.877Z";
-    return <FormattedDate date={new Date(date_from_server)} />;
-  };
-  return (
-    <>
-      <section className={styles.order_current}>
-        <div className={styles.order_current_center}>
-          <p className="text text_type_digits-default mb-10">#034533</p>
-        </div>
-        <p className="text text_type_main-medium mb-3">
-          Black Hole Singularity острый бургер
-        </p>
-        <p
-          className={
-            styles.order_current_status +
-            " " +
-            "text text_type_main-default mb-15"
-          }
-        >
-          Выполнен
-        </p>
-        <p className="text text_type_main-medium mb-6">Состав:</p>
-        <ul className={styles.order_items_list}>
-          {[...Array(5)].map((_, i) => (
-            <li key={i} className={styles.order_item_card}>
-              <div className={styles.order_item_wrapper}>
-                <div key={i} className={styles.order_ingredient_icon_wrapper}>
-                  <img
-                    className={styles.order_ingredient_icon_image}
-                    src={test}
-                    alt="Ингредиент"
-                  />
-                </div>
-                <p
-                  className={
-                    styles.order_ingredient_text +
-                    " " +
-                    "text text_type_main-default"
-                  }
-                >
-                  Булочка
-                </p>
-                <div className={styles.order_price_wrapper}>
-                  <p className="text text_type_main-medium">1х + 80</p>
-                  <CurrencyIcon type="primary" />
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <div className={styles.order_current_modal_footer}>
-          <p className="text text_type_main-default text_color_inactive">
-            {format_date()}
-          </p>
-          <div className={styles.order_price_wrapper}>
-            <p className="text text_type_main-medium">80</p>
-            <CurrencyIcon type="primary" />
-          </div>
-        </div>
-      </section>
-    </>
+export const OrderCurrent = () => {
+  const dispatch = useDispatch();
+  const { orderCurrentId } = useParams;
+  const order_redux = useSelector((state) => state.ingredient.data);
+  const ingredients = useSelector((state) => state.ingredients.items);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("order") === "{}") {
+      dispatch(getOrder(orderCurrentId))
+    }
+    sessionStorage.setItem("order", JSON.stringify(order_redux));
+  }, [])
+
+  const order = JSON.parse(sessionStorage.getItem("order"));
+
+  if (!order || !order.ingredients) return null;
+
+  const ingredientCount = order.ingredients.reduce((acc, id) => {
+    acc[id] = (acc[id] || 0) + 1;
+    return acc;
+  }, {});
+
+  const uniqueIngredients = Object.keys(ingredientCount)
+    .map((id) => {
+      const ingredient = ingredients.find((item) => item._id === id);
+      return ingredient ? { ...ingredient, count: ingredientCount[id] } : null;
+    })
+    .filter(Boolean);
+
+  const totalPrice = uniqueIngredients.reduce(
+    (sum, item) => sum + item.price * item.count,
+    0
   );
-}
+
+  return (
+    <section className={styles.order_current}>
+      <div className={styles.order_current_center}>
+        <p className="text text_type_digits-default mb-10">#{order.number}</p>
+      </div>
+      <p className="text text_type_main-medium mb-3">{order.name}</p>
+      <p
+        className={`${styles.order_current_status} text text_type_main-default mb-15`}
+      >
+        {order.status === "done" ? "Готово" : "В процессе"}
+      </p>
+      <p className="text text_type_main-medium mb-6">Состав:</p>
+      <ul className={styles.order_items_list}>
+        {uniqueIngredients.map((ingredient) => (
+          <li key={ingredient._id} className={styles.order_item_card}>
+            <div className={styles.order_item_wrapper}>
+              <div className={styles.order_ingredient_icon_wrapper}>
+                <img
+                  className={styles.order_ingredient_icon_image}
+                  src={ingredient.image}
+                  alt={ingredient.name}
+                />
+              </div>
+              <p className="text text_type_main-default">{ingredient.name}</p>
+              <div className={styles.order_price_wrapper}>
+                <p className="text text_type_main-medium">
+                  {ingredient.count}× {ingredient.price}
+                </p>
+                <CurrencyIcon type="primary" />
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div className={styles.order_current_modal_footer}>
+        <p className="text text_type_main-default text_color_inactive">
+          <FormattedDate date={new Date(order.createdAt)} />
+        </p>
+        <div className={styles.order_price_wrapper}>
+          <p className="text text_type_main-medium">{totalPrice}</p>
+          <CurrencyIcon type="primary" />
+        </div>
+      </div>
+    </section>
+  );
+};
