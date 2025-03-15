@@ -16,6 +16,7 @@ import {
   WS_USER_ORDERS_CONNECTION_CLOSED,
   WS_USER_ORDERS_CONNECTION_START,
 } from "../../../../services/actions/websocketUser";
+import { IItemsResponseOrders } from "../../../../utils/types";
 
 export default function Orders() {
   const dispatch = useDispatch();
@@ -53,9 +54,26 @@ export default function Orders() {
     return <p className={styles.ws_status_message}>Загрузка...</p>;
   }
 
-  if (!items[0]?.orders.length || !items[0]?.orders) {
+  if (!items[0]?.orders.length || (!items[0]?.orders && !isLoading)) {
     return <p className={styles.ws_status_message}>Заказов нет...</p>;
   }
+
+  const statusOrder = (order: IItemsResponseOrders) => {
+    switch (order.status) {
+      case "done": {
+        return "Выполнен";
+      }
+      case "cancel": {
+        return "Отменён";
+      }
+      case "pending": {
+        return "Создан";
+      }
+      default: {
+        return "Статус неизвестен";
+      }
+    }
+  };
 
   return (
     <>
@@ -91,7 +109,11 @@ export default function Orders() {
                         <p className="text text_type_digits-default">
                           #{order_item.number}
                         </p>
-                        <p className="text text_type_main-default text_color_inactive">
+                        <p
+                          className={
+                            "text text_type_main-default text_color_inactive"
+                          }
+                        >
                           <FormattedDate
                             date={new Date(order_item.createdAt)}
                           />
@@ -99,6 +121,13 @@ export default function Orders() {
                       </div>
                       <p className="text text_type_main-medium">
                         {order_item.name}
+                      </p>
+                      <p
+                        className={`text text_type_main-default text_color_inactive ${
+                          order_item.status === "done" ? styles.text_blue : ""
+                        }`}
+                      >
+                        {statusOrder(order_item)}
                       </p>
                       <div className={styles.order_item_header}>
                         <div className={styles.order_ingredients_wrapper}>
@@ -124,8 +153,8 @@ export default function Orders() {
                                       }
                                     >
                                       <img
-                                        className={styles.order_ingredient_image +
-                                          isLast
+                                        className={
+                                          styles.order_ingredient_image + isLast
                                             ? styles.order_ingredient_icon_low_opacity
                                             : styles.order_ingredient_icon_image
                                         }

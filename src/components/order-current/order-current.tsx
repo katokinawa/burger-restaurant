@@ -49,6 +49,23 @@ export const OrderCurrent = () => {
       0
     );
 
+  const statusOrder = () => {
+    switch(order.status) {
+      case "done": {
+        return "Выполнен"
+      }
+      case "cancel": {
+        return "Отменён"
+      }
+      case "pending": {
+        return "Создан"
+      }
+      default: {
+        return "Статус неизвестен";
+      }
+    }
+  }
+
   return (
     <section className={styles.order_current}>
       <div className={styles.order_current_center}>
@@ -58,7 +75,7 @@ export const OrderCurrent = () => {
       <p
         className={`${styles.order_current_status} text text_type_main-default mb-15`}
       >
-        {order.status === "done" ? "Готово" : "В процессе"}
+        {statusOrder()}
       </p>
       <p className="text text_type_main-medium mb-6">Состав:</p>
       <ul className={styles.order_items_list}>
