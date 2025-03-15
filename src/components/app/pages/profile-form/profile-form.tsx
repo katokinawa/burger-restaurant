@@ -6,9 +6,7 @@ import {
 import styles from "./profile-form.module.css";
 import { useForm } from "../../../../hooks/useForm";
 
-import {
-  submitGetPersonValues,
-} from "../../../../services/actions/form";
+import { submitGetPersonValues } from "../../../../services/actions/form";
 import {
   ChangeEvent,
   FormEvent,
@@ -147,57 +145,60 @@ export function ProfileForm() {
           disabled={isEditable.password}
           required={true}
         />
-        <AnimatePresence>
-          {isSuccess && !formErrorStatus && (
-            <motion.div key="success" exit={{ opacity: 0 }}>
-              <p className="text text_type_main-small">Успешно</p>
-            </motion.div>
+
+        <div className={styles.action_wrapper}>
+          <AnimatePresence>
+            {isSuccess && !formErrorStatus && (
+              <motion.div key="success" exit={{ opacity: 0 }}>
+                <p className="text text_type_main-small">Успешно</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          {formErrorStatus && formErrorStatusCode !== 403 && (
+            <p className="text text_type_main-small">
+              Пожалуйста, попробуйте еще раз
+            </p>
           )}
-        </AnimatePresence>
-        {formErrorStatus && formErrorStatusCode !== 403 && (
-          <p className="text text_type_main-small">
-            Пожалуйста, попробуйте еще раз
-          </p>
-        )}
-        {formErrorStatusCode === 403 && (
-          <p className="text text_type_main-small">
-            Этот email уже использует другой пользователь
-          </p>
-        )}
-        <Button
-          htmlType={"submit"}
-          name={"save"}
-          type="primary"
-          size="small"
-          extraClass={
-            "ml-2" +
-            " " +
-            styles.button_form +
-            " " +
-            (isEdit && styles.button_form_show)
-          }
-          required={true}
-          disabled={formRequest || !isEdit}
-        >
-          Сохранить
-        </Button>
-        <Button
-          htmlType={"button"}
-          onClick={resetProfileForm}
-          name={"cancel"}
-          type="secondary"
-          size="small"
-          extraClass={
-            "ml-2" +
-            " " +
-            styles.button_form +
-            " " +
-            (isEdit && styles.button_form_show)
-          }
-          disabled={formRequest || !isEdit}
-        >
-          Отмена
-        </Button>
+          {formErrorStatusCode === 403 && (
+            <p className="text text_type_main-small">
+              Этот email уже использует другой пользователь
+            </p>
+          )}
+          <Button
+            htmlType={"submit"}
+            name={"save"}
+            type="primary"
+            size="small"
+            extraClass={
+              "ml-2" +
+              " " +
+              styles.button_form +
+              " " +
+              (isEdit && styles.button_form_show)
+            }
+            required={true}
+            disabled={formRequest || !isEdit}
+          >
+            Сохранить
+          </Button>
+          <Button
+            htmlType={"button"}
+            onClick={resetProfileForm}
+            name={"cancel"}
+            type="secondary"
+            size="small"
+            extraClass={
+              "ml-2" +
+              " " +
+              styles.button_form +
+              " " +
+              (isEdit && styles.button_form_show)
+            }
+            disabled={formRequest || !isEdit}
+          >
+            Отмена
+          </Button>
+        </div>
       </form>
     </>
   );

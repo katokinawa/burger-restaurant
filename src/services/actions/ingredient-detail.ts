@@ -1,15 +1,15 @@
 import { AppDispatch, IItem, TItemsResponseOrders } from "../../utils/types";
 import { request } from "../../utils/request";
 
-export const SET_SELECTED_INGREDIENT: "SET_SELECTED_INGREDIENT" =
+export const SET_SELECTED_INGREDIENT: 'SET_SELECTED_INGREDIENT' =
   "SET_SELECTED_INGREDIENT";
-export const DELETE_SELECTED_INGREDIENT: "DELETE_SELECTED_INGREDIENT" =
+export const DELETE_SELECTED_INGREDIENT: 'DELETE_SELECTED_INGREDIENT' =
   "DELETE_SELECTED_INGREDIENT";
-export const CLEAR_INGREDIENT_DATA: "CLEAR_INGREDIENT_DATA" =
+export const CLEAR_INGREDIENT_DATA: 'CLEAR_INGREDIENT_DATA' =
   "CLEAR_INGREDIENT_DATA";
-export const GET_ORDER_REQUEST: "GET_ORDER_REQUEST" = "GET_ORDER_REQUEST";
-export const GET_ORDER_SUCCESS: "GET_ORDER_SUCCESS" = "GET_ORDER_SUCCESS";
-export const GET_ORDER_ERROR: "GET_ORDER_ERROR" = "GET_ORDER_ERROR";
+export const GET_ORDER_REQUEST: 'GET_ORDER_REQUEST' = "GET_ORDER_REQUEST";
+export const GET_ORDER_SUCCESS: 'GET_ORDER_SUCCESS' = "GET_ORDER_SUCCESS";
+export const GET_ORDER_ERROR: 'GET_ORDER_ERROR' = "GET_ORDER_ERROR";
 
 export interface ISetSelectedIngredient {
   readonly type: typeof SET_SELECTED_INGREDIENT;
@@ -43,16 +43,16 @@ export type TIngredientDetailActions =
   | IGetOrderSuccess
   | IGetOrderError
 
-export const getOrder = (orderId: string) => (dispatch: AppDispatch) => {
+export const getOrder = (orderId: number) => (dispatch: AppDispatch) => {
   dispatch({
     type: GET_ORDER_REQUEST,
   });
-  request(`api/orders/${orderId}`, {})
+  request(`orders/${orderId}`, {})
     .then((item) => {
-      if (item.data) {
+      if (item.orders) {
         dispatch({
           type: GET_ORDER_SUCCESS,
-          payload: item.data,
+          payload: item.orders[0]
         });
       } else {
         dispatch({

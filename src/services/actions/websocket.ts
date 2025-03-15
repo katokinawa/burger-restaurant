@@ -1,12 +1,9 @@
-export const WS_CONNECTION_START: "WS_CONNECTION_START" = "WS_CONNECTION_START";
-export const WS_CONNECTION_SUCCESS: "WS_CONNECTION_SUCCESS" =
-  "WS_CONNECTION_SUCCESS";
-export const WS_CONNECTION_ERROR: "WS_CONNECTION_ERROR" = "WS_CONNECTION_ERROR";
-export const WS_CONNECTION_CLOSED: "WS_CONNECTION_CLOSED" =
-  "WS_CONNECTION_CLOSED";
-export const WS_GET_ITEMS: "WS_GET_ITEMS" = "WS_GET_ITEMS";
-export const WS_SEND_ITEMS: "WS_SEND_ITEMS" = "WS_SEND_ITEMS";
-import { getCookie } from "../../utils/getCookieValue";
+export const WS_CONNECTION_START: 'WS_CONNECTION_START' = "WS_CONNECTION_START";
+export const WS_CONNECTION_SUCCESS: 'WS_CONNECTION_SUCCESS' = "WS_CONNECTION_SUCCESS";
+export const WS_CONNECTION_ERROR: 'WS_CONNECTION_ERROR' = "WS_CONNECTION_ERROR";
+export const WS_CONNECTION_CLOSED: 'WS_CONNECTION_CLOSED' = "WS_CONNECTION_CLOSED";
+export const WS_GET_ITEMS: 'WS_GET_ITEMS' = "WS_GET_ITEMS";
+export const WS_SEND_ITEMS: 'WS_SEND_ITEMS' = "WS_SEND_ITEMS";
 import {
   AppDispatch,
   IItemsResponse,
@@ -15,6 +12,7 @@ import {
 } from "../../utils/types";
 import { Middleware, MiddlewareAPI } from "redux";
 
+// Интерфейс для общего feed-а
 interface IWsConnectionStart {
   readonly type: typeof WS_CONNECTION_START;
 }
@@ -37,18 +35,12 @@ interface IWsConnectionGetItems {
   readonly payload: IItemsResponse;
 }
 
-interface IWsConnectionSendItems {
-  readonly type: typeof WS_SEND_ITEMS;
-  readonly payload: any;
-}
-
 export type TWebsocket =
   | IWsConnectionStart
   | IWsConnectionSuccess
   | IWsConnectionError
   | IWsConnectionClosed
   | IWsConnectionGetItems
-  | IWsConnectionSendItems;
 
 export const socketMiddleware = (
   wsUrl: string,
@@ -60,7 +52,7 @@ export const socketMiddleware = (
     return (next) => (action: TWebsocket) => {
       const { dispatch } = store;
       const { type } = action;
-      const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } =
+      const { wsInit, onOpen, onClose, onError, onMessage } =
         wsActions;
       if (type === wsInit) {
         socket = new WebSocket(`${wsUrl}`);
@@ -92,13 +84,6 @@ export const socketMiddleware = (
           dispatch({ type: onClose, payload: event });
           socket = null;
         };
-
-        if (type === wsSendMessage) {
-          const token = getCookie().accessToken;
-          const payload = action.payload;
-          const message = { ...payload, token: token };
-          socket.send(JSON.stringify(message));
-        }
       }
 
       next(action);

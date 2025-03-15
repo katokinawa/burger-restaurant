@@ -3,6 +3,7 @@ import { OrderCurrent } from "../order-current/order-current";
 import { useModal } from "../../hooks/useModal";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "../../utils/reduxCustomBoilerplate";
+import styles from "./order-current-modal-handler.module.css"
 export default function OrderCurrentModalHandler() {
   const { closeModal } = useModal();
   const { isModalOpen } = useSelector((state) => state.ingredient);
@@ -16,5 +17,5 @@ export default function OrderCurrentModalHandler() {
       </Modal>
     );
   }
-  return <OrderCurrent />;
+  return <div className={styles.order_current}><OrderCurrent /></div>;
 }

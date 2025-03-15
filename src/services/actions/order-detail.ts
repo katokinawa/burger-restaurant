@@ -1,3 +1,4 @@
+import { getCookie } from "../../utils/getCookieValue";
 import { request } from "../../utils/request";
 import { AppDispatch, AppThunk, IOrderDetailValues } from "../../utils/types";
 export const POST_ORDER_REQUEST: 'POST_ORDER_REQUEST' = "POST_ORDER_REQUEST";
@@ -31,6 +32,7 @@ export type TOrderDetail =
 
 export const postOrder =
   (ingredients: { ingredients: string[] }): AppThunk => (dispatch: AppDispatch) => {
+    const token = getCookie().accessToken;
     dispatch({
       type: POST_ORDER_REQUEST,
     });
@@ -38,6 +40,7 @@ export const postOrder =
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: token,
       },
       body: JSON.stringify(ingredients),
     })

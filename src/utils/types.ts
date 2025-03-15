@@ -12,8 +12,8 @@ import {
   WS_CONNECTION_START,
   WS_CONNECTION_SUCCESS,
   WS_GET_ITEMS,
-  WS_SEND_ITEMS,
 } from "../services/actions/websocket";
+import { WS_USER_ORDERS_CONNECTION_CLOSED, WS_USER_ORDERS_CONNECTION_ERROR, WS_USER_ORDERS_CONNECTION_START, WS_USER_ORDERS_CONNECTION_SUCCESS, WS_USER_ORDERS_GET_ITEMS } from "../services/actions/websocketUser";
 
 export interface IItem {
   _id: string;
@@ -92,11 +92,18 @@ export type AppDispatch = ThunkDispatch<
 
 export type TWebsocketActions = {
   wsInit: typeof WS_CONNECTION_START;
-  wsSendMessage: typeof WS_SEND_ITEMS;
   onOpen: typeof WS_CONNECTION_SUCCESS;
   onClose: typeof WS_CONNECTION_CLOSED;
   onError: typeof WS_CONNECTION_ERROR;
   onMessage: typeof WS_GET_ITEMS;
+};
+
+export type TWebsocketActionsUser = {
+  wsInit: typeof WS_USER_ORDERS_CONNECTION_START;
+  onOpen: typeof WS_USER_ORDERS_CONNECTION_SUCCESS;
+  onClose: typeof WS_USER_ORDERS_CONNECTION_CLOSED;
+  onError: typeof WS_USER_ORDERS_CONNECTION_ERROR;
+  onMessage: typeof WS_USER_ORDERS_GET_ITEMS;
 };
 
 export type TItemsResponseOrders = {

@@ -4,24 +4,27 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./order-current.module.css";
 import { useDispatch, useSelector } from "../../utils/reduxCustomBoilerplate";
-import { useParams } from "react-router-dom";
 import { getOrder } from "../../services/actions/ingredient-detail";
 import { useEffect } from "react";
 
 export const OrderCurrent = () => {
   const dispatch = useDispatch();
-  const { orderCurrentId } = useParams;
-  const order_redux = useSelector((state) => state.ingredient.data);
+  const order = useSelector((state) => state.ingredient.data);
+  const order_number = useSelector((state) => state.ingredient.data.number);
   const ingredients = useSelector((state) => state.ingredients.items);
 
   useEffect(() => {
-    if (sessionStorage.getItem("order") === "{}") {
-      dispatch(getOrder(orderCurrentId))
+    if (Object.keys(order).length !== 0) {
+      localStorage.setItem("order", JSON.stringify(order_number));
     }
-    sessionStorage.setItem("order", JSON.stringify(order_redux));
-  }, [])
+  }, [order, order_number]);
 
-  const order = JSON.parse(sessionStorage.getItem("order"));
+
+  useEffect(() => {
+    if (Object.keys(order).length === 0) {
+      dispatch(getOrder(localStorage.getItem("order")));
+    }
+  }, [order, dispatch]);
 
   if (!order || !order.ingredients) return null;
 
@@ -59,11 +62,14 @@ export const OrderCurrent = () => {
           <li key={ingredient._id} className={styles.order_item_card}>
             <div className={styles.order_item_wrapper}>
               <div className={styles.order_ingredient_icon_wrapper}>
-                <img
-                  className={styles.order_ingredient_icon_image}
-                  src={ingredient.image}
-                  alt={ingredient.name}
-                />
+                <div className={styles.order_ingredient_icon_wrapper_black}>
+                  {" "}
+                  <img
+                    className={styles.order_ingredient_icon_image}
+                    src={ingredient.image}
+                    alt={ingredient.name}
+                  />
+                </div>
               </div>
               <p className="text text_type_main-default">{ingredient.name}</p>
               <div className={styles.order_price_wrapper}>

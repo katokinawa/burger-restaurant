@@ -43,15 +43,18 @@ export default function BurgerConstructor() {
 
   const collectArrayId = (): { ingredients: string[] } => {
     if (bun && bun.length !== 0) {
+      const bunId = bun[0]._id;
       const arr = [
+        bunId,
         ...ingredients.map((item: IItem) => item._id),
-        ...bun.map((item: IItem) => item._id),
+        bunId,
       ];
       return { ingredients: arr };
     } else {
       return { ingredients: [] };
     }
   };
+  
 
   const handlePostOrder = (): void => {
     dispatch(postOrder(collectArrayId()));
@@ -217,7 +220,9 @@ export default function BurgerConstructor() {
           htmlType="button"
           type="primary"
           size="large"
-          disabled={ingredients.length === 0 || bun?.length === 0 ? true : false}
+          disabled={
+            ingredients.length === 0 || bun?.length === 0 ? true : false
+          }
         >
           Оформить заказ
         </Button>

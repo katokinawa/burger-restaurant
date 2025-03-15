@@ -1,0 +1,3 @@
+.order_current {
+  composes: mt-30 from global;
+}

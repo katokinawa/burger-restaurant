@@ -23,6 +23,7 @@ const initialState: TIngredientDetailState = {
   ingredientType: "",
   OrderRequest: false,
   OrderFailed: false,
+  OrderMessage: "",
 };
 
 export const ingredientDetail = (
@@ -61,6 +62,7 @@ export const ingredientDetail = (
       return {
         ...state,
         data: action.payload,
+        OrderRequest: false,
       };
     }
     case GET_ORDER_ERROR: {

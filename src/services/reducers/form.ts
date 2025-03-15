@@ -59,6 +59,7 @@ export const form = (state = initialState, action: TFormsActions) => {
         formRequest: false,
         formErrorStatus: false,
         formSuccess: true,
+        formErrorStatusCode: 0,
       };
     }
     case FORM_SUBMIT_ERROR: {
