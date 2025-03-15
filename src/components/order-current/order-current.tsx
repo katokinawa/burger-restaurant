@@ -10,11 +10,11 @@ import { useEffect } from "react";
 export const OrderCurrent = () => {
   const dispatch = useDispatch();
   const order = useSelector((state) => state.ingredient.data);
-  const order_number = useSelector((state) => state.ingredient.data.number);
+  const order_number = useSelector((state) => state.ingredient.data?.number);
   const ingredients = useSelector((state) => state.ingredients.items);
 
   useEffect(() => {
-    if (Object.keys(order).length !== 0) {
+    if (Object.keys(order).length !== 0 && order_number) {
       localStorage.setItem("order", JSON.stringify(order_number));
     }
   }, [order, order_number]);
@@ -22,13 +22,16 @@ export const OrderCurrent = () => {
 
   useEffect(() => {
     if (Object.keys(order).length === 0) {
-      dispatch(getOrder(localStorage.getItem("order")));
+      const order = localStorage.getItem("order")
+      if(order) {
+        dispatch(getOrder(+order));
+      }
     }
   }, [order, dispatch]);
 
   if (!order || !order.ingredients) return null;
 
-  const ingredientCount = order.ingredients.reduce((acc, id) => {
+  const ingredientCount = order.ingredients.reduce((acc:  { [key: string]: number }, id) => {
     acc[id] = (acc[id] || 0) + 1;
     return acc;
   }, {});
@@ -40,10 +43,11 @@ export const OrderCurrent = () => {
     })
     .filter(Boolean);
 
-  const totalPrice = uniqueIngredients.reduce(
-    (sum, item) => sum + item.price * item.count,
-    0
-  );
+
+    const totalPrice = uniqueIngredients.reduce(
+      (sum, item) => sum + item!.price * item!.count,
+      0
+    );
 
   return (
     <section className={styles.order_current}>
@@ -59,22 +63,22 @@ export const OrderCurrent = () => {
       <p className="text text_type_main-medium mb-6">Состав:</p>
       <ul className={styles.order_items_list}>
         {uniqueIngredients.map((ingredient) => (
-          <li key={ingredient._id} className={styles.order_item_card}>
+          <li key={ingredient?._id} className={styles.order_item_card}>
             <div className={styles.order_item_wrapper}>
               <div className={styles.order_ingredient_icon_wrapper}>
                 <div className={styles.order_ingredient_icon_wrapper_black}>
                   {" "}
                   <img
                     className={styles.order_ingredient_icon_image}
-                    src={ingredient.image}
-                    alt={ingredient.name}
+                    src={ingredient?.image}
+                    alt={ingredient?.name}
                   />
                 </div>
               </div>
-              <p className="text text_type_main-default">{ingredient.name}</p>
+              <p className="text text_type_main-default">{ingredient?.name}</p>
               <div className={styles.order_price_wrapper}>
                 <p className="text text_type_main-medium">
-                  {ingredient.count}× {ingredient.price}
+                  {ingredient?.count}× {ingredient?.price}
                 </p>
                 <CurrencyIcon type="primary" />
               </div>
@@ -84,7 +88,7 @@ export const OrderCurrent = () => {
       </ul>
       <div className={styles.order_current_modal_footer}>
         <p className="text text_type_main-default text_color_inactive">
-          <FormattedDate date={new Date(order.createdAt)} />
+          <FormattedDate date={new Date(order.createdAt!)} />
         </p>
         <div className={styles.order_price_wrapper}>
           <p className="text text_type_main-medium">{totalPrice}</p>

@@ -1,14 +1,14 @@
-export const WS_USER_ORDERS_CONNECTION_START: "WS_USER_ORDERS_CONNECTION_START" =
+export const WS_USER_ORDERS_CONNECTION_START: 'WS_USER_ORDERS_CONNECTION_START' =
   "WS_USER_ORDERS_CONNECTION_START";
-export const WS_USER_ORDERS_SEND_ITEMS: "WS_USER_ORDERS_SEND_ITEMS" =
+export const WS_USER_ORDERS_SEND_ITEMS: 'WS_USER_ORDERS_SEND_ITEMS' =
   "WS_USER_ORDERS_SEND_ITEMS";
-export const WS_USER_ORDERS_CONNECTION_SUCCESS: "WS_USER_ORDERS_CONNECTION_SUCCESS" =
+export const WS_USER_ORDERS_CONNECTION_SUCCESS: 'WS_USER_ORDERS_CONNECTION_SUCCESS' =
   "WS_USER_ORDERS_CONNECTION_SUCCESS";
-export const WS_USER_ORDERS_CONNECTION_CLOSED: "WS_USER_ORDERS_CONNECTION_CLOSED" =
+export const WS_USER_ORDERS_CONNECTION_CLOSED: 'WS_USER_ORDERS_CONNECTION_CLOSED' =
   "WS_USER_ORDERS_CONNECTION_CLOSED";
-export const WS_USER_ORDERS_CONNECTION_ERROR: "WS_USER_ORDERS_CONNECTION_ERROR" =
+export const WS_USER_ORDERS_CONNECTION_ERROR: 'WS_USER_ORDERS_CONNECTION_ERROR' =
   "WS_USER_ORDERS_CONNECTION_ERROR";
-export const WS_USER_ORDERS_GET_ITEMS: "WS_USER_ORDERS_GET_ITEMS" =
+export const WS_USER_ORDERS_GET_ITEMS: 'WS_USER_ORDERS_GET_ITEMS' =
   "WS_USER_ORDERS_GET_ITEMS";
 import { getCookie } from "../../utils/getCookieValue";
 import {
@@ -59,7 +59,7 @@ export const socketMiddlewareUser = (
       const { type } = action;
       const { wsInit, onOpen, onClose, onError, onMessage } = wsActions;
       const token = getCookie()?.accessToken?.replace("Bearer ", "") || "";
-      if (type === wsInit) {
+      if (type === wsInit && token) {
         socket = new WebSocket(`${wsUrl}?token=${token}`);
       }
       if (socket) {

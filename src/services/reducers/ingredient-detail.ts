@@ -1,4 +1,4 @@
-import { IItem } from "../../utils/types";
+import { IId, IItem, IItemsResponseOrders } from "../../utils/types";
 import {
   SET_SELECTED_INGREDIENT,
   DELETE_SELECTED_INGREDIENT,
@@ -9,12 +9,21 @@ import {
   GET_ORDER_REQUEST,
 } from "../actions/ingredient-detail";
 
+type initialData = {
+  number?: number;
+  ingredients?: string[];
+  status?: boolean;
+  createdAt?: string | undefined;
+  name?: string;
+}
+
 type TIngredientDetailState = {
-  data: IItem | object;
+  data: IItem | IItemsResponseOrders | IId | initialData;
   isModalOpen: boolean;
   ingredientType: string;
   OrderRequest: boolean;
   OrderFailed: boolean;
+  OrderMessage: string;
 };
 
 const initialState: TIngredientDetailState = {
@@ -43,7 +52,7 @@ export const ingredientDetail = (
       return {
         ...state,
         isModalOpen: false,
-        ingredientType: null,
+        ingredientType: "",
       };
     }
     case CLEAR_INGREDIENT_DATA: {

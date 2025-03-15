@@ -7,13 +7,21 @@ import { TIngredientDetailActions } from "../services/actions/ingredient-detail"
 import { TIngredients } from "../services/actions/ingredients";
 import { TOrderDetail } from "../services/actions/order-detail";
 import {
+  TWebsocket,
   WS_CONNECTION_CLOSED,
   WS_CONNECTION_ERROR,
   WS_CONNECTION_START,
   WS_CONNECTION_SUCCESS,
   WS_GET_ITEMS,
 } from "../services/actions/websocket";
-import { WS_USER_ORDERS_CONNECTION_CLOSED, WS_USER_ORDERS_CONNECTION_ERROR, WS_USER_ORDERS_CONNECTION_START, WS_USER_ORDERS_CONNECTION_SUCCESS, WS_USER_ORDERS_GET_ITEMS } from "../services/actions/websocketUser";
+import {
+  TWebsocketUser,
+  WS_USER_ORDERS_CONNECTION_CLOSED,
+  WS_USER_ORDERS_CONNECTION_ERROR,
+  WS_USER_ORDERS_CONNECTION_START,
+  WS_USER_ORDERS_CONNECTION_SUCCESS,
+  WS_USER_ORDERS_GET_ITEMS,
+} from "../services/actions/websocketUser";
 
 export interface IItem {
   _id: string;
@@ -29,6 +37,10 @@ export interface IItem {
   image_mobile: string;
   image_large: string;
   __v: number;
+  number?: number;
+  ingredients?: string[];
+  status?: boolean;
+  createdAt?: string | undefined;
 }
 
 export interface IUser {
@@ -43,6 +55,15 @@ export interface IOrderDetailValues {
   name: string;
   order: { number: number };
   success: boolean;
+}
+
+export interface IId {
+  _id?: null | string;
+  number?: number;
+  ingredients?: string[];
+  status?: boolean;
+  name?: string;
+  createdAt?: string | undefined;
 }
 
 export type TUseFormReturn = {
@@ -75,7 +96,9 @@ export type TApplicationActions =
   | TFormsActions
   | TIngredientDetailActions
   | TIngredients
-  | TOrderDetail;
+  | TOrderDetail
+  | TWebsocket
+  | TWebsocketUser;
 
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
@@ -106,18 +129,21 @@ export type TWebsocketActionsUser = {
   onMessage: typeof WS_USER_ORDERS_GET_ITEMS;
 };
 
-export type TItemsResponseOrders = {
+export interface IItemsResponseOrders {
   name: string;
   ingredients: string[];
+  owner: string;
   _id: string;
   status: string;
   number: number;
   createdAt: string;
   updatedAt: string;
-};
+  __v: number;
+}
 export interface IItemsResponse {
   success: boolean;
-  orders: TItemsResponseOrders[];
+  orders: IItemsResponseOrders[];
   total: number;
   totalToday: number;
+  message?: string;
 }

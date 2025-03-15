@@ -1,5 +1,5 @@
 import { BASE_URL } from "./constants";
-import { IItem } from "./types";
+import { IItem, IItemsResponseOrders } from "./types";
 
 // Типизация для ответа от API
 
@@ -18,6 +18,9 @@ interface ApiResponse {
   data: IItem[];
   order: { number: number };
   success: boolean;
+  orders: IItemsResponseOrders[]
+  total: number;
+  totalToday: number;
 }
 
 // Функция для обработки ответа

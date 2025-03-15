@@ -53,6 +53,10 @@ export default function Orders() {
     return <p className={styles.ws_status_message}>Загрузка...</p>;
   }
 
+  if (!items[0]?.orders.length || !items[0]?.orders) {
+    return <p className={styles.ws_status_message}>Заказов нет...</p>;
+  }
+
   return (
     <>
       <Outlet />
