@@ -1,16 +1,24 @@
+import { IItem } from "../../utils/types";
 import {
   GET_INGREDIENTS_REQUEST,
   GET_INGREDIENTS_ERROR,
   GET_INGREDIENTS_SUCCESS,
+  TIngredients,
 } from "../actions/ingredients";
 
-const initialState = {
+type TIngredientsState = {
+  items: IItem[];
+  ingredientsRequest: boolean;
+  ingredientsFailed: boolean;
+}
+
+const initialState: TIngredientsState = {
   items: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
 };
 
-export const ingredients = (state = initialState, action) => {
+export const ingredients = (state = initialState, action: TIngredients) => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return {

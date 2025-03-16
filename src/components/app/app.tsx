@@ -11,7 +11,10 @@ import { ProtectedRouteElement } from "../protected-route";
 import { ErrorPage } from "../error-page/error-page";
 import IngredientModalHandler from "../ingredient-modal-handler/ingredient-modal-handler";
 import OrderModalHandler from "../order-modal-handler/order-modal-handler";
+import FeedOrders from "./pages/feed-orders/feed-orders";
 import Orders from "./pages/orders/orders";
+import { ProfileForm } from "./pages/profile-form/profile-form";
+import OrderCurrentModalHandler from "../order-current-modal-handler/order-current-modal-handler";
 
 export default function App() {
   return (
@@ -23,14 +26,33 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route
-            path="/profile/orders"
-            element={<ProtectedRouteElement element={<Orders />} />}
-          />
+          <Route path="/feed" element={<FeedOrders />}>
+            <Route
+              path=":orderCurrentId"
+              element={<OrderCurrentModalHandler />}
+            />
+          </Route>
+
           <Route
             path="/profile"
             element={<ProtectedRouteElement element={<Profile />} />}
-          />
+          >
+            <Route index element={<ProfileForm />} />
+            <Route
+              path="orders"
+              element={<ProtectedRouteElement element={<Orders />} />}
+            >
+              <Route
+                path=":orderCurrentId"
+                element={
+                  <ProtectedRouteElement
+                    element={<OrderCurrentModalHandler />}
+                  />
+                }
+              />
+            </Route>
+          </Route>
+
           <Route path="/" element={<Home />}>
             <Route
               path="ingredient/:ingredientId"

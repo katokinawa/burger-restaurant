@@ -1,19 +1,26 @@
 import { BASE_URL } from "./constants";
-import { IItem } from "./types";
+import { IItem, IItemsResponseOrders } from "./types";
 
 // Типизация для ответа от API
 
 interface ApiResponse {
   user: {
-    name?: string;
-    email?: string;
-    password?: string;
-    code?: string;
-  };
-  accessToken?: string;
-  refreshToken?: string;
-  data?: IItem[];
-  order?: { number: number };
+    name: string;
+    email: string;
+  }
+  name: string;
+  email: string;
+  password: string;
+  code: string;
+  token: string;
+  accessToken: string;
+  refreshToken: string;
+  data: IItem[];
+  order: { number: number };
+  success: boolean;
+  orders: IItemsResponseOrders[]
+  total: number;
+  totalToday: number;
 }
 
 // Функция для обработки ответа

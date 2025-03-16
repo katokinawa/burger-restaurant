@@ -5,7 +5,7 @@ import {
 import styles from "./forgot-password.module.css";
 import { Link, Navigate } from "react-router-dom";
 import { useForm } from "../../../../hooks/useForm";
-import { useDispatch } from "react-redux";
+
 import {
   RESET_ERROR_STATUS,
   submitForgotPassword,
@@ -13,6 +13,7 @@ import {
 import { FormEvent, useEffect } from "react";
 import { getCookie } from "../../../../utils/getCookieValue";
 import { TUseFormReturn } from "../../../../utils/types";
+import { useDispatch } from "../../../../utils/reduxCustomBoilerplate";
 
 export function ForgotPassword() {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ export function ForgotPassword() {
 
   const onSubmit = (e: FormEvent): void => {
     e.preventDefault();
-    // @ts-expect-error Пока игнорируем redux типизацию
+
     dispatch(submitForgotPassword({ email: emailValue }));
   };
   if (token) {

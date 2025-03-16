@@ -1,10 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
 import {
   RESET_ERROR_STATUS,
   setFormValue,
   SHOW_PASSWORD_SWITCH,
 } from "../services/actions/form";
 import { ChangeEvent } from "react";
+import { useDispatch, useSelector } from "../utils/reduxCustomBoilerplate";
 
 export const useForm = () => {
   const dispatch = useDispatch();
@@ -14,11 +14,9 @@ export const useForm = () => {
     password: passwordValue,
     passwordVisible,
     code,
-    // @ts-expect-error Пока игнорируем redux типизацию
   } = useSelector((state) => state.form.form);
 
-  const { formRequest, formSuccess, formErrorStatus, formErrorStatusMessage } =
-    // @ts-expect-error Пока игнорируем redux типизацию
+  const { formRequest, formSuccess, formErrorStatus, formErrorStatusCode } =
     useSelector((state) => state.form);
 
   const onShowPasswordSwitch = () => {
@@ -30,7 +28,7 @@ export const useForm = () => {
   };
 
   const showMessageStatus = (message: string): string => {
-    switch (formErrorStatusMessage) {
+    switch (formErrorStatusCode) {
       case 403: {
         return message;
       }
@@ -65,6 +63,6 @@ export const useForm = () => {
     formRequest,
     formErrorStatus,
     formSuccess,
-    formErrorStatusMessage,
+    formErrorStatusCode,
   };
 };

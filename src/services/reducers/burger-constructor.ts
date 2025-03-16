@@ -1,22 +1,29 @@
+import { IItem } from "../../utils/types";
 import {
   ADD_BURGER_INGREDIENT,
   DELETE_BURGER_INGREDIENT,
   SWAP_BURGER_INGREDIENT,
   ADD_BURGER_BUN,
   RESET_BURGER_CONSTRUCTOR,
+  TBurgerConstructorActions,
 } from "../actions/burger-constructor";
 
-const initialState = {
-  items: [],
-  bun: [],
+type TBurgerConstructorState = {
+  items: IItem[];
+  buns: IItem[];
 };
 
-export const burgerConstructor = (state = initialState, action) => {
+const initialState: TBurgerConstructorState = {
+  items: [],
+  buns: [],
+};
+
+export const burgerConstructor = (state = initialState, action: TBurgerConstructorActions) => {
   switch (action.type) {
     case ADD_BURGER_BUN: {
       return {
         ...state,
-        bun: [action.item],
+        buns: [action.item],
       };
     }
     case SWAP_BURGER_INGREDIENT: {
@@ -41,7 +48,7 @@ export const burgerConstructor = (state = initialState, action) => {
       return {
         ...state,
         items: [],
-        bun: [],
+        buns: undefined,
       };
     }
     default: {

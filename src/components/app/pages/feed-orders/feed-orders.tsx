@@ -2,87 +2,57 @@ import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./orders.module.css";
-import { useModal } from "../../../../hooks/useModal";
+import styles from "./feed-orders.module.css";
 import { Outlet, useLocation } from "react-router-dom";
-import { getIngredients } from "../../../../services/actions/ingredients";
+import { useModal } from "../../../../hooks/useModal";
 import {
   useDispatch,
   useSelector,
 } from "../../../../utils/reduxCustomBoilerplate";
-import { useEffect, useState } from "react";
 import {
-  WS_USER_ORDERS_CONNECTION_CLOSED,
-  WS_USER_ORDERS_CONNECTION_START,
-} from "../../../../services/actions/websocketUser";
-import { IItemsResponseOrders } from "../../../../utils/types";
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_START,
+} from "../../../../services/actions/websocket";
+import { useEffect, useState } from "react";
+import { getIngredients } from "../../../../services/actions/ingredients";
 
-export default function Orders() {
+export default function FeedOrders() {
   const dispatch = useDispatch();
   const { openModal } = useModal();
   const location = useLocation();
-  const { items } = useSelector((state) => state.websocketUser);
+  const { items } = useSelector((state) => state.websocket);
   const ingredients = useSelector((state) => state.ingredients);
   const isModal: { background: boolean } = location.state?.background;
-  const isOrderDetailRoute = location.pathname.startsWith("/profile/orders/");
+  const isOrderDetailRoute = location.pathname.startsWith("/feed/");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    dispatch({ type: WS_USER_ORDERS_CONNECTION_START });
+    dispatch({ type: WS_CONNECTION_START });
     dispatch(getIngredients());
 
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 500);
-
+    }, 1000);
     return () => {
       clearTimeout(timer);
-      dispatch({ type: WS_USER_ORDERS_CONNECTION_CLOSED });
+      dispatch({ type: WS_CONNECTION_CLOSED });
     };
   }, [dispatch]);
-
-  if (items[0]?.message === "Invalid or missing token") {
-    return (
-      <>
-        <p className={styles.ws_status_message}>Токен недействителен</p>
-      </>
-    );
-  }
 
   if (isLoading) {
     return <p className={styles.ws_status_message}>Загрузка...</p>;
   }
-
-  if (!items[0]?.orders.length || (!items[0]?.orders && !isLoading)) {
-    return <p className={styles.ws_status_message}>Заказов нет...</p>;
-  }
-
-  const statusOrder = (order: IItemsResponseOrders) => {
-    switch (order.status) {
-      case "done": {
-        return "Выполнен";
-      }
-      case "cancel": {
-        return "Отменён";
-      }
-      case "pending": {
-        return "Создан";
-      }
-      default: {
-        return "Статус неизвестен";
-      }
-    }
-  };
 
   return (
     <>
       <Outlet />
       {!isOrderDetailRoute || isModal ? (
         <>
-          <article className={styles.order_user_wrapper}>
+          <article className={styles.order_feed_wrapper}>
+            <p className="text text_type_main-large">Лента заказов</p>
             <ul className={styles.order_items_list}>
               {items.map((items) => {
-                return [...items.orders].reverse().map((order_item) => {
+                return [...items.orders].map((order_item) => {
                   const totalPrice = order_item.ingredients.reduce(
                     (sum, ingredientId: string) => {
                       const ingredient = ingredients.items.find(
@@ -101,18 +71,14 @@ export default function Orders() {
                       key={order_item._id}
                       className={styles.order_item_card}
                       onClick={() => {
-                        openModal(order_item, "profile-order");
+                        openModal(order_item, "order");
                       }}
                     >
                       <div className={styles.order_item_header}>
                         <p className="text text_type_digits-default">
                           #{order_item.number}
                         </p>
-                        <p
-                          className={
-                            "text text_type_main-default text_color_inactive"
-                          }
-                        >
+                        <p className="text text_type_main-default text_color_inactive">
                           <FormattedDate
                             date={new Date(order_item.createdAt)}
                           />
@@ -120,13 +86,6 @@ export default function Orders() {
                       </div>
                       <p className="text text_type_main-medium">
                         {order_item.name}
-                      </p>
-                      <p
-                        className={`text text_type_main-default text_color_inactive ${
-                          order_item.status === "done" ? styles.text_blue : ""
-                        }`}
-                      >
-                        {statusOrder(order_item)}
                       </p>
                       <div className={styles.order_item_header}>
                         <div className={styles.order_ingredients_wrapper}>
@@ -189,6 +148,78 @@ export default function Orders() {
                 });
               })}
             </ul>
+          </article>
+          <article className={styles.statistics_panel}>
+            <section className={styles.statistics_table}>
+              <div className={styles.statistics_wrapper}>
+                <p className="text text_type_main-medium mb-6">Готовы:</p>
+                <ul className={styles.statistics_orders_list}>
+                  {items
+                    .flatMap((current) => current.orders)
+                    .slice(0, 10)
+                    .map((current, i) => {
+                      if (current.status === "done") {
+                        return (
+                          <li key={i}>
+                            <p
+                              className={
+                                styles.text_blue +
+                                " " +
+                                "text text_type_digits-default"
+                              }
+                            >
+                              {current.number}
+                            </p>
+                          </li>
+                        );
+                      }
+                    })}
+                </ul>
+              </div>
+              <div className={styles.statistics_wrapper}>
+                <p className="text text_type_main-medium mb-6">В работе:</p>
+                <ul className={styles.statistics_orders_list}>
+                  {items
+                    .flatMap((current) => current.orders)
+                    .slice(0, 10)
+                    .map((current, i) => {
+                      if (current.status !== "done") {
+                        return (
+                          <li key={i}>
+                            <p className="text text_type_digits-default">
+                              {current.number}
+                            </p>
+                          </li>
+                        );
+                      }
+                    })}
+                </ul>
+              </div>
+            </section>
+            <section className={styles.statistics_counters}>
+              <p className="text text_type_main-medium">
+                Выполнено за все время:
+              </p>
+              <p
+                className={
+                  styles.digits_glow + " " + "text text_type_digits-large"
+                }
+              >
+                {items[0]?.total}
+              </p>
+            </section>
+            <section className={styles.statistics_counters}>
+              <p className="text text_type_main-medium">
+                Выполнено за сегодня:
+              </p>
+              <p
+                className={
+                  styles.digits_glow + " " + "text text_type_digits-large"
+                }
+              >
+                {items[0]?.totalToday}
+              </p>
+            </section>
           </article>
         </>
       ) : null}

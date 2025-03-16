@@ -6,9 +6,27 @@ import {
   RESET_ERROR_STATUS,
   RESET_FORM,
   SHOW_PASSWORD_SWITCH,
+  TFormsActions,
 } from "../actions/form";
 
-const initialState = {
+export interface IFormValues {
+  name: string;
+  password: string;
+  passwordVisible: boolean;
+  email: string;
+  code: string;
+  token: string;
+}
+
+type TFormState = {
+  form: IFormValues;
+  formRequest: boolean;
+  formErrorStatus: boolean;
+  formSuccess: boolean;
+  formErrorStatusCode: number;
+};
+
+const initialState: TFormState = {
   form: {
     name: "",
     password: "",
@@ -20,10 +38,10 @@ const initialState = {
   formRequest: false,
   formErrorStatus: false,
   formSuccess: false,
-  formErrorStatusMessage: 0,
+  formErrorStatusCode: 0,
 };
 
-export const form = (state = initialState, action) => {
+export const form = (state = initialState, action: TFormsActions) => {
   switch (action.type) {
     case FORM_SUBMIT_REQUEST: {
       return {
@@ -36,12 +54,12 @@ export const form = (state = initialState, action) => {
         ...state,
         form: {
           ...state.form,
-          name: action.name,
-          email: action.email,
+          ...action.item,
         },
         formRequest: false,
         formErrorStatus: false,
         formSuccess: true,
+        formErrorStatusCode: 0,
       };
     }
     case FORM_SUBMIT_ERROR: {
@@ -50,7 +68,7 @@ export const form = (state = initialState, action) => {
         formRequest: false,
         formErrorStatus: true,
         formSuccess: false,
-        formErrorStatusMessage: action.error,
+        formErrorStatusCode: action.errorStatusCode,
       };
     }
     case SHOW_PASSWORD_SWITCH: {

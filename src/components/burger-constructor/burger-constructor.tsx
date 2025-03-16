@@ -5,7 +5,6 @@ import {
   ConstructorElement,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useModal } from "../../hooks/useModal";
-import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import {
@@ -20,6 +19,7 @@ import { postOrder } from "../../services/actions/order-detail";
 import { getCookie } from "../../utils/getCookieValue";
 import { useNavigate } from "react-router-dom";
 import { IItem } from "../../utils/types";
+import { useDispatch, useSelector } from "../../utils/reduxCustomBoilerplate";
 
 export default function BurgerConstructor() {
   const { openModal } = useModal();
@@ -27,33 +27,36 @@ export default function BurgerConstructor() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  // @ts-expect-error Пока игнорируем redux типизацию
   const ingredients = useSelector((state) => state.burger_constructor.items);
-  // @ts-expect-error Пока игнорируем redux типизацию
-  const bun = useSelector((state) => state.burger_constructor.bun);
+  const bun = useSelector((state) => state.burger_constructor.buns);
 
-  const sum =
-    ingredients.reduce(
-      (sum: number, { price }: { price: number }) => sum + price,
-      0
-    ) +
-    bun.reduce(
-      (sum: number, { price }: { price: number }) => sum + price * 2,
-      0
-    );
+  let sum = 0;
+  let bunItem;
 
-  const bunItem = bun[0];
+  if (bun && bun.length !== 0) {
+    sum =
+      ingredients.reduce((summarize, item) => summarize + item.price, 0) +
+      bun[0].price * 2;
 
-  const collectArrayId = (): { ingredients: IItem[] } => {
-    const arr = [
-      ...ingredients.map((item: IItem) => item._id),
-      ...bun.map((item: IItem) => item._id),
-    ];
-    return { ingredients: arr };
+    bunItem = bun[0];
+  }
+
+  const collectArrayId = (): { ingredients: string[] } => {
+    if (bun && bun.length !== 0) {
+      const bunId = bun[0]._id;
+      const arr = [
+        bunId,
+        ...ingredients.map((item: IItem) => item._id),
+        bunId,
+      ];
+      return { ingredients: arr };
+    } else {
+      return { ingredients: [] };
+    }
   };
+  
 
   const handlePostOrder = (): void => {
-    // @ts-expect-error Пока игнорируем redux типизацию
     dispatch(postOrder(collectArrayId()));
     dispatch({ type: RESET_BURGER_CONSTRUCTOR });
   };
@@ -123,7 +126,7 @@ export default function BurgerConstructor() {
 
   return (
     <section className={styles.burger_constructor}>
-      {bun.length === 0 ? (
+      {bun?.length === 0 || !bun ? (
         <div ref={dropTargetBunsTop} className={styles.constructor_bun_wrapper}>
           <div className={styles.constructor_wrapper_bun_hover}>
             <div className={styles.dnd_bun_wrapper}>
@@ -138,9 +141,9 @@ export default function BurgerConstructor() {
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={bunItem.name + " (верх)"}
-            price={bunItem.price}
-            thumbnail={bunItem.image}
+            text={bunItem!.name + " (верх)"}
+            price={bunItem!.price}
+            thumbnail={bunItem!.image}
           />
         </div>
       )}
@@ -172,7 +175,7 @@ export default function BurgerConstructor() {
         </div>
       )}
 
-      {bun.length === 0 ? (
+      {bun?.length === 0 || !bun ? (
         <div
           ref={dropTargetBunsBottom}
           className={styles.constructor_bun_wrapper}
@@ -193,9 +196,9 @@ export default function BurgerConstructor() {
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={bunItem.name + " (низ)"}
-            price={bunItem.price}
-            thumbnail={bunItem.image}
+            text={bunItem!.name + " (низ)"}
+            price={bunItem!.price}
+            thumbnail={bunItem!.image}
           />
         </div>
       )}
@@ -217,7 +220,9 @@ export default function BurgerConstructor() {
           htmlType="button"
           type="primary"
           size="large"
-          disabled={ingredients.length === 0 || bun.length === 0 ? true : false}
+          disabled={
+            ingredients.length === 0 || bun?.length === 0 ? true : false
+          }
         >
           Оформить заказ
         </Button>
