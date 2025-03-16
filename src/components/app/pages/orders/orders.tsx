@@ -11,7 +11,6 @@ import {
   useSelector,
 } from "../../../../utils/reduxCustomBoilerplate";
 import { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import {
   WS_USER_ORDERS_CONNECTION_CLOSED,
   WS_USER_ORDERS_CONNECTION_START,
@@ -99,7 +98,7 @@ export default function Orders() {
 
                   return (
                     <li
-                      key={uuidv4()}
+                      key={order_item._id}
                       className={styles.order_item_card}
                       onClick={() => {
                         openModal(order_item, "profile-order");

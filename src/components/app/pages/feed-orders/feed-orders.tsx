@@ -14,7 +14,6 @@ import {
   WS_CONNECTION_START,
 } from "../../../../services/actions/websocket";
 import { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { getIngredients } from "../../../../services/actions/ingredients";
 
 export default function FeedOrders() {
@@ -25,7 +24,7 @@ export default function FeedOrders() {
   const ingredients = useSelector((state) => state.ingredients);
   const isModal: { background: boolean } = location.state?.background;
   const isOrderDetailRoute = location.pathname.startsWith("/feed/");
-    const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     dispatch({ type: WS_CONNECTION_START });
@@ -69,7 +68,7 @@ export default function FeedOrders() {
 
                   return (
                     <li
-                      key={uuidv4()}
+                      key={order_item._id}
                       className={styles.order_item_card}
                       onClick={() => {
                         openModal(order_item, "order");
@@ -112,8 +111,8 @@ export default function FeedOrders() {
                                       }
                                     >
                                       <img
-                                        className={styles.order_ingredient_image +
-                                          isLast
+                                        className={
+                                          styles.order_ingredient_image + isLast
                                             ? styles.order_ingredient_icon_low_opacity
                                             : styles.order_ingredient_icon_image
                                         }
