@@ -30,31 +30,23 @@ export default function BurgerConstructor() {
   const ingredients = useSelector((state) => state.burger_constructor.items);
   const bun = useSelector((state) => state.burger_constructor.buns);
 
-  let sum = 0;
   let bunItem;
+  let sum = ingredients.reduce((summarize, item) => summarize + item.price, 0);
 
-  if (bun && bun.length !== 0) {
-    sum =
-      ingredients.reduce((summarize, item) => summarize + item.price, 0) +
-      bun[0].price * 2;
-
+  if (bun && bun.length) {
+    sum += bun[0].price * 2;
     bunItem = bun[0];
   }
 
   const collectArrayId = (): { ingredients: string[] } => {
-    if (bun && bun.length !== 0) {
+    if (bun && bun.length) {
       const bunId = bun[0]._id;
-      const arr = [
-        bunId,
-        ...ingredients.map((item: IItem) => item._id),
-        bunId,
-      ];
+      const arr = [bunId, ...ingredients.map((item: IItem) => item._id), bunId];
       return { ingredients: arr };
     } else {
       return { ingredients: [] };
     }
   };
-  
 
   const handlePostOrder = (): void => {
     dispatch(postOrder(collectArrayId()));
@@ -126,7 +118,7 @@ export default function BurgerConstructor() {
 
   return (
     <section className={styles.burger_constructor}>
-      {bun?.length === 0 || !bun ? (
+      {(bun && !bun.length) || !bun ? (
         <div ref={dropTargetBunsTop} className={styles.constructor_bun_wrapper}>
           <div className={styles.constructor_wrapper_bun_hover}>
             <div className={styles.dnd_bun_wrapper}>
@@ -141,13 +133,13 @@ export default function BurgerConstructor() {
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={bunItem!.name + " (верх)"}
-            price={bunItem!.price}
-            thumbnail={bunItem!.image}
+            text={bunItem ? bunItem.name + " (верх)" : ""}
+            price={bunItem ? bunItem.price : 0}
+            thumbnail={bunItem ? bunItem.image : ""}
           />
         </div>
       )}
-      {ingredients.length === 0 ? (
+      {!ingredients.length ? (
         <div ref={dropTarget} className={styles.constructor_wrapper_hover}>
           <div className={styles.dnd_wrapper}>
             <img src={cloudIcon} alt="Облако с иконкой загрузки" />
@@ -175,7 +167,7 @@ export default function BurgerConstructor() {
         </div>
       )}
 
-      {bun?.length === 0 || !bun ? (
+      {(bun && !bun.length) || !bun ? (
         <div
           ref={dropTargetBunsBottom}
           className={styles.constructor_bun_wrapper}
@@ -196,9 +188,9 @@ export default function BurgerConstructor() {
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={bunItem!.name + " (низ)"}
-            price={bunItem!.price}
-            thumbnail={bunItem!.image}
+            text={bunItem ? bunItem.name + " (низ)" : ""}
+            price={bunItem ? bunItem.price : 0}
+            thumbnail={bunItem ? bunItem.image : ""}
           />
         </div>
       )}
@@ -220,9 +212,7 @@ export default function BurgerConstructor() {
           htmlType="button"
           type="primary"
           size="large"
-          disabled={
-            ingredients.length === 0 || bun?.length === 0 ? true : false
-          }
+          disabled={bun && (!ingredients.length || !bun.length)}
         >
           Оформить заказ
         </Button>

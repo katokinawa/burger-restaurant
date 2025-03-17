@@ -14,16 +14,15 @@ export const OrderCurrent = () => {
   const ingredients = useSelector((state) => state.ingredients.items);
 
   useEffect(() => {
-    if (Object.keys(order).length !== 0 && order_number) {
+    if (Object.keys(order).length && order_number) {
       localStorage.setItem("order", JSON.stringify(order_number));
     }
   }, [order, order_number]);
 
-
   useEffect(() => {
-    if (Object.keys(order).length === 0) {
-      const order = localStorage.getItem("order")
-      if(order) {
+    if (!Object.keys(order).length) {
+      const order = localStorage.getItem("order");
+      if (order) {
         dispatch(getOrder(+order));
       }
     }
@@ -31,10 +30,13 @@ export const OrderCurrent = () => {
 
   if (!order || !order.ingredients) return null;
 
-  const ingredientCount = order.ingredients.reduce((acc:  { [key: string]: number }, id) => {
-    acc[id] = (acc[id] || 0) + 1;
-    return acc;
-  }, {});
+  const ingredientCount = order.ingredients.reduce(
+    (acc: { [key: string]: number }, id) => {
+      acc[id] = (acc[id] || 0) + 1;
+      return acc;
+    },
+    {}
+  );
 
   const uniqueIngredients = Object.keys(ingredientCount)
     .map((id) => {
@@ -43,29 +45,27 @@ export const OrderCurrent = () => {
     })
     .filter(Boolean);
 
-
-    const totalPrice = uniqueIngredients.reduce(
-      (sum, item) => sum + item!.price * item!.count,
-      0
-    );
+  const totalPrice = uniqueIngredients.reduce(
+    (sum, item) => sum + (item ? item.price * (item ? item.count : 0) : 0),
+    0
+  );
 
   const statusOrder = () => {
-    switch(order.status) {
+    switch (order.status) {
       case "done": {
-        return "Выполнен"
+        return "Выполнен";
       }
       case "cancel": {
-        return "Отменён"
+        return "Отменён";
       }
       case "pending": {
-        return "Создан"
+        return "Создан";
       }
       default: {
         return "Статус неизвестен";
       }
     }
-  }
-
+  };
   return (
     <section className={styles.order_current}>
       <div className={styles.order_current_center}>
@@ -79,33 +79,42 @@ export const OrderCurrent = () => {
       </p>
       <p className="text text_type_main-medium mb-6">Состав:</p>
       <ul className={styles.order_items_list}>
-        {uniqueIngredients.map((ingredient) => (
-          <li key={ingredient?._id} className={styles.order_item_card}>
-            <div className={styles.order_item_wrapper}>
-              <div className={styles.order_ingredient_icon_wrapper}>
-                <div className={styles.order_ingredient_icon_wrapper_black}>
-                  {" "}
-                  <img
-                    className={styles.order_ingredient_icon_image}
-                    src={ingredient?.image}
-                    alt={ingredient?.name}
-                  />
+        {uniqueIngredients.map((ingredient) => {
+          if (!ingredient) return null;
+          return (
+            <li key={ingredient._id} className={styles.order_item_card}>
+              <div className={styles.order_item_wrapper}>
+                <div className={styles.order_ingredient_icon_wrapper}>
+                  <div className={styles.order_ingredient_icon_wrapper_black}>
+                    {" "}
+                    <img
+                      className={styles.order_ingredient_icon_image}
+                      src={ingredient.image}
+                      alt={ingredient.name}
+                    />
+                  </div>
+                </div>
+                <p className="text text_type_main-default">{ingredient.name}</p>
+                <div className={styles.order_price_wrapper}>
+                  <p className="text text_type_main-medium">
+                    {ingredient.count}× {ingredient.price}
+                  </p>
+                  <CurrencyIcon type="primary" />
                 </div>
               </div>
-              <p className="text text_type_main-default">{ingredient?.name}</p>
-              <div className={styles.order_price_wrapper}>
-                <p className="text text_type_main-medium">
-                  {ingredient?.count}× {ingredient?.price}
-                </p>
-                <CurrencyIcon type="primary" />
-              </div>
-            </div>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ul>
       <div className={styles.order_current_modal_footer}>
         <p className="text text_type_main-default text_color_inactive">
-          <FormattedDate date={new Date(order.createdAt!)} />
+          <FormattedDate
+            date={
+              order && order.createdAt
+                ? new Date(order.createdAt)
+                : new Date("Неизвестно")
+            }
+          />
         </p>
         <div className={styles.order_price_wrapper}>
           <p className="text text_type_main-medium">{totalPrice}</p>

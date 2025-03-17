@@ -5,6 +5,11 @@
   width: 720px;
   border-radius: 50px;
   color: #f2f2f3;
+  min-width: 720px;
+  min-height: 538px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .hidden {

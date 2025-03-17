@@ -49,7 +49,6 @@ export const getOrder = (orderId: number) => (dispatch: AppDispatch) => {
   });
   request(`orders/${orderId}`, {})
     .then((item) => {
-      console.log(item)
       if (item.orders) {
         dispatch({
           type: GET_ORDER_SUCCESS,

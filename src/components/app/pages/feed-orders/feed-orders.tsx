@@ -22,7 +22,7 @@ export default function FeedOrders() {
   const location = useLocation();
   const { items } = useSelector((state) => state.websocket);
   const ingredients = useSelector((state) => state.ingredients);
-  const isModal: { background: boolean } = location.state?.background;
+  const isModal: { background: boolean } = location.state?.background ?? false;
   const isOrderDetailRoute = location.pathname.startsWith("/feed/");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -32,7 +32,7 @@ export default function FeedOrders() {
 
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 1500);
     return () => {
       clearTimeout(timer);
       dispatch({ type: WS_CONNECTION_CLOSED });
@@ -54,11 +54,14 @@ export default function FeedOrders() {
               {items.map((items) => {
                 return [...items.orders].map((order_item) => {
                   const totalPrice = order_item.ingredients.reduce(
-                    (sum, ingredientId: string) => {
+                    (sum: number, ingredientId: string) => {
                       const ingredient = ingredients.items.find(
                         (item) => item._id === ingredientId
                       );
-                      return sum + (ingredient?.price || 0);
+                      if (ingredient) {
+                        return sum + (ingredient.price || 0);
+                      }
+                      return 0;
                     },
                     0
                   );
@@ -202,10 +205,12 @@ export default function FeedOrders() {
               </p>
               <p
                 className={
-                  styles.digits_glow + " " + "text text_type_digits-large"
+                  items[0]
+                    ? styles.digits_glow + " " + "text text_type_digits-large"
+                    : "text text_type_main-large"
                 }
               >
-                {items[0]?.total}
+                {items[0] ? items[0].total : "Загрузка..."}
               </p>
             </section>
             <section className={styles.statistics_counters}>
@@ -214,10 +219,12 @@ export default function FeedOrders() {
               </p>
               <p
                 className={
-                  styles.digits_glow + " " + "text text_type_digits-large"
+                  items[0]
+                    ? styles.digits_glow + " " + "text text_type_digits-large"
+                    : "text text_type_main-large"
                 }
               >
-                {items[0]?.totalToday}
+                {items[0] ? items[0].totalToday : "Загрузка..."}
               </p>
             </section>
           </article>

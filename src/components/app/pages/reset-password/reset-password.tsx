@@ -89,7 +89,7 @@ export function ResetPassword() {
             htmlType="submit"
             type="primary"
             size="medium"
-            disabled={formRequest}
+          disabled={formRequest}
           >
             Сохранить
           </Button>
