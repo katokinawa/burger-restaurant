@@ -20,6 +20,7 @@ export default function IngredientDetails() {
     dispatch(getIngredients());
   }, [dispatch]);
 
+  if(!ingredient) return <p className={styles.error}>Не можем обработать запрос</p>;
   return (
     <div className={styles.ingredients_modal_wrapper}>
       <p className={styles.heading + " text text_type_main-large"}>
@@ -28,17 +29,17 @@ export default function IngredientDetails() {
       <div className={styles.ingredients_details_wrapper}>
         <img
           className="mb-4"
-          src={ingredient?.image_large}
-          alt={ingredient?.name}
+          src={ingredient.image_large}
+          alt={ingredient.name}
         />
-        <p className="text text_type_main-medium mb-8">{ingredient?.name}</p>
+        <p className="text text_type_main-medium mb-8">{ingredient.name}</p>
         <ul className={styles.energy_value_list}>
           <li className={styles.energy_value_item}>
             <p className="text text_type_main-default text_color_inactive">
               Калории, ккал
             </p>
             <p className="text text_type_digits-default text_color_inactive">
-              {ingredient?.calories}
+              {ingredient.calories}
             </p>
             <p className="text text_type_main-default text_color_inactive"></p>
           </li>
@@ -47,7 +48,7 @@ export default function IngredientDetails() {
               Белки, г
             </p>
             <p className="text text_type_digits-default text_color_inactive">
-              {ingredient?.proteins}
+              {ingredient.proteins}
             </p>
             <p className="text text_type_main-default text_color_inactive"></p>
           </li>
@@ -56,7 +57,7 @@ export default function IngredientDetails() {
               Жиры, г
             </p>
             <p className="text text_type_digits-default text_color_inactive">
-              {ingredient?.fat}
+              {ingredient.fat}
             </p>
             <p className="text text_type_main-default text_color_inactive"></p>
           </li>
@@ -65,7 +66,7 @@ export default function IngredientDetails() {
               Углеводы, г
             </p>
             <p className="text text_type_digits-default text_color_inactive">
-              {ingredient?.carbohydrates}
+              {ingredient.carbohydrates}
             </p>
             <p className="text text_type_main-default text_color_inactive"></p>
           </li>

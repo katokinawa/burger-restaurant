@@ -24,3 +24,7 @@
   text-align: center;
   gap: 8px;
 }
+
+.error {
+  font-size: 4rem;
+}

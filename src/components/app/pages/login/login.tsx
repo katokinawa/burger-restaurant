@@ -32,7 +32,7 @@ export function Login() {
   }: TUseFormReturn = useForm();
   const dispatch = useDispatch();
   const token = getCookie().refreshToken;
-  const from = location.state?.from || "/";
+  const from = location.state && location.state.from || "/";
 
   useEffect(() => {
     dispatch({ type: RESET_ERROR_STATUS });

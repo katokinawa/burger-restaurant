@@ -15,7 +15,7 @@ export const ProtectedRouteElement = ({
   const dispatch = useDispatch();
   const token = getCookie().refreshToken;
   const location = useLocation();
-  const from = location.state?.from || "/";
+  const from = location.state && location.state.from || "/";
 
   const init = useCallback(() => {
     if (token) {

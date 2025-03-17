@@ -22,7 +22,7 @@ export default function IngredientElement({
 
   const countIngredient = ingredients.filter((e: IItem) => e._id === item._id);
 
-  if(counterBuns && counterBuns.length !== 0) {
+  if(counterBuns && counterBuns.length) {
     countBuns = counterBuns.filter((e: IItem) => e._id === item._id);
   }
 
@@ -41,14 +41,14 @@ export default function IngredientElement({
       className={styles.article}
       ref={dragTarget}
     >
-      {countIngredient.length !== 0 && (
+      {countIngredient.length > 0 && (
         <Counter
           count={countIngredient.length}
           size="default"
           extraClass="m-1"
         />
       )}
-      {countBuns.length !== 0 && (
+      {countBuns.length > 0 && (
         <Counter count={countBuns.length + 1} size="default" extraClass="m-1" />
       )}
       <img className={styles.img} src={item.image_large} alt={item.name}></img>

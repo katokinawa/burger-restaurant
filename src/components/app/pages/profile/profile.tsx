@@ -6,7 +6,7 @@ import { useDispatch } from "../../../../utils/reduxCustomBoilerplate";
 export function Profile() {
   const dispatch = useDispatch();
   const location = useLocation();
-  const isModal: { background: boolean } = location.state?.background;
+  const isModal: { background: boolean } = location.state?.background ?? false;
   const isOrderDetailRoute = location.pathname.startsWith("/profile/orders/");
 
   const currentLocation = () => {

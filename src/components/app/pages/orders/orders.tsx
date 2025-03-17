@@ -23,7 +23,7 @@ export default function Orders() {
   const location = useLocation();
   const { items } = useSelector((state) => state.websocketUser);
   const ingredients = useSelector((state) => state.ingredients);
-  const isModal: { background: boolean } = location.state?.background;
+  const isModal: { background: boolean } = location.state?.background ?? false;
   const isOrderDetailRoute = location.pathname.startsWith("/profile/orders/");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -51,10 +51,6 @@ export default function Orders() {
 
   if (isLoading) {
     return <p className={styles.ws_status_message}>Загрузка...</p>;
-  }
-
-  if (!items[0]?.orders.length || (!items[0]?.orders && !isLoading)) {
-    return <p className={styles.ws_status_message}>Заказов нет...</p>;
   }
 
   const statusOrder = (order: IItemsResponseOrders) => {
@@ -88,7 +84,10 @@ export default function Orders() {
                       const ingredient = ingredients.items.find(
                         (item) => item._id === ingredientId
                       );
-                      return sum + (ingredient?.price || 0);
+                      if (ingredient) {
+                        return sum + (ingredient.price || 0);
+                      }
+                      return 0;
                     },
                     0
                   );

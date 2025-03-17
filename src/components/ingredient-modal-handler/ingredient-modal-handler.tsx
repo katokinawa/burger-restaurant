@@ -9,7 +9,7 @@ export default function IngredientModalHandler() {
 
   const { isModalOpen } = useSelector((state) => state.ingredient);
   const location = useLocation();
-  const isModal: { background: boolean } = location.state?.background;
+  const isModal: { background: boolean } = location.state?.background ?? false;
 
   if (isModalOpen || isModal) {
     return (
