@@ -4,7 +4,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import eslint from "@eslint/js";
-import pluginCypress from 'eslint-plugin-cypress/flat'
+import pluginCypress from "eslint-plugin-cypress/flat";
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -13,6 +13,7 @@ export default tseslint.config(
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
+
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
