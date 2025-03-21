@@ -14,7 +14,7 @@ type WebsocketState = {
   error?: Event;
 };
 
-const initialState: WebsocketState = {
+export const initialState: WebsocketState = {
   wsConnected: false,
   items: [],
 };

@@ -13,7 +13,7 @@ type TBurgerConstructorState = {
   buns: IItem[];
 };
 
-const initialState: TBurgerConstructorState = {
+export const initialState: TBurgerConstructorState = {
   items: [],
   buns: [],
 };
@@ -45,11 +45,7 @@ export const burgerConstructor = (state = initialState, action: TBurgerConstruct
       };
     }
     case RESET_BURGER_CONSTRUCTOR: {
-      return {
-        ...state,
-        items: [],
-        buns: undefined,
-      };
+      return state;
     }
     default: {
       return state;

@@ -38,7 +38,7 @@ export interface IFormSubmitSuccess {
 }
 export interface IFormSubmitError {
   readonly type: typeof FORM_SUBMIT_ERROR;
-  errorStatusCode?: number;
+  errorStatusCode: number;
 }
 export interface IShowPasswordSwitch {
   readonly type: typeof SHOW_PASSWORD_SWITCH;
