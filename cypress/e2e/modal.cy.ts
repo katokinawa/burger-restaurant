@@ -3,7 +3,7 @@ import { testUrl } from "../../src/utils/constants";
 const OPEN_MODAL_BUTTON = ".open-modal-button";
 const MODAL_WINDOW = '[data-testid="modal-window"]';
 
-const handleDrapAndDropItem = (item: string, itemName: string) => {
+const handleDragAndDropItem = (item: string, itemName: string) => {
   // берем ингредиент и бросаем в конструктор
   cy.get("@ingredients-elements-block")
     .find('[data-testid="ingredient"]')
@@ -45,9 +45,9 @@ describe("Проверка логики работы модального окн
       "сonstructor-ingredients-block-ingredient"
     ); // блок с конструктором ингредиентов
 
-    handleDrapAndDropItem("bun", "Булка");
+    handleDragAndDropItem("bun", "Булка");
 
-    handleDrapAndDropItem("ingredient", "Соус");
+    handleDragAndDropItem("ingredient", "Соус");
 
     // теперь кликаем по кнопке оформить заказ
     cy.get(OPEN_MODAL_BUTTON).contains("Оформить заказ").click();
