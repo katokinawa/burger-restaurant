@@ -216,7 +216,7 @@ export default function FeedOrders() {
                     : "text text_type_main-large"
                 }
               >
-                {items[0] ? items[0].total : <p className={"text text_type_main-medium" + " " + styles.ws_status_message}>"Загрузка..."</p>}
+                {items[0] ? items[0].total : "Загрузка..."}
               </p>
             </section>
             <section className={styles.statistics_counters}>
@@ -230,7 +230,7 @@ export default function FeedOrders() {
                     : "text text_type_main-large"
                 }
               >
-                {items[0] ? items[0].totalToday : <p className={"text text_type_main-medium" + " " + styles.ws_status_message}>Загрузка...</p>}
+                {items[0] ? items[0].totalToday : "Загрузка..."}
               </p>
             </section>
           </article>
