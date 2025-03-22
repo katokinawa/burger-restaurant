@@ -32,7 +32,7 @@ export default function Modal({ handleClose, children }: TModal) {
             data-testid="modal-window"
           >
             <button className={styles.modal_close_button} onClick={handleClose}>
-              <img src={closeImage} alt="Крестик" />
+              <img src={closeImage} alt="Крестик" data-testid="close-button" />
             </button>
             {children}
           </div>
