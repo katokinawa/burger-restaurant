@@ -31,7 +31,6 @@ export const getIngredients = () => (dispatch: AppDispatch) => {
   request("ingredients", {})
     .then((item) => {
       if (item.data) {
-        console.log(item.data)
         dispatch({
           type: GET_INGREDIENTS_SUCCESS,
           items: item.data,

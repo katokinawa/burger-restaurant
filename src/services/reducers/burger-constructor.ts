@@ -45,7 +45,11 @@ export const burgerConstructor = (state = initialState, action: TBurgerConstruct
       };
     }
     case RESET_BURGER_CONSTRUCTOR: {
-      return state;
+      return {
+        ...state,
+        items: [],
+        buns: [],
+      };
     }
     default: {
       return state;

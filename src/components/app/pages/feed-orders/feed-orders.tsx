@@ -72,7 +72,7 @@ export default function FeedOrders() {
                   return (
                     <li
                       key={order_item._id}
-                      className={styles.order_item_card}
+                      className={styles.order_item_card + " " + "open-modal-button"}
                       onClick={() => {
                         openModal(order_item, "order");
                       }}

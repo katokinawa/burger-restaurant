@@ -29,6 +29,7 @@ export default function Modal({ handleClose, children }: TModal) {
           <div
             onClick={(evt) => evt.stopPropagation()}
             className={styles.modal}
+            data-testid="modal-window"
           >
             <button className={styles.modal_close_button} onClick={handleClose}>
               <img src={closeImage} alt="Крестик" />

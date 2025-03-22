@@ -3,7 +3,7 @@ import { initialState, websocketUser } from "./websocketUser";
 
 
 
-describe("websocketUserUser reducer", () => {
+describe("websocketUser reducer", () => {
   const payload = new Event("error");
 
   const itemsResponseOrders = [
