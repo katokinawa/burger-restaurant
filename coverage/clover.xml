@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1742575387937" clover="3.2.0">
-  <project timestamp="1742575387937" name="All files">
-    <metrics statements="275" coveredstatements="110" conditionals="72" coveredconditionals="19" methods="69" coveredmethods="7" elements="416" coveredelements="136" complexity="0" loc="275" ncloc="275" packages="3" files="17" classes="17"/>
+<coverage generated="1742640362117" clover="3.2.0">
+  <project timestamp="1742640362117" name="All files">
+    <metrics statements="276" coveredstatements="138" conditionals="72" coveredconditionals="47" methods="69" coveredmethods="7" elements="417" coveredelements="192" complexity="0" loc="276" ncloc="276" packages="3" files="17" classes="17"/>
     <package name="services.actions">
-      <metrics statements="193" coveredstatements="66" conditionals="24" coveredconditionals="0" methods="58" coveredmethods="0"/>
+      <metrics statements="194" coveredstatements="66" conditionals="24" coveredconditionals="0" methods="58" coveredmethods="0"/>
       <file name="burger-constructor.ts" path="/Users/harikomi/Documents/Project/burger-restaurant/src/services/actions/burger-constructor.ts">
         <metrics statements="8" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
@@ -113,7 +113,7 @@
         <line num="64" count="0" type="stmt"/>
       </file>
       <file name="ingredients.ts" path="/Users/harikomi/Documents/Project/burger-restaurant/src/services/actions/ingredients.ts">
-        <metrics statements="11" coveredstatements="5" conditionals="2" coveredconditionals="0" methods="4" coveredmethods="0"/>
+        <metrics statements="12" coveredstatements="5" conditionals="2" coveredconditionals="0" methods="4" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
@@ -123,8 +123,9 @@
         <line num="31" count="0" type="stmt"/>
         <line num="33" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="34" count="0" type="stmt"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="45" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
       </file>
       <file name="order-detail.ts" path="/Users/harikomi/Documents/Project/burger-restaurant/src/services/actions/order-detail.ts">
         <metrics statements="15" coveredstatements="8" conditionals="1" coveredconditionals="0" methods="4" coveredmethods="0"/>
@@ -220,7 +221,7 @@
       </file>
     </package>
     <package name="services.reducers">
-      <metrics statements="68" coveredstatements="40" conditionals="47" coveredconditionals="19" methods="7" coveredmethods="7"/>
+      <metrics statements="68" coveredstatements="68" conditionals="47" coveredconditionals="47" methods="7" coveredmethods="7"/>
       <file name="burger-constructor.ts" path="/Users/harikomi/Documents/Project/burger-restaurant/src/services/reducers/burger-constructor.ts">
         <metrics statements="10" coveredstatements="10" conditionals="7" coveredconditionals="7" methods="1" coveredmethods="1"/>
         <line num="2" count="1" type="stmt"/>
@@ -232,82 +233,82 @@
         <line num="36" count="1" type="stmt"/>
         <line num="42" count="1" type="stmt"/>
         <line num="48" count="1" type="stmt"/>
-        <line num="55" count="1" type="stmt"/>
+        <line num="51" count="1" type="stmt"/>
       </file>
       <file name="form.ts" path="/Users/harikomi/Documents/Project/burger-restaurant/src/services/reducers/form.ts">
-        <metrics statements="12" coveredstatements="5" conditionals="9" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <metrics statements="12" coveredstatements="12" conditionals="9" coveredconditionals="9" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="29" count="1" type="stmt"/>
         <line num="44" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="45" count="1" type="cond" truecount="1" falsecount="7"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="53" count="0" type="stmt"/>
-        <line num="66" count="0" type="stmt"/>
-        <line num="75" count="0" type="stmt"/>
-        <line num="84" count="0" type="stmt"/>
-        <line num="93" count="0" type="stmt"/>
-        <line num="100" count="0" type="stmt"/>
+        <line num="45" count="12" type="cond" truecount="8" falsecount="0"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="53" count="2" type="stmt"/>
+        <line num="66" count="3" type="stmt"/>
+        <line num="75" count="1" type="stmt"/>
+        <line num="84" count="2" type="stmt"/>
+        <line num="93" count="1" type="stmt"/>
+        <line num="100" count="1" type="stmt"/>
         <line num="103" count="1" type="stmt"/>
       </file>
       <file name="ingredient-detail.ts" path="/Users/harikomi/Documents/Project/burger-restaurant/src/services/reducers/ingredient-detail.ts">
-        <metrics statements="11" coveredstatements="5" conditionals="8" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <metrics statements="11" coveredstatements="11" conditionals="8" coveredconditionals="8" methods="1" coveredmethods="1"/>
         <line num="2" count="1" type="stmt"/>
         <line num="29" count="1" type="stmt"/>
         <line num="38" count="1" type="stmt"/>
-        <line num="42" count="1" type="cond" truecount="1" falsecount="6"/>
-        <line num="44" count="0" type="stmt"/>
-        <line num="52" count="0" type="stmt"/>
-        <line num="59" count="0" type="stmt"/>
-        <line num="65" count="0" type="stmt"/>
-        <line num="71" count="0" type="stmt"/>
-        <line num="78" count="0" type="stmt"/>
+        <line num="42" count="9" type="cond" truecount="7" falsecount="0"/>
+        <line num="44" count="3" type="stmt"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="59" count="1" type="stmt"/>
+        <line num="65" count="1" type="stmt"/>
+        <line num="71" count="1" type="stmt"/>
+        <line num="78" count="1" type="stmt"/>
         <line num="85" count="1" type="stmt"/>
       </file>
       <file name="ingredients.ts" path="/Users/harikomi/Documents/Project/burger-restaurant/src/services/reducers/ingredients.ts">
-        <metrics statements="8" coveredstatements="5" conditionals="5" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <metrics statements="8" coveredstatements="8" conditionals="5" coveredconditionals="5" methods="1" coveredmethods="1"/>
         <line num="2" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
         <line num="21" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="22" count="1" type="cond" truecount="1" falsecount="3"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
+        <line num="22" count="4" type="cond" truecount="4" falsecount="0"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
         <line num="44" count="1" type="stmt"/>
       </file>
       <file name="order-detail.ts" path="/Users/harikomi/Documents/Project/burger-restaurant/src/services/reducers/order-detail.ts">
-        <metrics statements="9" coveredstatements="5" conditionals="6" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <metrics statements="9" coveredstatements="9" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="21" count="1" type="stmt"/>
         <line num="27" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="28" count="1" type="cond" truecount="1" falsecount="4"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="36" count="0" type="stmt"/>
-        <line num="44" count="0" type="stmt"/>
-        <line num="51" count="0" type="stmt"/>
+        <line num="28" count="5" type="cond" truecount="5" falsecount="0"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="51" count="1" type="stmt"/>
         <line num="57" count="1" type="stmt"/>
       </file>
       <file name="websocket.ts" path="/Users/harikomi/Documents/Project/burger-restaurant/src/services/reducers/websocket.ts">
-        <metrics statements="9" coveredstatements="5" conditionals="6" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <metrics statements="9" coveredstatements="9" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
         <line num="2" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
         <line num="22" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="23" count="1" type="cond" truecount="1" falsecount="4"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="38" count="0" type="stmt"/>
-        <line num="44" count="0" type="stmt"/>
-        <line num="50" count="1" type="stmt"/>
+        <line num="23" count="5" type="cond" truecount="5" falsecount="0"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
       </file>
       <file name="websocketUser.ts" path="/Users/harikomi/Documents/Project/burger-restaurant/src/services/reducers/websocketUser.ts">
-        <metrics statements="9" coveredstatements="5" conditionals="6" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <metrics statements="9" coveredstatements="9" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
         <line num="2" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
         <line num="16" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="17" count="1" type="cond" truecount="1" falsecount="4"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="26" count="0" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="39" count="0" type="stmt"/>
+        <line num="17" count="5" type="cond" truecount="5" falsecount="0"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
         <line num="46" count="1" type="stmt"/>
       </file>
     </package>

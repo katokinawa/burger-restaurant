@@ -29,7 +29,7 @@ describe("ingredientDetail reducer", () => {
     createdAt: "",
   };
 
-  const ItemsResponseOrders = {
+  const itemsResponseOrders = {
     name: "",
     ingredients: [""],
     owner: "",
@@ -66,12 +66,12 @@ describe("ingredientDetail reducer", () => {
     expect(
       ingredientDetail(undefined, {
         type: SET_SELECTED_INGREDIENT,
-        item: ItemsResponseOrders,
+        item: itemsResponseOrders,
         ingredientType,
       })
     ).toEqual({
       ...initialState,
-      data: ItemsResponseOrders,
+      data: itemsResponseOrders,
       isModalOpen: true,
       ingredientType: ingredientType,
     });
@@ -130,11 +130,11 @@ describe("ingredientDetail reducer", () => {
     expect(
       ingredientDetail(undefined, {
         type: GET_ORDER_SUCCESS,
-        payload: ItemsResponseOrders,
+        payload: itemsResponseOrders,
       })
     ).toEqual({
       ...initialState,
-      data: ItemsResponseOrders,
+      data: itemsResponseOrders,
       OrderRequest: false,
     });
   });

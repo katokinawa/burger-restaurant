@@ -10,7 +10,7 @@ import {
 import { initialState, form } from "./form";
 
 describe("form reducer", () => {
-  const item = {
+  const formValues = {
     name: "",
     password: "",
     passwordVisible: false,
@@ -39,11 +39,11 @@ describe("form reducer", () => {
     expect(
       form(undefined, {
         type: FORM_SUBMIT_SUCCESS,
-        item: item,
+        item: formValues,
       })
     ).toEqual({
       ...initialState,
-      form: { ...initialState.form, ...item },
+      form: { ...initialState.form, ...formValues },
       formRequest: false,
       formErrorStatus: false,
       formSuccess: true,
@@ -58,7 +58,7 @@ describe("form reducer", () => {
       })
     ).toEqual({
       ...initialState,
-      form: { ...item },
+      form: { ...formValues },
       formRequest: false,
       formErrorStatus: false,
       formSuccess: true,

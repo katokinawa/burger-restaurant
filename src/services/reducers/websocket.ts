@@ -24,7 +24,6 @@ export const websocket = (state = initialState, action: TWebsocket) => {
     case WS_CONNECTION_SUCCESS:
       return {
         ...state,
-
         wsConnected: true,
         error: undefined,
       };

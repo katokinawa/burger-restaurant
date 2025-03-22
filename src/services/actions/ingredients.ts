@@ -1,10 +1,10 @@
 import { request } from "../../utils/request";
 import { AppDispatch, IItem } from "../../utils/types";
-export const GET_INGREDIENTS_REQUEST: 'GET_INGREDIENTS_REQUEST' =
+export const GET_INGREDIENTS_REQUEST: "GET_INGREDIENTS_REQUEST" =
   "GET_INGREDIENTS_REQUEST";
-export const GET_INGREDIENTS_ERROR: 'GET_INGREDIENTS_ERROR' =
+export const GET_INGREDIENTS_ERROR: "GET_INGREDIENTS_ERROR" =
   "GET_INGREDIENTS_ERROR";
-export const GET_INGREDIENTS_SUCCESS: 'GET_INGREDIENTS_SUCCESS' =
+export const GET_INGREDIENTS_SUCCESS: "GET_INGREDIENTS_SUCCESS" =
   "GET_INGREDIENTS_SUCCESS";
 
 interface IGetIngredientsRequest {
@@ -29,18 +29,19 @@ export const getIngredients = () => (dispatch: AppDispatch) => {
     type: GET_INGREDIENTS_REQUEST,
   });
   request("ingredients", {})
-  .then((item) => {
-    if (item.data) {
-      dispatch({
-        type: GET_INGREDIENTS_SUCCESS,
-        items: item.data,
-      });
-    } else {
-      dispatch({
-        type: GET_INGREDIENTS_ERROR,
-      });
-    }
-  })
+    .then((item) => {
+      if (item.data) {
+        console.log(item.data)
+        dispatch({
+          type: GET_INGREDIENTS_SUCCESS,
+          items: item.data,
+        });
+      } else {
+        dispatch({
+          type: GET_INGREDIENTS_ERROR,
+        });
+      }
+    })
     .catch(() => {
       dispatch({
         type: GET_INGREDIENTS_ERROR,
