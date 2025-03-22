@@ -1,26 +1,28 @@
+import { testUrl } from "../../src/utils/constants"
+
 describe("Drag & Drop тест булки", () => {
   beforeEach(() => {
     cy.intercept("GET", "ingredients", { fixture: "ingredient" }).as(
       "getIngredients"
     ); // мокаем запрос ингредиентов
-    cy.visit("http://localhost:5173/");
+    cy.visit(testUrl);
   });
 
   it("Должен перетащить ингредиент в конструктор", () => {
     cy.get('[data-testid="ingredients-elements-block"]').as(
-      "ingredients-elements-block"
+      "ingredientsBlock"
     ); // блок с ингредиентами
     cy.get('[data-testid="сonstructor-ingredients-block-bun"]').as(
-      "сonstructor-ingredients-block-bun"
+      "сonstructorBlockBun"
     ); // блок конструктором
 
-    cy.get("@ingredients-elements-block")
+    cy.get("@ingredientsBlock")
       .find('[data-testid="ingredient"]')
       .contains("Булка")
-      .as("ingredient-drag"); // берём замоканную булку и присваеваем ей имя
+      .as("ingredientDrag"); // берём замоканную булку и присваеваем ей имя
 
-    cy.get("@ingredient-drag").trigger("dragstart").wait(500) // ждём, чтобы не было багов;
-    cy.get("@сonstructor-ingredients-block-bun").trigger("drop").wait(500) // ждём, чтобы не было багов;
+    cy.get("@ingredientDrag").trigger("dragstart").wait(500) // ждём, чтобы не было багов;
+    cy.get("@сonstructorBlockBun").trigger("drop").wait(500) // ждём, чтобы не было багов;
 
     cy.get('[data-testid="bun-constructor-element"]').eq(0)
     .should('exist');
