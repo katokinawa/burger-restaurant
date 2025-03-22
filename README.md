@@ -1,4 +1,4 @@
-# Stellar Burgers - бургерная на краю вселенной
+<img width="951" alt="Снимок экрана 2025-03-22 в 19 27 37" src="https://github.com/user-attachments/assets/d773c416-fe1c-4bc5-829d-b89ce06bc1c2" /># Stellar Burgers - бургерная на краю вселенной
 
 Добро пожаловать в **Stellar Burgers** — бургерную, которая находится на самом краю вселенной! Здесь мы подаем космически-вкусные бургеры, вдохновленные величием космоса и таинственными планетами.
 Для сборки и разработки используется Vite. Для обеспечения качества кода применяются ESLint, Typescript и несколько плагинов для React, включая eslint-plugin-react, eslint-plugin-react-hooks, и eslint-plugin-react-refresh.
@@ -11,3 +11,5 @@
 4. Перейдите в директорию проекта с помощью команды `cd <директория>`.
 5. Загрузите все зависимости с помощью команды `npm install`.
 6. Запустите проект с помощью команды `npm run preview`.
+
+[GitHub Pages](https://katokinawa.github.io/burger-restaurant/)
