@@ -40,7 +40,11 @@ export default function FeedOrders() {
   }, [dispatch]);
 
   if (isLoading) {
-    return <p className={styles.ws_status_message}>Загрузка...</p>;
+    return (
+      <p className={"text text_type_main-medium" + " " + styles.ws_status_message}>
+        Загрузка...
+      </p>
+    );
   }
 
   return (
@@ -72,7 +76,9 @@ export default function FeedOrders() {
                   return (
                     <li
                       key={order_item._id}
-                      className={styles.order_item_card + " " + "open-modal-button"}
+                      className={
+                        styles.order_item_card + " " + "open-modal-button"
+                      }
                       onClick={() => {
                         openModal(order_item, "order");
                       }}
@@ -210,7 +216,7 @@ export default function FeedOrders() {
                     : "text text_type_main-large"
                 }
               >
-                {items[0] ? items[0].total : "Загрузка..."}
+                {items[0] ? items[0].total : <p className={"text text_type_main-medium" + " " + styles.ws_status_message}>"Загрузка..."</p>}
               </p>
             </section>
             <section className={styles.statistics_counters}>
@@ -224,7 +230,7 @@ export default function FeedOrders() {
                     : "text text_type_main-large"
                 }
               >
-                {items[0] ? items[0].totalToday : "Загрузка..."}
+                {items[0] ? items[0].totalToday : <p className={"text text_type_main-medium" + " " + styles.ws_status_message}>Загрузка...</p>}
               </p>
             </section>
           </article>
