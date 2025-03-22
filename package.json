@@ -2,7 +2,7 @@
   "name": "burger-restaurant",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://harikomi.github.io/burger-restaurant",
+  "homepage": "https://harikomi.github.io/",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
