@@ -1,4 +1,5 @@
-# Stellar Burgers - бургерная на краю вселенной
+
+Stellar Burgers - бургерная на краю вселенной
 
 Добро пожаловать в **Stellar Burgers** — бургерную, которая находится на самом краю вселенной! Здесь мы подаем космически-вкусные бургеры, вдохновленные величием космоса и таинственными планетами.
 Для сборки и разработки используется Vite. Для обеспечения качества кода применяются ESLint, Typescript и несколько плагинов для React, включая eslint-plugin-react, eslint-plugin-react-hooks, и eslint-plugin-react-refresh.
@@ -13,4 +14,3 @@
 6. Запустите проект с помощью команды `npm run preview`.
 
 [GitHub Pages](https://katokinawa.github.io/burger-restaurant/)
-
